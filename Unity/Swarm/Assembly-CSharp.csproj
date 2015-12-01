@@ -51,19 +51,13 @@
      <Compile Include="Assets\Scripts\Apath\PathFinding.cs" />
      <Compile Include="Assets\Scripts\Apath\PathRequestManager.cs" />
      <Compile Include="Assets\Scripts\Apath\Unit.cs" />
-     <Compile Include="Assets\Scripts\Serializers\NodeSerializer.cs" />
+     <Compile Include="Assets\Scripts\Swarm\Spawn.cs" />
      <Compile Include="Assets\Scripts\Swarm\creep.cs" />
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity5.2/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity5.2/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
  <HintPath>C:/Program Files/Unity5.2/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity5.2/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="Mono.Cecil">
  <HintPath>C:/Program Files/Unity5.2/Editor/Data/Managed/Mono.Cecil.dll</HintPath>
