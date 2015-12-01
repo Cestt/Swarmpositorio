@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class creep : MonoBehaviour{
+public class Creep : MonoBehaviour{
 
 	public int life;
 	public int armor;
@@ -21,6 +21,7 @@ public class creep : MonoBehaviour{
 	
 	}
 
+<<<<<<< HEAD
 	void RequestPath(){
 
 		if(path[0] != null){
@@ -50,5 +51,15 @@ public class creep : MonoBehaviour{
 				yield return null;
 			}
 		}
+=======
+	public int Damage(int damage, int armorPen){
+		//Debug.Log ("golpeado");
+		int defense = Mathf.Max (0, armor - armorPen);
+		int damageReal = Mathf.Max (0, damage - defense);
+		life -= damageReal;
+		if (life <= 0)
+			Destroy (gameObject);
+		return life;
+>>>>>>> origin/master
 	}
 }
