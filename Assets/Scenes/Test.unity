@@ -253,7 +253,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 2131865436}
   - 212: {fileID: 2131865435}
-  - 61: {fileID: 2131865437}
   m_Layer: 0
   m_Name: Aaron no la cagues
   m_TagString: Untagged
@@ -299,16 +298,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!61 &2131865437
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2131865434}
-  m_Enabled: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: .150000006, y: .280000001}
