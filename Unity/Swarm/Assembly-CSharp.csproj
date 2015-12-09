@@ -51,6 +51,9 @@
      <Compile Include="Assets\Scripts\Apath\PathFinding.cs" />
      <Compile Include="Assets\Scripts\Apath\PathRequestManager.cs" />
      <Compile Include="Assets\Scripts\Apath\Unit.cs" />
+     <Compile Include="Assets\Scripts\Human\Bullet.cs" />
+     <Compile Include="Assets\Scripts\Human\Human.cs" />
+     <Compile Include="Assets\Scripts\Human\Weapon.cs" />
      <Compile Include="Assets\Scripts\Swarm\Spawn.cs" />
      <Compile Include="Assets\Scripts\Swarm\creep.cs" />
  <Reference Include="UnityEngine.UI">

@@ -14,6 +14,7 @@ public class Creep : MonoBehaviour{
 
 	void Start () {
 		InvokeRepeating("RequestPath",0,1f);
+		Debug.Log ("PRUEBA MERGE");
 	}
 	
 
