@@ -22,7 +22,7 @@ public class Creep : MonoBehaviour{
 	
 	}
 
-<<<<<<< HEAD
+
 	void RequestPath(){
 
 		if(path[0] != null){
@@ -52,7 +52,10 @@ public class Creep : MonoBehaviour{
 				yield return null;
 			}
 		}
-=======
+
+	
+}
+
 	public int Damage(int damage, int armorPen){
 		//Debug.Log ("golpeado");
 		int defense = Mathf.Max (0, armor - armorPen);
@@ -61,6 +64,6 @@ public class Creep : MonoBehaviour{
 		if (life <= 0)
 			Destroy (gameObject);
 		return life;
->>>>>>> origin/master
+		
 	}
 }
