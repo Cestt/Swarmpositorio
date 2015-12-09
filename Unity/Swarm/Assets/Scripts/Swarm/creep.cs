@@ -21,7 +21,6 @@ public class Creep : MonoBehaviour{
 	
 	}
 
-<<<<<<< HEAD
 	void RequestPath(){
 
 		if(path[0] != null){
@@ -32,26 +31,27 @@ public class Creep : MonoBehaviour{
 
 	IEnumerator MoveAlongPath(){
 		int targetIndex = 0;
-		if(path[0] != null){
-			Vector3 currentWayPoint = path[0];
+		if (path [0] != null) {
+			Vector3 currentWayPoint = path [0];
 
-			while(true){
+			while (true) {
 
-				if(transform.position == currentWayPoint){
+				if (transform.position == currentWayPoint) {
 
 					targetIndex++;
-					if(targetIndex >= path.Length){
+					if (targetIndex >= path.Length) {
 
 
 						yield break;
 					}
-					currentWayPoint = path[targetIndex];
+					currentWayPoint = path [targetIndex];
 				}
-				transform.position = Vector3.MoveTowards(transform.position,currentWayPoint,speed * Time.fixedDeltaTime);
+				transform.position = Vector3.MoveTowards (transform.position, currentWayPoint, speed * Time.fixedDeltaTime);
 				yield return null;
 			}
 		}
-=======
+	}
+
 	public int Damage(int damage, int armorPen){
 		//Debug.Log ("golpeado");
 		int defense = Mathf.Max (0, armor - armorPen);
@@ -60,6 +60,5 @@ public class Creep : MonoBehaviour{
 		if (life <= 0)
 			Destroy (gameObject);
 		return life;
->>>>>>> origin/master
 	}
 }
