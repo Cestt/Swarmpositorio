@@ -359,6 +359,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2131865436}
   - 212: {fileID: 2131865435}
+  - 114: {fileID: 2131865437}
   m_Layer: 0
   m_Name: Aaron no la cagues
   m_TagString: Untagged
@@ -404,3 +405,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+--- !u!114 &2131865437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2131865434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27a15aae803e602459a5e3ac8c38da34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unwalkableMask:
+    serializedVersion: 2
+    m_Bits: 0
+  displayGizmos: 0
+  gridWorldSize: {x: 0, y: 0}
+  nodeSize: 0
+  nodeTemp: .200000003
