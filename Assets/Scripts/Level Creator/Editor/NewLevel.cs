@@ -9,6 +9,6 @@ public class NewLevel{
 	}
 	[MenuItem("Tools/New Level/Basic Level")]
 	private static void NewBasicLevel () {
-		LevelInit.NewEmptyLevel();
+		LevelInit.NewBasicLevel();
 	}
 }

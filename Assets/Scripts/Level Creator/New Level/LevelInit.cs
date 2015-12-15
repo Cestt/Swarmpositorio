@@ -25,6 +25,12 @@ namespace LevelUtilities{
 			CleanScene ();
 			EditorApplication.SaveScene();
 		}
+
+		public static void NewBasicLevel () {
+			NewScene ();
+			GameObject Manager = new GameObject("Level Manager");
+			EditorApplication.SaveScene();
+		}
 	}
 }
 
