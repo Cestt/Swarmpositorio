@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class Unit : MonoBehaviour {
+public class UnitPath : MonoBehaviour {
 
 	public Transform target;
 	public float speed;
