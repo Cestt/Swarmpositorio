@@ -7,6 +7,7 @@ public class Unit : MonoBehaviour {
 	public int life = 1; //Vida de la unidad
 	public int armor; //Armadura de la unidad
 	//public FSM.states state;
+	public float basicAttackCooldown=1;
 
 	[HideInInspector]
 	public int weaknessType; //Tipo al que es debil la unidad
@@ -14,7 +15,8 @@ public class Unit : MonoBehaviour {
 	public TypesAttacks typesAttacks; //Clase donde se tienen todos los tipos de ataque
 	[HideInInspector]
 	public Transform thisTransform;
-
+	[HideInInspector]
+	public Unit target;
 	void Awake(){
 		typesAttacks = GameObject.Find ("GameManager/TypesAttacks").GetComponent<TypesAttacks> ();
 		thisTransform = transform;
