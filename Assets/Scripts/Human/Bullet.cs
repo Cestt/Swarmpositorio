@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other) {
 		if (other.tag == "Swarm") {
 			int life = 0;
-			life = other.gameObject.GetComponent<Creep>().Damage(damage,armorPenetration);
+			//life = other.gameObject.GetComponent<Creep>().Damage(damage,armorPenetration);
 			if (life > 0 ){
 				Destroy (gameObject);
 			}else{

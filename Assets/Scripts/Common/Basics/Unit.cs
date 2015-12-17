@@ -6,8 +6,15 @@ public class Unit : MonoBehaviour {
 
 	public int life = 1; //Vida de la unidad
 	public int armor; //Armadura de la unidad
+<<<<<<< HEAD
+	public FSM.States state;
+=======
 	//public FSM.states state;
+<<<<<<< HEAD
 	public float basicAttackCooldown=1;
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 	[HideInInspector]
 	public int weaknessType; //Tipo al que es debil la unidad

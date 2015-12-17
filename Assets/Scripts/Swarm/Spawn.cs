@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Spawn : MonoBehaviour {
 
+	public Vector3[] path;
 
 	void Start () {
 	
