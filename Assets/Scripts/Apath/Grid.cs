@@ -19,20 +19,19 @@ public class Grid : MonoBehaviour {
 		public float nodeSize;
 		[HideInInspector]
 		public float nodeTemp;
+		private EVector3 position = new EVector3(2f,3f,4f);
+		private EVector2 position2 = new EVector2(2f,3f);
+
 		
 		int gridSizeX, gridSizeY;
 		
 		
 		void Awake(){
-			//CreateGrid();
+			position = new EVector3(transform.position);
+			CreateGrid();
+		EVector3 hola = (EVector2)position + position2;
 		}
-		public Grid(Node[,] _grid, LayerMask _unwalkableMask, Vector2 _gridWorldSize, float _nodeSize){
-			
-			grid = _grid;
-			unwalkableMask = _unwalkableMask;
-			gridWorldSize = _gridWorldSize;
-			nodeSize = _nodeSize;
-		}
+		
 		
 		public int maxHeapSize{
 			get{
@@ -47,7 +46,7 @@ public class Grid : MonoBehaviour {
 			gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeSize);
 			gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeSize);
 			grid = new Node[gridSizeX,gridSizeY];
-			Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2;
+			Vector3 worldBottomLeft =  transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.up * gridWorldSize.y/2;
 			
 			for(int i = 0; i < gridSizeX; i++){
 				
