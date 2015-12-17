@@ -7,12 +7,12 @@ public class ThreadManager {
 
 	//Crea la pool de Threads
 	public void Enque(ParseQueue data){
-		ThreadPool.QueueUserWorkItem();
+		ThreadPool.QueueUserWorkItem(CallbackDamage,data);
 	}
 
 	//LLama al metodo Damage
 	void CallbackDamage(object data){
 		ParseQueue temp = (ParseQueue) data;
-		temp.unit.Damage(temp.Damage,temp.armorPen);
+		temp.unit.Damage(temp.Damage,temp.armorPen,temp.typeAttack);
 	}
 }
