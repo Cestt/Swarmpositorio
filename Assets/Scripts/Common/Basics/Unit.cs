@@ -7,16 +7,20 @@ public class Unit : MonoBehaviour {
 	public int life = 1; //Vida de la unidad
 	public int armor; //Armadura de la unidad
 
+	public bool canAttack = true; //Si puede atacar la unidad
+	[HideInInspector]
 	public FSM.States state;
 
-	[HideInInspector]
+
 	public int weaknessType; //Tipo al que es debil la unidad
 	[HideInInspector]
 	public TypesAttacks typesAttacks; //Clase donde se tienen todos los tipos de ataque
 	[HideInInspector]
-	public Transform thisTransform;
+	public Transform thisTransform; //Transform propio.
 	[HideInInspector]
-	public Unit target;
+	public Unit target; //Unidad objetivo al que apunta
+	//[HideInInspector]
+	public Skill[] skills; //Lista de habilidades. La 0 es la habilidad basica
 
 	void Awake(){
 		typesAttacks = GameObject.Find ("GameManager/TypesAttacks").GetComponent<TypesAttacks> ();

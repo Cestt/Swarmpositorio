@@ -85,51 +85,6 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &139715267
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 139715269}
-  - 114: {fileID: 139715268}
-  m_Layer: 0
-  m_Name: CC
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &139715268
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 139715267}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6b910f3352df3e4e885a39ae897749b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coolDown: 1
-  damage: 1
-  range: .5
-  typeSkill: 0
-  typesAttacks: {fileID: 653476257}
-  typeDamage: 0
---- !u!4 &139715269
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 139715267}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
 --- !u!1 &653476256
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +131,59 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1128686234}
   m_RootOrder: 0
+--- !u!1 &1110629357
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1110629359}
+  - 114: {fileID: 1110629358}
+  m_Layer: 0
+  m_Name: Creep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1110629358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1110629357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce900cb709ea93f499aeaeb9a5d41672, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 1
+  armor: 0
+  canAttack: 1
+  state: 0
+  weaknessType: 0
+  typesAttacks: {fileID: 653476257}
+  thisTransform: {fileID: 0}
+  target: {fileID: 0}
+  skills:
+  - {fileID: 11464686, guid: 19e47bde475a29b4dbeed1a5c7c81668, type: 2}
+  OriginSpawn: {fileID: 0}
+  detectionRadius: 0
+  speedAlongPath: 0
+  path: []
+--- !u!4 &1110629359
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1110629357}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
 --- !u!1 &1128686233
 GameObject:
   m_ObjectHideFlags: 0
@@ -498,14 +506,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 100
   armor: 0
-  basicAttackCooldown: 1
+  canAttack: 1
+  state: 0
   weaknessType: 1
   typesAttacks: {fileID: 653476257}
   thisTransform: {fileID: 0}
-  damage: 1
-  speed: 1
-  rotationSpeed: 1
-  enemies: []
+  target: {fileID: 0}
+  skills: []
 --- !u!4 &1749556803
 Transform:
   m_ObjectHideFlags: 0

@@ -12,13 +12,23 @@ public class UnitEditor : Editor {
 
 		if (unitScript.typesAttacks == null)
 			unitScript.typesAttacks = GameObject.Find ("GameManager/TypesAttacks").GetComponent<TypesAttacks> ();
-		DrawDefaultInspector ();
+		//DrawDefaultInspector ();
+
+		unitScript.life = EditorGUILayout.IntField ("Life", unitScript.life);
+		unitScript.armor = EditorGUILayout.IntField ("Armor", unitScript.armor);
+		unitScript.canAttack = EditorGUILayout.Toggle ("Can Attack?", unitScript.canAttack);
 		List<string> listOfTypes = new List<string>();
 		foreach (TypesAttacks.TypesStruct type in unitScript.typesAttacks.types) {
 			listOfTypes.Add(type.name);
 		}
 		unitScript.weaknessType = EditorGUILayout.Popup ("Weakness Type",unitScript.weaknessType ,listOfTypes.ToArray());
 
+		if (unitScript.canAttack) {
+			serializedObject.Update();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty("skills"), true);
+			serializedObject.ApplyModifiedProperties();
+
+		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}
@@ -28,5 +38,9 @@ public class UnitEditor : Editor {
 
 [CustomEditor(typeof(Human))]
 public class HumanEditor : UnitEditor {
+}
+
+[CustomEditor(typeof(Creep))]
+public class CreepEditor : UnitEditor {
 }
 
