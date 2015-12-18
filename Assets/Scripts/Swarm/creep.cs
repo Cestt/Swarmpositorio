@@ -16,10 +16,7 @@ public class Creep : Unit{
 	//Camino generado por el PathFinding
 	[HideInInspector]
 	public Vector3[] path;
-	//Transform propio.
-	Transform thisTransform;
-	//Objetivo al que apuntas
-	Unit target;
+
 
 
 	void Start () {

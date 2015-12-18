@@ -6,7 +6,7 @@ using System.Threading;
 public class ThreadManager {
 
 	//Crea la pool de Threads
-	public void Enque(ParseQueue data){
+	public void EnQueue(ParseQueue data){
 		ThreadPool.QueueUserWorkItem(CallbackDamage,data);
 	}
 

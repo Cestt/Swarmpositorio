@@ -12,7 +12,7 @@ public class EditorLevelEditor : Editor {
 		LevelEditor levelEditorScript = (LevelEditor) target;
 
 
-		levelEditorScript.nativeResolution = EditorGUILayout.Vector2Field("Native Resolution",levelEditorScript.nativeResolution,GUILayout.MaxWidth(150));
+		levelEditorScript.nativeResolution = EditorGUILayout.Vector2Field("Camera Size",levelEditorScript.nativeResolution,GUILayout.MaxWidth(150));
 
 			EditorGUILayout.Space();
 

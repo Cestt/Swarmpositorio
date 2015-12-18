@@ -40,7 +40,7 @@ public class GridEditor : Editor {
 
 		}else{
 			if(GUILayout.Button("Preview Grid")){
-				gridScript.CreateGrid();
+				gridScript.StartCreateGrid();
 			}
 		}
 
