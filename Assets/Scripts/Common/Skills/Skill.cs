@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Skill :MonoBehaviour{
 
@@ -17,13 +18,9 @@ public class Skill :MonoBehaviour{
 	[HideInInspector]
 	public int typeDamage; //Tipo al que es debil la unidad
 
-	private Unit owner; // Unidad que tiene la habilidad
-
-	void Awake(){
-		owner = gameObject.GetComponent<Unit> ();
-	}
-
-	public void Use(){
+	public void Use(Unit owner){
+		owner.target.StartCheckDamage ();
 		ThreadManager.EnQueue (new ParseQueue (owner.target, damage, armorPen, typeDamage));
 	}
+
 }

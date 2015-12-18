@@ -38,9 +38,21 @@ public class UnitEditor : Editor {
 
 [CustomEditor(typeof(Human))]
 public class HumanEditor : UnitEditor {
+	public override void OnInspectorGUI ()
+	{
+		base.OnInspectorGUI ();
+	}
 }
 
 [CustomEditor(typeof(Creep))]
 public class CreepEditor : UnitEditor {
+	public override void OnInspectorGUI ()
+	{
+		base.OnInspectorGUI ();
+		Creep creepScript = (Creep)target;
+
+		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
+		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
+	}
 }
 

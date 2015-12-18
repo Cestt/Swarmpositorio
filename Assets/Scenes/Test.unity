@@ -141,7 +141,7 @@ GameObject:
   - 4: {fileID: 1110629359}
   - 114: {fileID: 1110629358}
   m_Layer: 0
-  m_Name: Creep
+  m_Name: CreepRaro
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,13 +158,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce900cb709ea93f499aeaeb9a5d41672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 1
+  life: 20
   armor: 0
   canAttack: 1
   state: 0
   weaknessType: 0
   typesAttacks: {fileID: 653476257}
   thisTransform: {fileID: 0}
+  thisGameObject: {fileID: 0}
   target: {fileID: 0}
   skills:
   - {fileID: 11464686, guid: 19e47bde475a29b4dbeed1a5c7c81668, type: 2}
@@ -511,8 +512,11 @@ MonoBehaviour:
   weaknessType: 1
   typesAttacks: {fileID: 653476257}
   thisTransform: {fileID: 0}
+  thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11464686, guid: 19e47bde475a29b4dbeed1a5c7c81668, type: 2}
+  target2: {fileID: 1110629358}
 --- !u!4 &1749556803
 Transform:
   m_ObjectHideFlags: 0

@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Threading;
+using System.ComponentModel;
 
 public class Unit : MonoBehaviour {
 
@@ -18,14 +21,21 @@ public class Unit : MonoBehaviour {
 	[HideInInspector]
 	public Transform thisTransform; //Transform propio.
 	[HideInInspector]
+	public GameObject thisGameObject; //Transform propio.
+
+	[HideInInspector]
 	public Unit target; //Unidad objetivo al que apunta
 	//[HideInInspector]
-	public Skill[] skills; //Lista de habilidades. La 0 es la habilidad basica
+	public List<Skill> skills = new List<Skill>(); //Lista de habilidades. La 0 es la habilidad basica
 
-	void Awake(){
+	private bool endDamage;
+
+	public void Awake(){
 		typesAttacks = GameObject.Find ("GameManager/TypesAttacks").GetComponent<TypesAttacks> ();
 		thisTransform = transform;
+		thisGameObject = gameObject;
 	}
+
 	/// <summary>
 	/// Damage. Gestiona el daño recibido por un ataque
 	/// </summary>
@@ -39,5 +49,21 @@ public class Unit : MonoBehaviour {
 		}
 		int damageReal = Mathf.Max (0, damageWeak - Mathf.Max (0, armor - armorPen));
 		life -= damageReal;
+		endDamage = true;
+	}
+
+	public void StartCheckDamage(){
+		endDamage = false;
+		StartCoroutine (CheckDamage ());
+	}
+
+	IEnumerator CheckDamage(){
+
+		while (!endDamage) {
+			yield return new WaitForSeconds (Random.Range (0.1f, 0.2f));
+		}
+		if (life <= 0) {
+			Destroy (thisGameObject);
+		}
 	}
 }
