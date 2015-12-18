@@ -6,13 +6,13 @@ using System.Threading;
 public class ThreadManager {
 
 	//Crea la pool de Threads
-	public void EnQueue(ParseQueue data){
+	public static void EnQueue(ParseQueue data){
 		ThreadPool.QueueUserWorkItem(CallbackDamage,data);
 	}
 
 	//LLama al metodo Damage
-	void CallbackDamage(object data){
+	private static void  CallbackDamage(object data){
 		ParseQueue temp = (ParseQueue) data;
-		temp.unit.Damage(temp.Damage,temp.armorPen,temp.typeAttack);
+		temp.unit.Damage(temp.damage,temp.armorPen,temp.typeAttack);
 	}
 }
