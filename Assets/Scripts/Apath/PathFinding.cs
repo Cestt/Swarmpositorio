@@ -12,10 +12,9 @@ public class PathFinding : MonoBehaviour {
 	void Awake(){
 		grid = GetComponentInParent<Grid>();
 		pathManager = GetComponent<PathRequestManager>();
-
 	}
 
-	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition){
+	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
 		StartCoroutine(FindPath(startPosition,targetPosition));
 	}
 

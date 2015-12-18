@@ -39,7 +39,11 @@ public class Grid : MonoBehaviour {
 			}
 		}
 		
-		public void CreateGrid(){
+		public void StartCreateGrid(){
+			StartCoroutine(CreateGrid());
+		}	
+
+		IEnumerator CreateGrid(){
 			Stopwatch sw = new Stopwatch();
 			sw.Start();
 			nodeSize = nodeTemp;
@@ -61,7 +65,7 @@ public class Grid : MonoBehaviour {
 			}
 			sw.Stop();
 			print("Created grid in: " +sw.ElapsedMilliseconds+" ms");
-			
+			yield return null;
 		}
 		
 		public Node NodeFromWorldPosition(Vector3 worldPosition){
