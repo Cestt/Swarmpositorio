@@ -13,14 +13,18 @@ public class Creep : Unit{
 	//Radio deteccion creep;
 	public float detectionRadius;
 	//Velocidad de movimiento
-	public float speedAlongPath;
+	 float speedAlongPath = 1;
 	//Camino generado por el PathFinding
 	[HideInInspector]
 	public Vector3[] path;
+	//Punto de la ruta en la que se encuentra
+	int targetIndex = 0;
 
 
 
 	void Start () {
+		//Inicializamos el path.
+		path = null;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
 		stateChanger();
@@ -40,16 +44,24 @@ public class Creep : Unit{
 			StartCoroutine(EnemyDetection());
 			if(path == null){
 				Invoke("RequestPath",Random.Range(0f,0.5f));
+			}else{
+				state = FSM.States.Move;
+				stateChanger();
 			}
 		}
 		if(state == FSM.States.Move){
-			if(path == null || path[path.Length -1] != thisTransform.position){
-				StartCoroutine(EnemyDetection());
-				StartCoroutine(MoveAlongPath());
+			if(path != null ){
+				if(path[path.Length - 1] != thisTransform.position){
+					StartCoroutine(EnemyDetection());
+					StartCoroutine(MoveAlongPath());
+				}
 			}else{
 				state = FSM.States.Idle;
 				stateChanger();
 			}
+		}
+		if(state == FSM.States.Attack){
+			skills[0].Use();
 		}
 
 	}
@@ -59,13 +71,14 @@ public class Creep : Unit{
 	/// </summary>
 	void RequestPath(){
 
-
-		if(OriginSpawn.path != null & path != OriginSpawn.path){
+		Debug.Log("Requesting Path");
+		if(path != null){
 			CancelInvoke();
 			state = FSM.States.Move;
 			stateChanger();
 		}else{
-			Invoke("RequestPath",Random.Range(0f,0.5f));
+			Invoke("RequestPath",Random.Range(0.2f,0.7f));
+			path = new Vector3[]{new Vector3(5,5,5)};
 		}
 	}
 
@@ -74,8 +87,7 @@ public class Creep : Unit{
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
 	IEnumerator MoveAlongPath(){
-		//Punto de la ruta en la que se encuentra
-		int targetIndex = 0;
+		Debug.Log("Moving Along path");
 		if(path != null){
 			Vector3 currentWayPoint = path[0];
 			//Mantiene el bucle de movimiento.
@@ -85,14 +97,16 @@ public class Creep : Unit{
 				if(thisTransform.position == currentWayPoint){
 
 					targetIndex++;
-					if(targetIndex >= path.Length){
+					if(targetIndex >= path.Length -1){
 						loop = false;
 						path = null;
+						targetIndex = 0;
 					}
-					if(targetIndex <= path.Length -1 & path != null)
+					if(path != null)
 						currentWayPoint = path[targetIndex];
 				}
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
+				Debug.Log("Moving");
 				yield return null;
 			}
 		}
@@ -100,12 +114,16 @@ public class Creep : Unit{
 		stateChanger();
 	}
 
+	/// <summary>
+	/// Mantiene al creep buscando enemigos alrededor suya
+	/// </summary>
 	IEnumerator EnemyDetection(){
-		Collider2D[] colls = new Collider2D[25];
-		float points = -1;
-		Collider2D bestTarget = null;
-		while(true){
-
+		Collider2D[] colls = new Collider2D[25];//Maximo de colliders que detectara alrededor suya.
+		float points = -1;//Euristica de puntos para evvaluar el mejor objetivo.
+		Collider2D bestTarget = null;//Objetivo designado.
+		bool loop = true;//Mantiene el bucle.
+		while(loop){
+			Debug.Log("Checking for enemies");
 			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls);
 			if(collsNum > 0){
 				foreach(Collider2D coll in colls){
@@ -121,15 +139,45 @@ public class Creep : Unit{
 							}
 					}
 				}
+				loop = false;
 				target = bestTarget.GetComponent<Unit>();
 				state = FSM.States.Attack;
 				stateChanger();
-
 			}
 
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 		}
+
 	}
+
+	
+	/// <summary>
+	/// Ataca al target con la habilidad designada.
+	/// </summary>
+	IEnumerator Attack(){
+
+	 bool loop = true;//Mantiene el bucle.
+
+		Debug.Log("Attacking");
+		while(loop){
+			if(target != null){
+				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque.
+					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime);
+					yield return null;
+				}else{
+					skills[0].Use();
+					yield return new WaitForSeconds(skills[0].coolDown);
+				}
+
+			}else{
+				loop = false;
+			}
+		}
+		state = FSM.States.Idle;
+		stateChanger();
+	}
+
+
 
 
 
