@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/// <summary>
+/// Clase de ayuda para pasar datos a la cola del thread;
+/// </summary>
 [System.Serializable]
 public class ParseQueue  {
 

@@ -13,7 +13,8 @@ public class Creep : Unit{
 	//Radio deteccion creep;
 	public float detectionRadius;
 	//Velocidad de movimiento
-	 float speedAlongPath = 1;
+	[HideInInspector]
+	public float speedAlongPath = 1;
 	//Camino generado por el PathFinding
 	[HideInInspector]
 	public Vector3[] path;
@@ -61,7 +62,7 @@ public class Creep : Unit{
 			}
 		}
 		if(state == FSM.States.Attack){
-			skills[0].Use();
+			skills[0].Use(this);
 		}
 
 	}
@@ -73,7 +74,7 @@ public class Creep : Unit{
 
 		Debug.Log("Requesting Path");
 		if(path != null){
-			CancelInvoke();
+			CancelInvoke();//Para de pedir un path.
 			state = FSM.States.Move;
 			stateChanger();
 		}else{
@@ -119,7 +120,7 @@ public class Creep : Unit{
 	/// </summary>
 	IEnumerator EnemyDetection(){
 		Collider2D[] colls = new Collider2D[25];//Maximo de colliders que detectara alrededor suya.
-		float points = -1;//Euristica de puntos para evvaluar el mejor objetivo.
+		float points = -1;//Euristica de puntos para evaluar el mejor objetivo.
 		Collider2D bestTarget = null;//Objetivo designado.
 		bool loop = true;//Mantiene el bucle.
 		while(loop){
@@ -165,7 +166,7 @@ public class Creep : Unit{
 					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime);
 					yield return null;
 				}else{
-					skills[0].Use();
+					skills[0].Use(this);
 					yield return new WaitForSeconds(skills[0].coolDown);
 				}
 

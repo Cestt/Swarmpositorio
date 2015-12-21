@@ -2,7 +2,9 @@
 using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
-
+/// <summary>
+/// Clase propia para mostrar todos los Custom editor.
+/// </summary>
 [CustomEditor (typeof(Unit))]
 public class UnitEditor : Editor {
 
