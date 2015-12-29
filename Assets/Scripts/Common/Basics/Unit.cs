@@ -52,11 +52,18 @@ public class Unit : MonoBehaviour {
 		endDamage = true;
 	}
 
+	/// <summary>
+	/// Metodo que llama a la corrutina que comprueba si ha finalizado el ataque
+	/// </summary>
 	public void StartCheckDamage(){
+		//La condicion que dice si ha terminado el ataque la ponemos a falso
 		endDamage = false;
 		StartCoroutine (CheckDamage ());
 	}
 
+	/// <summary>
+	/// Corrutina que espera a que finalice el ataque y comprueba si la unidad resulta muerta tras este
+	/// </summary>
 	IEnumerator CheckDamage(){
 
 		while (!endDamage) {
@@ -66,4 +73,6 @@ public class Unit : MonoBehaviour {
 			Destroy (thisGameObject);
 		}
 	}
+
+	public virtual void Dead (){}
 }

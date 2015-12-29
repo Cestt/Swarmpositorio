@@ -18,7 +18,9 @@ public class SkillEditor : Editor {
 			listOfTypes.Add(type.name);
 		}
 		skillScript.typeDamage = EditorGUILayout.Popup ("Damage Type",skillScript.typeDamage ,listOfTypes.ToArray());
-		
+		if (skillScript.typeSkill == Skill.typesSkill.Projectile) {
+			skillScript.projectile = (GameObject)EditorGUILayout.ObjectField("Projectile",skillScript.projectile,typeof(GameObject));
+		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}
