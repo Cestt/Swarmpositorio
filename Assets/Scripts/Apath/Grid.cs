@@ -7,107 +7,125 @@ using System.Diagnostics;
 
 
 public class Grid : MonoBehaviour {
-		
-	public int maxGridWorldSizeX = 50;
-	public int maxGridWorldSizeY =  50;
+
+	//Tamaño maximo en X de cada sector que compone el grid;
+	public int maxSectorSizeX = 50;
+	//Tamaño maximo en Y de cada sector que compone el grid;
+	public int maxSectorSizeY =  50;
+	//Array de guardado de los nodos que componen el grid;
 	public Node[,] grid;
+	//Capa de colision para los obstaculos;
 	public LayerMask unwalkableMask;
+	//Control del preview del grid;(Desactivado)
 	[HideInInspector]
 	public bool displayGizmos;
+	//Tamaño total del grid;(manejado por Custom Inspector);
 	[HideInInspector]
 	public Vector2 gridWorldSize;
+	//Tamaño de los nodos que componen el grid;
 	[HideInInspector]
 	public float nodeSize;
+	//Helper para el tamaño del nodo;
 	[HideInInspector]
 	public float nodeTemp;
-	private EVector3 position = new EVector3(2f,3f,4f);
-	private EVector2 position2 = new EVector2(2f,3f);
+	//Lista que almacena los nodos de cada sector;
 	private Dictionary<int,Node[]> Grids = new Dictionary<int, Node[]>();
+	//Iteraciones en X e Y de cada sector;	
+	int gridSizeX, gridSizeY;
 		
-		int gridSizeX, gridSizeY;
 		
+	void Awake(){
+	// Recrear el grid en tiempo de carga;
+	StartCreateGrid();
+	}
 		
-		void Awake(){
-			position = new EVector3(transform.position);
-		StartCreateGrid();
-		EVector3 hola = (EVector2)position + position2;
+	//Tamaño maximo del arbol de busqueda del pathfinding;
+	public int maxHeapSize{
+		get{
+			return Mathf.RoundToInt(gridWorldSize.x/nodeSize) * Mathf.RoundToInt(gridWorldSize.y/nodeSize);
 		}
+	}
+
+	/// <summary>
+	/// Metodo para acceder a la corutina desde otras clases.
+	/// </summary>
+	public void StartCreateGrid(){
+		StartCoroutine(CreateGrid());
+	}	
+	/// <summary>
+	/// Crea el grid
+	/// </summary>
+	/// <returns>Null</returns>
+	IEnumerator CreateGrid(){
+	Stopwatch sw = new Stopwatch();
+	sw.Start();
+
+	int Xiterations = 0;
+	int Yiterations = 0;
+
+	if(gridWorldSize.x > maxSectorSizeX){
+		Xiterations = Mathf.RoundToInt(gridWorldSize.x/maxSectorSizeX);
+	}else{
+		maxSectorSizeX = Mathf.RoundToInt(gridWorldSize.x);
+		Xiterations = 1;
+	}
+	if(gridWorldSize.y > maxSectorSizeY){
+		Yiterations = Mathf.RoundToInt(gridWorldSize.y/maxSectorSizeY);
+	}else{
+		maxSectorSizeY = Mathf.RoundToInt(gridWorldSize.y);
+		Yiterations = 1;
+	}
 		
-		
-		public int maxHeapSize{
-			get{
-				return Mathf.RoundToInt(gridWorldSize.x/nodeSize) * Mathf.RoundToInt(gridWorldSize.y/nodeSize);
-			}
-		}
-		
-		public void StartCreateGrid(){
-			StartCoroutine(CreateGrid());
-		}	
+	nodeSize = nodeTemp;
+	gridSizeX = Mathf.RoundToInt(maxSectorSizeX/nodeSize);
+	gridSizeY = Mathf.RoundToInt(maxSectorSizeY/nodeSize);
+	grid = new Node[gridSizeX * Xiterations,gridSizeY * Yiterations];
 
-		IEnumerator CreateGrid(){
-		Stopwatch sw = new Stopwatch();
-		sw.Start();
+	Vector3 worldBottomLeft =(transform.position - new Vector3(gridWorldSize.x/2,gridWorldSize.y/2,0));
+	int gridNum = 0;
+	for(int i = 1; i < Xiterations + 1;i++){
+		for(int j = 1; j < Yiterations + 1;j++){
+			List<Node> temp = new List<Node>();
+			for(int k = gridSizeX * (i-1); k < (gridSizeX * i); k++){
 
-		int Xiterations = 0;
-		int Yiterations = 0;
+				for(int l = gridSizeY * (j-1); l < (gridSizeY * j); l++){
 
-		if(gridWorldSize.x > maxGridWorldSizeX){
-			Xiterations = Mathf.RoundToInt(gridWorldSize.x/maxGridWorldSizeX);
-		}else{
-			maxGridWorldSizeX = Mathf.RoundToInt(gridWorldSize.x);
-			Xiterations = 1;
-		}
-		if(gridWorldSize.y > maxGridWorldSizeY){
-			Yiterations = Mathf.RoundToInt(gridWorldSize.y/maxGridWorldSizeY);
-		}else{
-			maxGridWorldSizeY = Mathf.RoundToInt(gridWorldSize.y);
-			Yiterations = 1;
-		}
-			
-		nodeSize = nodeTemp;
-		gridSizeX = Mathf.RoundToInt(maxGridWorldSizeX/nodeSize);
-		gridSizeY = Mathf.RoundToInt(maxGridWorldSizeY/nodeSize);
-		grid = new Node[gridSizeX * Xiterations,gridSizeY * Yiterations];
-
-		Vector3 worldBottomLeft =(transform.position - new Vector3(gridWorldSize.x/2,gridWorldSize.y/2,0));
-		int gridNum = 0;
-		for(int i = 1; i < Xiterations + 1;i++){
-			for(int j = 1; j < Yiterations + 1;j++){
-				List<Node> temp = new List<Node>();
-				for(int k = gridSizeX * (i-1); k < (gridSizeX * i); k++){
-
-					for(int l = gridSizeY * (j-1); l < (gridSizeY * j); l++){
-
-						Vector3 worldPoint = worldBottomLeft + Vector3.right * (k * nodeSize + (nodeSize/2)) + Vector3.up * (l * nodeSize + (nodeSize/2));
-						bool walkable = !(Physics2D.OverlapCircle(worldPoint,nodeSize/2,unwalkableMask));
-						grid[k,l] =  new Node(walkable,worldPoint,k,l,gridNum);
-						temp.Add(grid[k,l]);
-					}
-
+					Vector3 worldPoint = worldBottomLeft + Vector3.right * (k * nodeSize + (nodeSize/2)) + Vector3.up * (l * nodeSize + (nodeSize/2));
+					bool walkable = !(Physics2D.OverlapCircle(worldPoint,nodeSize/2,unwalkableMask));
+					grid[k,l] =  new Node(walkable,worldPoint,k,l,gridNum);
+					temp.Add(grid[k,l]);
 				}
-				Grids[gridNum] = temp.ToArray();
-				gridNum++;
 
 			}
-
+			Grids[gridNum] = temp.ToArray();
+			gridNum++;
 
 		}
-		sw.Stop();
-		print("Created grid in: " +sw.ElapsedMilliseconds+" ms");
-		System.GC.Collect();
-		System.GC.WaitForPendingFinalizers();
-		yield return null;
-			
-		}
 
+
+	}
+	sw.Stop();
+	print("Created grid in: " +sw.ElapsedMilliseconds+" ms");
+	System.GC.Collect();
+	System.GC.WaitForPendingFinalizers();
+	yield return null;
+		
+	}
+
+	/// <summary>
+	/// Metodo para llamar la corutina desde otrs clases.
+	/// </summary>
+	/// <param name="worldPoint">World point.</param>
 	public void StartRebuildGrid(Vector3 worldPoint){
 		StartCoroutine(RebuildGrid(worldPoint));
 	}
 
-
+	/// <summary>
+	/// Reconstruye un sector;
+	/// </summary>
+	/// <returns>Null</returns>
+	/// <param name="worldPosition">World position.</param>
 	IEnumerator RebuildGrid(Vector3 worldPosition){
-		Stopwatch sw = new Stopwatch();
-		sw.Start();
 
 		Node[] temp = GridFromWorldPosition(worldPosition);
 
@@ -115,15 +133,17 @@ public class Grid : MonoBehaviour {
 			bool walkable = !(Physics2D.OverlapCircle(temp[i].worldPosition,nodeSize/2,unwalkableMask));
 			temp[0].walkable = walkable;
 		}
-
-		sw.Stop();
-		print("Recreated grid of size "+temp.Length+" in: "+sw.ElapsedMilliseconds+" ms");
+		
 		System.GC.Collect();
 		System.GC.WaitForPendingFinalizers();
 		yield return null;
 	}
 
-		
+	/// <summary>
+	/// Obtiene un nodo dada una posicion;
+	/// </summary>
+	/// <returns>Nodo.</returns>
+	/// <param name="worldPosition">World position.</param>	
 	public Node NodeFromWorldPosition(Vector3 worldPosition){
 		
 		
@@ -138,6 +158,11 @@ public class Grid : MonoBehaviour {
 		return grid[x,y];
 	}
 
+	/// <summary>
+	/// Obtiene el sector dada una posicion
+	/// </summary>
+	/// <returns>Nodos que pertenecen a ese sector Node[].</returns>
+	/// <param name="worldPosition">World position.</param>
 	public Node[] GridFromWorldPosition(Vector3 worldPosition){
 		
 		
@@ -151,7 +176,12 @@ public class Grid : MonoBehaviour {
 		
 		return Grids[grid[x,y].grid];
 	}
-		
+
+	/// <summary>
+	/// Obtiene los nodos adyacentes al actual
+	/// </summary>
+	/// <returns>List<node></returns>
+	/// <param name="node">Node.</param>
 	public List<Node> GetNeighbours(Node node){
 			
 		List<Node> neighbours = new List<Node>();

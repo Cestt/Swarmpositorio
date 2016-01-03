@@ -119,15 +119,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a15aae803e602459a5e3ac8c38da34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxGridWorldSizeX: 50
-  maxGridWorldSizeY: 50
+  maxSectorSizeX: 50
+  maxSectorSizeY: 50
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 256
   displayGizmos: 1
-  gridWorldSize: {x: 1024, y: 760}
-  nodeSize: .200000003
-  nodeTemp: .200000003
+  gridWorldSize: {x: 1920, y: 1080}
+  nodeSize: 20
+  nodeTemp: 20
 --- !u!81 &730270686
 AudioListener:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 27.8500004
+  orthographic size: 538.919983
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -291,7 +291,7 @@ Transform:
   m_GameObject: {fileID: 922950775}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: .0848837495, y: -.497349709, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0

@@ -20,20 +20,31 @@ public class Creep : Unit{
 	public Vector3[] path;
 	//Punto de la ruta en la que se encuentra
 	int targetIndex = 0;
+	//Tier
+	public int tier = 0;
+	//Sub tier
+	public int subTier = 0;
 
 
-
-	void Start () {
+	void OnEnable () {
 		//Inicializamos el path.
 		path = null;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
 		stateChanger();
 	}
+	void OnDisable() {
+		//Re inicializamos el path;
+		path = null;
+		//Paramos la IA;
+		StopAllCoroutines();
+		state = FSM.States.Idle;
+		OriginSpawn = null;	
+	}
 	
-
-
-
+	
+	
+	
 	/// <summary>
 	/// Cambia su estado propio dentro de la FSM
 	/// </summary>
