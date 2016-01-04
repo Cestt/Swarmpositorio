@@ -39,7 +39,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b910f3352df3e4e885a39ae897749b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown: .200000003
+  coolDown: 0.2
   damage: 5
   armorPen: 0
   range: 30
