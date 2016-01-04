@@ -32,7 +32,7 @@ public class PathRequestManager : MonoBehaviour {
 			currentPathRequest = pathRequestQueue[pathRequestQueue.Count - 1];
 			pathRequestQueue.RemoveAt(pathRequestQueue.Count - 1);
 			isProcessingPath = true;
-			pathFinding.StartFindPath(currentPathRequest.pathStart,currentPathRequest.pathEnd);
+			//pathFinding.StartFindPath(currentPathRequest.pathStart,currentPathRequest.pathEnd);
 		}
 	}
 	public void FinishedProcessingPath(Vector3[] path, bool success){

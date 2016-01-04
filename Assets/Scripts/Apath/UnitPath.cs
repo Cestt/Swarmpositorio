@@ -32,7 +32,7 @@ public class UnitPath : MonoBehaviour {
 	}
 	IEnumerator FollowPath(){
 
-		if(path[0] != null){
+		if(path != null){
 			Vector3 currentWayPoint = path[0];
 			while(true){
 				if(transform.position == currentWayPoint){

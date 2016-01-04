@@ -12,21 +12,19 @@ public class PathFinding : MonoBehaviour {
 	void Awake(){
 		grid = GetComponentInParent<Grid>();
 		pathManager = GetComponent<PathRequestManager>();
-
 	}
 
-	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition){
-		StartCoroutine(FindPath(startPosition,targetPosition));
+	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
+		StartCoroutine(FindPath(startPosition,targetPosition,callBack));
 	}
 
-	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition){
+	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
 		yield return new WaitForEndOfFrame();
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
 
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
-
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
 		
@@ -48,6 +46,7 @@ public class PathFinding : MonoBehaviour {
 					}
 					
 					foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+
 						if(!neighbour.walkable || closedSet.Contains(neighbour)){
 							continue;
 						}
@@ -74,9 +73,9 @@ public class PathFinding : MonoBehaviour {
 			if(pathSuccess){
 				waypoints = RetracePath(startNode,targetNode);
 			}
-			pathManager.FinishedProcessingPath(waypoints,pathSuccess);
+		callBack(waypoints);
 		sw.Stop();
-		print("Found path in "+ sw.ElapsedMilliseconds + " ms" );
+		print("Found path in "+sw.ElapsedMilliseconds+" ms");
 	}
 
 	Vector3[] RetracePath(Node startNode, Node endNode){
@@ -90,6 +89,7 @@ public class PathFinding : MonoBehaviour {
 		}
 		Vector3[] wayPoints = simplifyPath(path);
 		Array.Reverse(wayPoints);
+
 		return wayPoints;
 	}
 	Vector3[] simplifyPath(List<Node> path){

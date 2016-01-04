@@ -16,13 +16,15 @@ public class Node : IHeapItem<Node>{
 	int heapIndex;
 
 	public Node parent;
+	public int grid;
 
-	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY){
+	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY,int _grid){
 
 		walkable = _walkable;
 		worldPosition = _worldPosition;
 		gridX = _gridX;
 		gridY = _gridY;
+		grid = _grid;
 	}
 	public int CompareTo(Node nodeToCompare){
 		int compare = fcost.CompareTo(nodeToCompare.fcost);

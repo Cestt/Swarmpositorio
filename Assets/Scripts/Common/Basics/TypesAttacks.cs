@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public class TypesAttacks :MonoBehaviour {
 
@@ -16,7 +15,7 @@ public class TypesAttacks :MonoBehaviour {
 */
 	//public string[] types = new string[]{"None"};
 	
-	[Serializable]
+	[System.Serializable]
 	public class TypesStruct{
 		
 		
