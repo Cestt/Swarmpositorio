@@ -24,6 +24,8 @@ public class Creep : Unit{
 	public int tier = 0;
 	//Sub tier
 	public int subTier = 0;
+	//Lista de Creeps cercanos
+	public List<GameObject> NearbyAllies = new List<GameObject>();
 
 	void Start(){
 		path = null;
@@ -31,12 +33,14 @@ public class Creep : Unit{
 	}
 
 	void OnEnable () {
+		//Iniciar separacion de los creeps.
+		StartCoroutine(CheckSeparation());
 		//Inicializamos el path.
 		path = null;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
 		stateChanger();
-		Invoke("Eliminate",1f);
+		
 	}
 	void OnDisable() {
 		//Re inicializamos el path;
@@ -197,6 +201,58 @@ public class Creep : Unit{
 		Destroy(this.gameObject);	
 	}
 
+	IEnumerator CheckSeparation(){
+
+		while(true){
+			NearbyAllies.Clear();
+			Collider2D[] colls = Physics2D.OverlapCircleAll((Vector2)transform.position,0.3f);
+			for(int i = 0; i < colls.Length;i++){
+				NearbyAllies.Add(colls[i].gameObject);
+			}
+			if(NearbyAllies.Count >0)
+				StartCoroutine(Separation(NearbyAllies,SeparationResult));
+			yield return new WaitForSeconds(1f);
+		}
+
+		
+
+	}
+
+
+	IEnumerator Separation(List<GameObject> allCars, System.Action <Vector2> SeparationCallback)
+	{
+		int j = 0;
+		Vector2 separationForce = new Vector2(0,0);
+		Vector2 averageDirection = new Vector2(0,0);
+		Vector2 distance = new Vector2(0,0);
+		for (int i = 0; i < allCars.Count - 1; i++)
+		{
+			distance = transform.position - allCars[i].transform.position;
+			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 0.5f && allCars[i] != gameObject)
+			{
+				j++;
+				separationForce += (Vector2)transform.position - (Vector2)allCars[i].transform.position;
+				separationForce = separationForce.normalized;
+				separationForce = separationForce * (5f);
+				averageDirection = averageDirection + separationForce;
+			}
+		}
+		if (j == 0)
+		{
+			SeparationCallback (new Vector2(0,0));
+			yield return null;
+		}
+		else
+		{
+			//averageDirection = averageDirection / j;
+			SeparationCallback (averageDirection);
+			yield return null;
+		}
+	}
+
+	void SeparationResult(Vector2 result){
+		thisTransform.position += (Vector3) result * 10f * Time.deltaTime;
+	}
 
 
 

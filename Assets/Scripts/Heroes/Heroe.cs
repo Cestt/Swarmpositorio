@@ -9,7 +9,12 @@ public class Hero : Unit {
 	
 	PathFinding pathFinder;//Script con algoritmo de busqueda de path;
 
-	
+	void Awake(){
+
+	}
+
+
+
 
 	/// <summary>
 	/// Callback que recibe el path y lo inicia.
