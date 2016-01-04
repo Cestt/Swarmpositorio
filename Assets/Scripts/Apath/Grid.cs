@@ -210,10 +210,10 @@ public class Grid : MonoBehaviour {
 		
 		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,gridWorldSize.y,1));
 		//Comentado por la enorme cantidad de nodos actual.
-		/*
-		if(grid != null & displayGizmos){
+
+		/*if(grid != null & displayGizmos){
 			
-			foreach(Node n in Nodes){
+			foreach(Node n in grid){
 					Gizmos.color = (n.walkable)?Color.white:Color.red;
 					Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeSize-.1f));
 			}

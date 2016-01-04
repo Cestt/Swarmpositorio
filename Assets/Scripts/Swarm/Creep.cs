@@ -25,6 +25,10 @@ public class Creep : Unit{
 	//Sub tier
 	public int subTier = 0;
 
+	void Start(){
+		path = null;
+
+	}
 
 	void OnEnable () {
 		//Inicializamos el path.
@@ -32,6 +36,7 @@ public class Creep : Unit{
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
 		stateChanger();
+		Invoke("Eliminate",1f);
 	}
 	void OnDisable() {
 		//Re inicializamos el path;
@@ -90,7 +95,7 @@ public class Creep : Unit{
 			stateChanger();
 		}else{
 			Invoke("RequestPath",Random.Range(0.2f,0.7f));
-			path = new Vector3[]{new Vector3(5,5,5)};
+			path = OriginSpawn.path;
 		}
 	}
 
@@ -109,7 +114,7 @@ public class Creep : Unit{
 				if(thisTransform.position == currentWayPoint){
 
 					targetIndex++;
-					if(targetIndex >= path.Length -1){
+					if(targetIndex >= path.Length){
 						loop = false;
 						path = null;
 						targetIndex = 0;
@@ -118,7 +123,6 @@ public class Creep : Unit{
 						currentWayPoint = path[targetIndex];
 				}
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
-				Debug.Log("Moving");
 				yield return null;
 			}
 		}
@@ -157,7 +161,7 @@ public class Creep : Unit{
 				stateChanger();
 			}
 
-			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+			yield return new WaitForSeconds(Random.Range(0.6f,0.8f));
 		}
 
 	}
@@ -189,6 +193,9 @@ public class Creep : Unit{
 		stateChanger();
 	}
 
+	void Eliminate(){
+		Destroy(this.gameObject);	
+	}
 
 
 

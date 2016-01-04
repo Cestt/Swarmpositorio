@@ -10,7 +10,7 @@ public class Touch : MonoBehaviour {
 	void Start () {
 		pathfind = GetComponent<PathFinding>();
 		grid = GetComponent<Grid>();
-		square = GameObject.Find("square");
+		square = GameObject.Find("Spawn");
 	}
 	
 	// Update is called once per frame
@@ -24,7 +24,6 @@ public class Touch : MonoBehaviour {
 	}
 
 	void callback(Vector3[] paths){
-		square.GetComponent<test>().path = paths;
-		square.GetComponent<test>().Move();
+		square.GetComponent<Spawn>().path = paths;
 	}
 }
