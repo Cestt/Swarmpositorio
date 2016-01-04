@@ -22,7 +22,7 @@ public class Human : Unit {
 		float points = -1;//Euristica de puntos para evaluar el mejor objetivo.
 		Collider2D bestTarget = null;//Objetivo designado.
 		bool loop = true;//Mantiene el bucle.
-		Debug.Log("Checking for enemies");
+		//Debug.Log("Checking for enemies");
 		while(loop){
 			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,skills[0].range,colls, 1 << LayerMask.NameToLayer("Creep"));
 			if(collsNum > 0){
@@ -52,7 +52,7 @@ public class Human : Unit {
 	IEnumerator Attack(){
 		StopCoroutine (EnemyDetection ());
 		bool loop = true;//Mantiene el bucle.
-		Debug.Log("Attacking");
+		//Debug.Log("Attacking");
 		while(loop){
 			if(target != null && Vector2.Distance(thisTransform.position, target.thisTransform.position) <= targetDistanceIni){
 				Vector3 dir = target.thisTransform.position - thisTransform.position;

@@ -74,5 +74,8 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Metodo que se llama cuando la unidad muere.
+	/// </summary>
 	public virtual void Dead (){}
 }

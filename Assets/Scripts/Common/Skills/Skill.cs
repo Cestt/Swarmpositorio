@@ -39,7 +39,10 @@ public class Skill :MonoBehaviour{
 
 	}
 
-
+	/// <summary>
+	/// Ataca al objetivo del propietario.
+	/// </summary>
+	/// <param name="owner">Owner. Unidad que usa la habilidad</param>
 	public void Attack(Unit owner){
 		if (owner.target != null) {
 			//Primero ponemos al objetivo de la unidad a cequear el daño
