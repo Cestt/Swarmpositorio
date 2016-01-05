@@ -76,6 +76,7 @@ public class PathFinding : MonoBehaviour {
 		callBack(waypoints);
 		sw.Stop();
 		print("Found path in "+sw.ElapsedMilliseconds+" ms");
+
 	}
 
 	Vector3[] RetracePath(Node startNode, Node endNode){

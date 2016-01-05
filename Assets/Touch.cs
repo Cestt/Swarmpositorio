@@ -4,19 +4,22 @@ using System.Collections;
 public class Touch : MonoBehaviour {
 
 	PathFinding pathfind;
-	GameObject  square;
+	Hero  square;
 	Grid grid;
+	GameObject hero;
 	// Use this for initialization
 	void Start () {
 		pathfind = GetComponent<PathFinding>();
 		grid = GetComponent<Grid>();
-		square = GameObject.Find("Spawn");
+		hero = GameObject.Find("Hero");
+		square = hero.GetComponent<Hero>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(Input.GetMouseButtonDown(0)){
-			pathfind.StartFindPath(square.transform.position,Camera.main.ScreenToWorldPoint(Input.mousePosition),callback);
+			square.path = null;
+			pathfind.StartFindPath(hero.transform.position,Camera.main.ScreenToWorldPoint(Input.mousePosition),square.StartPath);
 		}
 		if(Input.GetMouseButtonDown(1)){
 			grid.StartRebuildGrid(Camera.main.ScreenToWorldPoint(Input.mousePosition));

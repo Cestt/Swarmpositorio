@@ -15,7 +15,7 @@ public class Creep : Unit{
 	//Velocidad de movimiento
 	public float speedAlongPath = 50;
 	//Camino generado por el PathFinding
-	//[HideInInspector]
+	[HideInInspector]
 	public Vector3[] path;
 	//Punto de la ruta en la que se encuentra
 	int targetIndex = 0;
@@ -91,7 +91,7 @@ public class Creep : Unit{
 	/// </summary>
 	void RequestPath(){
 
-		Debug.Log("Requesting Path");
+		Debug.Log("Waiting Path");
 		if(path != null){
 			CancelInvoke();//Para de pedir un path.
 			state = FSM.States.Move;
@@ -122,7 +122,7 @@ public class Creep : Unit{
 						path = null;
 
 					}
-					if(path != null)
+
 						currentWayPoint = path[targetIndex];
 				}
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
