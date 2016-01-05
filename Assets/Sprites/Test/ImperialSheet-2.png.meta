@@ -1,11 +1,12 @@
 fileFormatVersion: 2
 guid: 3dae30e9a7fa87f41ab28ea46132f15f
-timeCreated: 1448989569
+timeCreated: 1452005601
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
     21300000: ImperialSheet-2_0
     21300002: ImperialSheet-2_1
+    21300004: ImperialSheet-2_2
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -69,6 +70,16 @@ TextureImporter:
         y: 267
         width: 3
         height: 8
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: ImperialSheet-2_2
+      rect:
+        serializedVersion: 2
+        x: 138
+        y: 191
+        width: 67
+        height: 74
       alignment: 0
       pivot: {x: .5, y: .5}
       border: {x: 0, y: 0, z: 0, w: 0}
