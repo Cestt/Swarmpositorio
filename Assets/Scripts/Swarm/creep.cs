@@ -30,7 +30,9 @@ public class Creep : Unit{
 		path = null;
 
 	}
-
+	/// <summary>
+	/// Raises the enable event.
+	/// </summary>
 	void OnEnable () {
 		//Iniciar separacion de los creeps(Comentado hasta revision y optimizacion).
 		//StartCoroutine(CheckSeparation());
