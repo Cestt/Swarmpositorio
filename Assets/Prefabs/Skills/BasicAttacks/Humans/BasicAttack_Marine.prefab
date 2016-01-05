@@ -1,52 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &131322
+--- !u!1 &106696
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 446044}
-  - 114: {fileID: 11464686}
+  - 4: {fileID: 469100}
+  - 114: {fileID: 11409314}
   m_Layer: 0
-  m_Name: CC
+  m_Name: BasicAttack_Marine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &446044
+--- !u!4 &469100
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 131322}
+  m_GameObject: {fileID: 106696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11464686
+--- !u!114 &11409314
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 131322}
+  m_GameObject: {fileID: 106696}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e6b910f3352df3e4e885a39ae897749b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown: 0.2
-  damage: 1
+  coolDown: 1
+  damage: 20
   armorPen: 0
-  range: 10
-  typeSkill: 0
+  range: 1024
+  typeSkill: 1
   typesAttacks: {fileID: 0}
   typeDamage: 0
-  projectile: {fileID: 0}
+  projectile: {fileID: 149370, guid: d4fb70adf7fc54e438e80587fae94a7c, type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -55,26 +55,14 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
-      propertyPath: skills.Array.size
+      propertyPath: typeSkill
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: coolDown
-      value: .200000003
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: armorPen
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: typeSkill
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
       propertyPath: range
-      value: 10
+      value: 1024
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 131322}
+  m_RootGameObject: {fileID: 106696}
   m_IsPrefabParent: 1

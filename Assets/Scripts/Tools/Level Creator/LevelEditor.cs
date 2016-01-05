@@ -9,7 +9,7 @@ public class LevelEditor : MonoBehaviour {
 	public Grid grid;
 
 	void Start () {
-		grid = GameObject.Find("A*Path").GetComponent<Grid>();
+		//grid = GameObject.Find("A*Path").GetComponent<Grid>();
 	}
 	
 	// Update is called once per frame
