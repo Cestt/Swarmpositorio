@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour {
 	private Vector3 dir;
 	private Skill skill;
 	private Unit owner;
+	private Unit target;
 
 	private float distance;
 	private float travel;
@@ -20,9 +21,13 @@ public class Projectile : MonoBehaviour {
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 		angle += 90;
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		target = owner.target;
 	}
 	// Update is called once per frame
 	void Update () {
+		//Si ya ha muerto el objetivo se elimina la bala
+		if (target == null || !target.thisGameObject.activeInHierarchy)
+			Destroy(gameObject);
 		transform.position += dir * speed * Time.deltaTime;
 		travel += speed * Time.deltaTime;
 		if (travel >= distance) {

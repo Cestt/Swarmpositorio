@@ -43,13 +43,12 @@ public class Creep : Unit{
 		stateChanger();
 		
 	}
-	void OnDisable() {
+	void OnDisable() {	
 		//Re inicializamos el path;
 		path = null;
 		//Paramos la IA;
-		StopAllCoroutines();
 		state = FSM.States.Idle;
-		OriginSpawn = null;	
+		StopAllCoroutines();
 	}
 	
 	
@@ -101,7 +100,7 @@ public class Creep : Unit{
 			stateChanger();
 		}else{
 			Invoke("RequestPath",Random.Range(0.2f,0.7f));
-			if(OriginSpawn.path != null){
+			if(OriginSpawn != null && OriginSpawn.path != null){
 				if(path != OriginSpawn.path)
 					path = OriginSpawn.path;
 			} 
@@ -265,7 +264,9 @@ public class Creep : Unit{
 
 	public override void Dead ()
 	{
+		state = FSM.States.Idle;
 		StopAllCoroutines();
+		OriginSpawn = null;	
 		gameObject.SetActive(false);
 	}
 

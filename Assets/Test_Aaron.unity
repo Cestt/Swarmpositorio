@@ -94,11 +94,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 433500, guid: d8c69bbc8fb205445a3c8ff1f147aabc, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -32.9000015
+      value: 39.7000008
       objectReference: {fileID: 0}
     - target: {fileID: 433500, guid: d8c69bbc8fb205445a3c8ff1f147aabc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 5
+      value: 1.10000002
       objectReference: {fileID: 0}
     - target: {fileID: 433500, guid: d8c69bbc8fb205445a3c8ff1f147aabc, type: 2}
       propertyPath: m_LocalPosition.z
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Creeps:
   - {fileID: 168956, guid: 3536e86b7de5ed0449bcdfcb2d7f4766, type: 2}
-  - {fileID: 168956, guid: 0de56995b6b5c5c45acef1514b2e3a4b, type: 2}
+  - {fileID: 162330, guid: eceeafd83f081444094e83e7921e5951, type: 2}
   Humanos: []
 --- !u!1 &340280157
 GameObject:
@@ -301,9 +301,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   geneConsumption: 0
   spawnRate: 1
-  spawnRateTier: 20000
+  spawnRateTier: 2
   path: []
-  creepPrefabs: []
+  creepPrefabs:
+  - {fileID: 168956, guid: 3536e86b7de5ed0449bcdfcb2d7f4766, type: 2}
+  - {fileID: 162330, guid: eceeafd83f081444094e83e7921e5951, type: 2}
   tier: 1
   Subtier: 0
   coste: 0
