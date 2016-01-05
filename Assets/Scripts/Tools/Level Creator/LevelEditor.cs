@@ -18,6 +18,6 @@ public class LevelEditor : MonoBehaviour {
 	}
 
 	public void SetOrthographicSize(){
-		Camera.main.orthographicSize = (nativeResolution.x / 2)* (1 /(pixelPerUnit));
+		Camera.main.orthographicSize = (nativeResolution.y / 2)* pixelPerUnit;
 	}
 }
