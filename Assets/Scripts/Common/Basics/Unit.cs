@@ -58,7 +58,8 @@ public class Unit : MonoBehaviour {
 	public void StartCheckDamage(){
 		//La condicion que dice si ha terminado el ataque la ponemos a falso
 		endDamage = false;
-		StartCoroutine (CheckDamage ());
+		if(gameObject.activeInHierarchy)
+			StartCoroutine (CheckDamage ());
 	}
 
 	/// <summary>
@@ -70,7 +71,7 @@ public class Unit : MonoBehaviour {
 			yield return new WaitForSeconds (Random.Range (0.1f, 0.2f));
 		}
 		if (life <= 0) {
-			Destroy (thisGameObject);
+			Dead();
 		}
 	}
 
