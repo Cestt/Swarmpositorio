@@ -58,6 +58,7 @@ public class CreepEditor : UnitEditor {
 		base.OnInspectorGUI ();
 		Creep creepScript = (Creep)target;
 
+		creepScript.tier = EditorGUILayout.IntField("Tier",creepScript.tier);
 		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
 	}

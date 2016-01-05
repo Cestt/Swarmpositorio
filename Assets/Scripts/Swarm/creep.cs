@@ -13,8 +13,7 @@ public class Creep : Unit{
 	//Radio deteccion creep;
 	public float detectionRadius;
 	//Velocidad de movimiento
-	[HideInInspector]
-	public float speedAlongPath = 1;
+	public float speedAlongPath = 50;
 	//Camino generado por el PathFinding
 	[HideInInspector]
 	public Vector3[] path;
@@ -33,8 +32,8 @@ public class Creep : Unit{
 	}
 
 	void OnEnable () {
-		//Iniciar separacion de los creeps.
-		StartCoroutine(CheckSeparation());
+		//Iniciar separacion de los creeps(Comentado hasta revision y optimizacion).
+		//StartCoroutine(CheckSeparation());
 		//Inicializamos el path.
 		path = null;
 		//Inicializamos al estado principal;
@@ -92,7 +91,7 @@ public class Creep : Unit{
 	/// </summary>
 	void RequestPath(){
 
-		Debug.Log("Requesting Path");
+		Debug.Log("Waiting Path");
 		if(path != null){
 			CancelInvoke();//Para de pedir un path.
 			state = FSM.States.Move;
@@ -121,15 +120,16 @@ public class Creep : Unit{
 					if(targetIndex >= path.Length){
 						loop = false;
 						path = null;
-						targetIndex = 0;
+
 					}
-					if(path != null)
+
 						currentWayPoint = path[targetIndex];
 				}
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
 				yield return null;
 			}
 		}
+		targetIndex = 0;
 		state = FSM.States.Idle;
 		stateChanger();
 	}
@@ -144,7 +144,7 @@ public class Creep : Unit{
 		bool loop = true;//Mantiene el bucle.
 		while(loop){
 			Debug.Log("Checking for enemies");
-			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls);
+			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Obstacles"));
 			if(collsNum > 0){
 				foreach(Collider2D coll in colls){
 					if(coll.tag == "Human"){
@@ -205,13 +205,13 @@ public class Creep : Unit{
 
 		while(true){
 			NearbyAllies.Clear();
-			Collider2D[] colls = Physics2D.OverlapCircleAll((Vector2)transform.position,0.3f);
+			Collider2D[] colls = Physics2D.OverlapCircleAll((Vector2)transform.position,7.5f);
 			for(int i = 0; i < colls.Length;i++){
 				NearbyAllies.Add(colls[i].gameObject);
 			}
 			if(NearbyAllies.Count >0)
-				StartCoroutine(Separation(NearbyAllies,SeparationResult));
-			yield return new WaitForSeconds(1f);
+				StartCoroutine(SeparationCalc(NearbyAllies,SeparationResult));
+			yield return new WaitForSeconds(0.5f);
 		}
 
 		
@@ -219,8 +219,9 @@ public class Creep : Unit{
 	}
 
 
-	IEnumerator Separation(List<GameObject> allCars, System.Action <Vector2> SeparationCallback)
+	IEnumerator SeparationCalc(List<GameObject> allCars, System.Action <Vector2> SeparationCallback)
 	{
+		Debug.Log("Separation calc");
 		int j = 0;
 		Vector2 separationForce = new Vector2(0,0);
 		Vector2 averageDirection = new Vector2(0,0);
@@ -228,12 +229,12 @@ public class Creep : Unit{
 		for (int i = 0; i < allCars.Count - 1; i++)
 		{
 			distance = transform.position - allCars[i].transform.position;
-			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 0.5f && allCars[i] != gameObject)
+			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 5f && allCars[i] != gameObject)
 			{
 				j++;
 				separationForce += (Vector2)transform.position - (Vector2)allCars[i].transform.position;
 				separationForce = separationForce.normalized;
-				separationForce = separationForce * (5f);
+				separationForce = separationForce * (50f);
 				averageDirection = averageDirection + separationForce;
 			}
 		}

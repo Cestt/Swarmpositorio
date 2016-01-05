@@ -44,23 +44,28 @@ public class Spawn : MonoBehaviour {
 			            
 		}*/
 		CreepScript creep = pool.GetCreep (0);
-		creep.creep.name = "Creep";
-		creep.creepScript.OriginSpawn = this;
-		creep.creep.transform.parent = this.transform;
-		creep.creep.transform.position = new Vector3(transform.position.x + Random.Range(1,5),
-		                                             transform.position.y + Random.Range(1,5));
-
+		if (creep != null) {
+			creep.creep.name = "Creep";
+			creep.creep.transform.parent = this.transform;
+			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),
+		                                             transform.position.y + Random.Range (-50, 50));
+			creep.creep.SetActive (true);
+			creep.creepScript.OriginSpawn = this;
+		}
 		Invoke("Create",spawnRate);
 	}
 	
 	void CreateTier(){
 		CreepScript creep = pool.GetCreep (tier);
-		creep.creep.name = "Creep";
-		creep.creepScript.OriginSpawn = this;
-		creep.creep.transform.parent = this.transform;
-		creep.creep.transform.position = new Vector3(transform.position.x + Random.Range(1,5),
-		                                             transform.position.y + Random.Range(1,5));
-		
+		if (creep != null) {
+			creep.creep.name = "Creep";
+
+			creep.creep.transform.parent = this.transform;
+			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),
+		                                             transform.position.y + Random.Range (-50, 50));
+			creep.creep.SetActive (true);
+			creep.creepScript.OriginSpawn = this;
+		}
 		Invoke("CreateTier",spawnRateTier);
 	}
 
