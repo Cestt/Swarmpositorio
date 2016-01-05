@@ -57,13 +57,13 @@ public class Pool : MonoBehaviour {
 		switch (tier) {
 		case 0:
 			for (int i =0; i < Tier0Cuantity; i++){
-				if (Creep0[i].creep.activeInHierarchy)
+				if (!Creep0[i].creep.activeInHierarchy)
 					return Creep0[i];
 			}
 			break;
 		case 1:
 			for (int i =0; i < Tier1_1Cuantity; i++){
-				if (Creep1[i].creep.activeInHierarchy)
+				if (!Creep1[i].creep.activeInHierarchy)
 					return Creep1[i];
 			}
 			break;
