@@ -40,7 +40,7 @@ public class Hero : Unit {
 						loop = false;
 
 					}
-
+					//Comprueba si sigue en el path.
 					if(targetIndex < path.Length)
 						currentWayPoint = path[targetIndex];
 				}
