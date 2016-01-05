@@ -81,7 +81,8 @@ public class Creep : Unit{
 			}
 		}
 		if(state == FSM.States.Attack){
-			skills[0].Use(this);
+			StopCoroutine(EnemyDetection());
+			StartCoroutine(Attack());
 		}
 
 	}
@@ -98,7 +99,10 @@ public class Creep : Unit{
 			stateChanger();
 		}else{
 			Invoke("RequestPath",Random.Range(0.2f,0.7f));
-			path = OriginSpawn.path;
+			if(OriginSpawn.path != null){
+				if(path != OriginSpawn.path)
+					path = OriginSpawn.path;
+			} 
 		}
 	}
 
@@ -147,17 +151,21 @@ public class Creep : Unit{
 			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Obstacles"));
 			if(collsNum > 0){
 				foreach(Collider2D coll in colls){
-					if(coll.tag == "Human"){
-						if(points < 2/(thisTransform.position -coll.gameObject.transform.position).magnitude){
-							points = 2/(thisTransform.position -coll.gameObject.transform.position).magnitude;
-							bestTarget = coll;
-						}
-					}else if(coll.tag == "Building"){
+					if(coll != null){
+						print("Collider"+coll.tag);
+						if(coll.tag == "Human"){
+							if(points < 2/(thisTransform.position -coll.gameObject.transform.position).magnitude){
+								points = 2/(thisTransform.position -coll.gameObject.transform.position).magnitude;
+								bestTarget = coll;
+							}
+						}else if(coll.tag == "Building"){
 							if(points < 1/(thisTransform.position -coll.gameObject.transform.position).magnitude){
 								points = 1/(thisTransform.position -coll.gameObject.transform.position).magnitude;
 								bestTarget = coll;
 							}
+						}
 					}
+
 				}
 				loop = false;
 				target = bestTarget.GetComponent<Unit>();
@@ -197,9 +205,7 @@ public class Creep : Unit{
 		stateChanger();
 	}
 
-	void Eliminate(){
-		Destroy(this.gameObject);	
-	}
+
 
 	IEnumerator CheckSeparation(){
 
@@ -255,7 +261,11 @@ public class Creep : Unit{
 		thisTransform.position += (Vector3) result * 10f * Time.deltaTime;
 	}
 
-
+	public override void Dead ()
+	{
+		StopAllCoroutines();
+		gameObject.SetActive(false);
+	}
 
 }
 

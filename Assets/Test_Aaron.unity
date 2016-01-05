@@ -300,8 +300,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   geneConsumption: 0
-  spawnRate: .5
-  spawnRateTier: 2
+  spawnRate: 1
+  spawnRateTier: 20000
   path: []
   creepPrefabs: []
   tier: 1
