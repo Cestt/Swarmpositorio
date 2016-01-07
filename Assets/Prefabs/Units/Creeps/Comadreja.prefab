@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
   - 114: {fileID: 11458616}
+  - 61: {fileID: 6130460}
   m_Layer: 9
   m_Name: Comadreja
   m_TagString: Untagged
@@ -29,6 +30,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!61 &6130460
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162330}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 60, y: 126}
 --- !u!114 &11458616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -52,7 +67,7 @@ MonoBehaviour:
   skills:
   - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
   OriginSpawn: {fileID: 0}
-  detectionRadius: 0
+  detectionRadius: 1024
   speedAlongPath: 30
   path: []
   tier: 1
@@ -76,14 +91,18 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 510380539
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -103,6 +122,14 @@ Prefab:
         type: 2}
     - target: {fileID: 0}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
