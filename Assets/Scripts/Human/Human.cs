@@ -57,7 +57,7 @@ public class Human : Unit {
 			if(target != null && Vector2.Distance(thisTransform.position, target.thisTransform.position) <= targetDistanceIni){
 				Vector3 dir = target.thisTransform.position - thisTransform.position;
 				float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-				angle += 90;
+				angle -= 90;
 				thisTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 				skills[0].Use(this);
 					yield return new WaitForSeconds(skills[0].coolDown);
