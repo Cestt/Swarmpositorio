@@ -66,7 +66,7 @@ public class Creep : Unit{
 		if(state == FSM.States.Idle){
 			StartCoroutine(EnemyDetection());
 			if(path == null){
-				Invoke("RequestPath",Random.Range(0f,0.5f));
+				StartCoroutine(RequestPath());
 			}else{
 				state = FSM.States.Move;
 				stateChanger();
@@ -93,18 +93,20 @@ public class Creep : Unit{
 	/// <summary>
 	/// Solicita un path de manera recursiva
 	/// </summary>
-	void RequestPath(){
-
-		Debug.Log("Waiting Path");
+	IEnumerator RequestPath(){
+		
 		if(path != null){
 			CancelInvoke();//Para de pedir un path.
+			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
 			stateChanger();
 		}else{
-			Invoke("RequestPath",Random.Range(0.2f,0.7f));
 			if(OriginSpawn != null && OriginSpawn.path != null){
-				if(path != OriginSpawn.path)
+				if(path != OriginSpawn.path){
 					path = OriginSpawn.path;
+					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+				}
+					
 			} 
 		}
 	}
@@ -150,12 +152,10 @@ public class Creep : Unit{
 		Collider2D bestTarget = null;//Objetivo designado.
 		bool loop = true;//Mantiene el bucle.
 		while(loop){
-			Debug.Log("Checking for enemies");
 			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Obstacles"));
 			if(collsNum > 0){
 				foreach(Collider2D coll in colls){
 					if(coll != null){
-						print("Collider"+coll.tag);
 						if(coll.tag == "Human"){
 							if(points < 2/(thisTransform.position -coll.gameObject.transform.position).magnitude){
 								points = 2/(thisTransform.position -coll.gameObject.transform.position).magnitude;
@@ -173,6 +173,7 @@ public class Creep : Unit{
 				loop = false;
 				target = bestTarget.GetComponent<Unit>();
 				state = FSM.States.Attack;
+				yield return new WaitForSeconds(Random.Range(0.6f,0.8f));
 				stateChanger();
 			}
 
@@ -188,8 +189,7 @@ public class Creep : Unit{
 	IEnumerator Attack(){
 
 	 bool loop = true;//Mantiene el bucle.
-
-		Debug.Log("Attacking");
+		
 		while(loop){
 			if(target != null){
 				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque.
@@ -202,9 +202,11 @@ public class Creep : Unit{
 
 			}else{
 				loop = false;
+				yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			}
 		}
 		state = FSM.States.Idle;
+		yield return new WaitForSeconds(Random.Range(0.6f,0.8f));
 		stateChanger();
 	}
 

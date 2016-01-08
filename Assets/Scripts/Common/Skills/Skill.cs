@@ -48,10 +48,10 @@ public class Skill :MonoBehaviour{
 			/***********Uso de hilos***************
 			//Primero ponemos al objetivo de la unidad a cequear el daño
 			owner.target.StartCheckDamage (owner);
+			 *********************************/
 			//El daño lo metemos en cola
 			ThreadManager.EnQueue (new ParseQueue (owner.target, damage, armorPen, typeDamage));
-			 *********************************/
-			owner.target.Damage(damage,armorPen,typeDamage, owner);
+			//owner.target.Damage(damage,armorPen,typeDamage, owner);
 		}
 	}
 }

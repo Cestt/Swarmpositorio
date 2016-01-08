@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using System.Threading;
-using System.ComponentModel;
+using Battlehub.Dispatcher;
+
+
 
 public class Unit : MonoBehaviour {
 
@@ -75,8 +75,12 @@ public class Unit : MonoBehaviour {
 		}
 		int damageReal = Mathf.Max (0, damageWeak - Mathf.Max (0, armor - armorPen));
 		life -= damageReal;
-		
-		endDamage = true;
+		Dispatcher.Current.BeginInvoke(() =>{
+			if (life <= 0) {
+				Dead();
+			}
+		});
+
 	}
 	/// <summary>
 	/// Metodo que llama a la corrutina que comprueba si ha finalizado el ataque
