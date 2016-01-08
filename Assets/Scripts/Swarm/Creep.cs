@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Battlehub.Dispatcher;
 
 //Deriva de la clase basica Unit;
 //Clase basica de los creeps;
@@ -24,7 +25,7 @@ public class Creep : Unit{
 	//Sub tier
 	public int subTier = 0;
 	//Lista de Creeps cercanos
-	public List<GameObject> NearbyAllies = new List<GameObject>();
+	public List<EVector2> NearbyAllies = new List<EVector2>();
 
 	void Start(){
 		path = null;
@@ -202,26 +203,25 @@ public class Creep : Unit{
 
 			}else{
 				loop = false;
-				yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+				yield return new WaitForSeconds(0);
 			}
 		}
 		state = FSM.States.Idle;
-		yield return new WaitForSeconds(Random.Range(0.6f,0.8f));
+		yield return new WaitForSeconds(0);
 		stateChanger();
 	}
 
 
 
 	IEnumerator CheckSeparation(){
-
 		while(true){
 			NearbyAllies.Clear();
 			Collider2D[] colls = Physics2D.OverlapCircleAll((Vector2)transform.position,7.5f);
 			for(int i = 0; i < colls.Length;i++){
-				NearbyAllies.Add(colls[i].gameObject);
+				NearbyAllies.Add(new EVector2(colls[i].transform.position.x,colls[i].transform.position.y));
 			}
 			if(NearbyAllies.Count >0)
-				StartCoroutine(SeparationCalc(NearbyAllies,SeparationResult));
+				StartCoroutine(SeparationCalc(NearbyAllies,SeparationResult,new EVector2(thisTransform.position.x,thisTransform.position.y)));
 			yield return new WaitForSeconds(0.5f);
 		}
 
@@ -230,40 +230,47 @@ public class Creep : Unit{
 	}
 
 
-	IEnumerator SeparationCalc(List<GameObject> allCars, System.Action <Vector2> SeparationCallback)
+	IEnumerator SeparationCalc(List<EVector2> allCars, System.Action <EVector2> SeparationCallback,EVector2 position)
 	{
 		Debug.Log("Separation calc");
 		int j = 0;
-		Vector2 separationForce = new Vector2(0,0);
-		Vector2 averageDirection = new Vector2(0,0);
-		Vector2 distance = new Vector2(0,0);
+		EVector2 separationForce = new EVector2(0,0);
+		EVector2 averageDirection = new EVector2(0,0);
+		EVector2 distance = new EVector2(0,0);
 		for (int i = 0; i < allCars.Count - 1; i++)
 		{
-			distance = transform.position - allCars[i].transform.position;
-			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 5f && allCars[i] != gameObject)
+			distance = position - allCars[i];
+			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 5f && allCars[i] != position)
 			{
 				j++;
-				separationForce += (Vector2)transform.position - (Vector2)allCars[i].transform.position;
-				separationForce = separationForce.normalized;
+				separationForce += position - allCars[i];
+				separationForce = EVector2.Normalized(separationForce);
 				separationForce = separationForce * (50f);
 				averageDirection = averageDirection + separationForce;
 			}
 		}
 		if (j == 0)
 		{
-			SeparationCallback (new Vector2(0,0));
+			Dispatcher.Current.BeginInvoke(() =>{
+				SeparationCallback (new EVector2(0,0));
+			});
+
 			yield return null;
 		}
 		else
 		{
-			//averageDirection = averageDirection / j;
-			SeparationCallback (averageDirection);
+				Dispatcher.Current.BeginInvoke(() =>{
+					//averageDirection = averageDirection / j;
+					SeparationCallback (averageDirection);
+			});
+			
 			yield return null;
 		}
 	}
 
-	void SeparationResult(Vector2 result){
-		thisTransform.position += (Vector3) result * 10f * Time.deltaTime;
+	void SeparationResult(EVector2 result){
+		Vector3 final = new Vector3(result.x,result.y,0);
+		thisTransform.position += final * 10f * Time.deltaTime;
 	}
 
 	public override void Dead ()
