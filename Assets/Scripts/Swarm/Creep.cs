@@ -40,9 +40,11 @@ public class Creep : Unit{
 		path = null;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
+		life = lifeIni;
 		stateChanger();
 		
 	}
+
 	void OnDisable() {	
 		//Re inicializamos el path;
 		path = null;

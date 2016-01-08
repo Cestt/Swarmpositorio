@@ -34,7 +34,7 @@ public class Pool : MonoBehaviour {
 				for(int i = 0;i < Tier0Cuantity;i++){
 					clone = Instantiate(tempCreep,Vector3.zero,Quaternion.identity) as GameObject;
 					clone.transform.parent = transform;
-					clone.name = "Creep";
+					clone.name = "Creep0_"+i;
 					CreepScript tempScript = new CreepScript(clone,creepTempScript);
 					Creep0[i] = tempScript;
 				}
@@ -44,7 +44,7 @@ public class Pool : MonoBehaviour {
 				for (int i = 0; i <Tier1_1Cuantity; i++){
 					clone = Instantiate(tempCreep,Vector3.zero,Quaternion.identity) as GameObject;
 					clone.transform.parent = transform;
-					clone.name = "Creep";
+					clone.name = "Creep1_"+i;
 					CreepScript tempScript = new CreepScript(clone,creepTempScript);
 					Creep1[i] = tempScript;
 				}

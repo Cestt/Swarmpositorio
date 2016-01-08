@@ -26,11 +26,13 @@ public class Human : Unit {
 		while(loop){
 			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,skills[0].range,colls, 1 << LayerMask.NameToLayer("Creep"));
 			if(collsNum > 0){
-				points = (thisTransform.position - colls[0].transform.position).magnitude;
+				points = Vector2.Distance(thisTransform.position, colls[0].transform.position);
 				bestTarget = colls[0];
+				//Debug.Log ("Creep: "+ colls[0].name + " Dist: " + points);
 				for (int i = 1; i < colls.Length && colls[i] != null; i++){
-					if(points < (thisTransform.position -colls[i].transform.position).magnitude){
-						points = (thisTransform.position -colls[i].transform.position).magnitude;
+					//Debug.Log ("Creep: "+ colls[i].name + " Dist: " + Vector2.Distance(thisTransform.position, colls[i].transform.position));
+					if(points > Vector2.Distance(thisTransform.position, colls[i].transform.position)){
+						points = Vector2.Distance(thisTransform.position, colls[i].transform.position);
 						bestTarget = colls[i];
 					}
 				}
@@ -41,7 +43,7 @@ public class Human : Unit {
 				StartCoroutine(Attack());
 				state = FSM.States.Attack;
 			}else{
-				yield return new WaitForSeconds(Random.Range(0.1f,0.2f));
+				yield return new WaitForSeconds(Random.Range(0.05f,0.1f));
 			}
 		}
 	}
@@ -63,7 +65,7 @@ public class Human : Unit {
 					yield return new WaitForSeconds(skills[0].coolDown);
 			}else{
 				loop = false;
-				yield return new WaitForSeconds(0.2f);
+				yield return new WaitForSeconds(0.05f);
 				StartCoroutine(EnemyDetection());
 			}
 		}
