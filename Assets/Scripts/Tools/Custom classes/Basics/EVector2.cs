@@ -75,7 +75,22 @@ public class EVector2 {
 		}
 	}
 
+	public static EVector2 Normalized(EVector2 a)
+	{
 
+			float magn = Mathf.Sqrt (a.x * a.x + a.y * a.y);
+
+			if (magn > 1E-05f)
+			{
+				return a / magn;
+			}
+			else
+			{
+				return  EVector2.zero;
+			}
+
+
+	}
 
 	//
 	// Operators

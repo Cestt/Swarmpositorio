@@ -57,6 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 10
   armor: 0
+  lifeIni: 0
   canAttack: 1
   state: 0
   weaknessType: 0

@@ -10,9 +10,10 @@ GameObject:
   - 4: {fileID: 470850}
   - 212: {fileID: 21242260}
   - 114: {fileID: 11464022}
+  - 61: {fileID: 6150814}
   m_Layer: 8
   m_Name: MarineHuman
-  m_TagString: Untagged
+  m_TagString: Human
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24,11 +25,25 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 123302}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -190, y: 331, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!61 &6150814
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123302}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 50, y: 113}
 --- !u!114 &11464022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -42,6 +57,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 100
   armor: 10
+  lifeIni: 0
   canAttack: 1
   state: 0
   weaknessType: 0
@@ -51,6 +67,9 @@ MonoBehaviour:
   target: {fileID: 0}
   skills:
   - {fileID: 11409314, guid: b027af3d8bd3b8e4c9615517055690ba, type: 2}
+  detectionRadius: 1000
+  speedAlongPath: 20
+  path: []
 --- !u!212 &21242260
 SpriteRenderer:
   m_ObjectHideFlags: 1

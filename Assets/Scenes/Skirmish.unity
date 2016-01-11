@@ -85,24 +85,6 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &218553432 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
-  m_PrefabInternal: {fileID: 992061566}
---- !u!61 &218553433
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 218553432}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 50, y: 113}
 --- !u!1001 &325757647
 Prefab:
   m_ObjectHideFlags: 0
@@ -163,6 +145,10 @@ Prefab:
       propertyPath: m_Name
       value: MarineHuman (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
   m_IsPrefabParent: 0
@@ -194,6 +180,45 @@ Transform:
   - {fileID: 509612385}
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!1 &461605011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 461605013}
+  - 114: {fileID: 461605012}
+  m_Layer: 0
+  m_Name: Dispatcher
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &461605012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 461605011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23dd9f2672b2e6644a83e39dffaf0268, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &461605013
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 461605011}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -120.75334, y: -65.50148, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
 --- !u!1001 &463196254
 Prefab:
   m_ObjectHideFlags: 0
@@ -232,6 +257,14 @@ Prefab:
     - target: {fileID: 476032, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
       propertyPath: m_RootOrder
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: spawnRate
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: spawnRateTier
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
@@ -462,6 +495,10 @@ Prefab:
       propertyPath: m_Name
       value: MarineHuman (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
   m_IsPrefabParent: 0
@@ -524,6 +561,10 @@ Prefab:
     - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
       propertyPath: m_Name
       value: MarineHuman (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
@@ -615,6 +656,10 @@ Prefab:
       propertyPath: m_Name
       value: MarineHuman (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
   m_IsPrefabParent: 0
@@ -627,11 +672,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -187
+      value: -190
       objectReference: {fileID: 0}
     - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 213
+      value: 331
       objectReference: {fileID: 0}
     - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
       propertyPath: m_LocalPosition.z
@@ -661,19 +706,6 @@ Prefab:
       propertyPath: typesAttacks
       value: 
       objectReference: {fileID: 509612386}
-    - target: {fileID: 11464022, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
-      propertyPath: skills.Array.data[0]
-      value: 
-      objectReference: {fileID: 11409314, guid: b027af3d8bd3b8e4c9615517055690ba,
-        type: 2}
-    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
-      propertyPath: m_TagString
-      value: Human
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464022, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
-      propertyPath: life
-      value: 100
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
   m_IsPrefabParent: 0

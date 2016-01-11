@@ -11,28 +11,47 @@ public class Projectile : MonoBehaviour {
 
 	private float distance;
 	private float travel;
+	public int enemyPenetration;
 
-	public void Ini(Unit _owner, Vector3 _dir, Skill _skill)
+	/// <summary>
+	/// Metodo para inicializar las variables del proyectil
+	/// </summary>
+	/// <param name="_owner">Owner.</param>
+	/// <param name="_dir">Dir.</param>
+	/// <param name="_enemyPenetration">Enemy penetration. Numero de enemigos a los que puede penetrar y dañar</param>
+	/// <param name="_distance">Distance.</param>
+	/// <param name="_skill">Skill. Habilidad que ha generado la bala</param>
+	public void Ini(Unit _owner, Vector3 _dir,int _enemyPenetration,float _distance, Skill _skill)
 	{
 		owner = _owner;
 		dir = _dir;
 		skill = _skill;
-		distance = Vector2.Distance(owner.thisTransform.position,owner.target.thisTransform.position);
+		enemyPenetration = _enemyPenetration;
+		//distance = Vector2.Distance(owner.thisTransform.position,owner.target.thisTransform.position);
+		distance = _distance;
 		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 		angle += 90;
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 		target = owner.target;
+		travel = 0;
 	}
 	// Update is called once per frame
 	void Update () {
 		//Si ya ha muerto el objetivo se elimina la bala
-		if (target == null || !target.thisGameObject.activeInHierarchy)
-			Destroy(gameObject);
+		/*if (target == null || !target.thisGameObject.activeInHierarchy)
+			Destroy(gameObject);*/
 		transform.position += dir * speed * Time.deltaTime;
 		travel += speed * Time.deltaTime;
 		if (travel >= distance) {
-			skill.Attack(owner);
+			//skill.Attack(owner);
 			Destroy(gameObject);
 		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+		skill.Attack (other.GetComponent<Unit> (), owner);
+		enemyPenetration--;
+		if (enemyPenetration <= 0)
+			Destroy (gameObject);
 	}
 }
