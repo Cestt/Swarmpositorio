@@ -41,25 +41,6 @@ public class Unit : MonoBehaviour {
 
 
 
-	/// <summary>
-	/// DDamage. Gestiona el daño recibido por un ataque. SIN HILOS
-	/// </summary>
-	/// <param name="damage">Damage. Daño del ataque</param>
-	/// <param name="armorPen">Armor pen. Penetracion de armadura</param>
-	/// <param name="typeAttack">TypeAttack. Tipo del ataque</param> 
-	/// <param name="enemy">Enemy.Enemigo que daña a la unidad</param>
-	public void Damage(int damage, int armorPen, int typeAttack, Unit enemy){
-		int damageWeak = damage;
-		if (weaknessType == typeAttack) {
-			damageWeak = (int)(damage * typesAttacks.types[typeAttack].value);
-		}
-		int damageReal = Mathf.Max (0, damageWeak - Mathf.Max (0, armor - armorPen));
-		life -= damageReal;
-		if (life <= 0) {
-			enemy.target = null;
-			Dead();
-		}
-	}
 
 	#region Daño Hilos
 	/// <summary>
@@ -68,7 +49,7 @@ public class Unit : MonoBehaviour {
 	/// <param name="damage">Damage. Daño del ataque</param>
 	/// <param name="armorPen">Armor pen. Penetracion de armadura</param>
 	/// <param name="typeAttack">TypeAttack. Tipo del ataque</param> 
-	public void Damage(int damage, int armorPen, int typeAttack){
+	public void Damage(int damage, int armorPen, int typeAttack, Unit enemy){
 		int damageWeak = damage;
 		if (weaknessType == typeAttack) {
 			damageWeak = (int)(damage * typesAttacks.types[typeAttack].value);
@@ -77,6 +58,7 @@ public class Unit : MonoBehaviour {
 		life -= damageReal;
 		Dispatcher.Current.BeginInvoke(() =>{
 			if (life <= 0) {
+				enemy.target = null;
 				Dead();
 			}
 		});

@@ -4,76 +4,172 @@ using System.Collections.Generic;
 
 public class Human : Unit {
 
-	private float targetDistanceIni;
+	//Radio deteccion del humano;
+	public float detectionRadius;
+	//Velocidad de movimiento
+	public float speedAlongPath = 50;
+	//Camino generado por el PathFinding
+	[HideInInspector]
+	public Vector3[] path;
+	//Punto de la ruta en la que se encuentra
+	int targetIndex = 0;
 
-	void Awake () {
-		base.Awake ();
-		if (canAttack)
-			StartCoroutine (EnemyDetection ());
+	void Start(){
+		path = null;
+
+	}
+	/// <summary>
+	/// Raises the enable event.
+	/// </summary>
+	void OnEnable () {
+		//Iniciar separacion de los creeps(Comentado hasta revision y optimizacion).
+		//StartCoroutine(CheckSeparation());
+		//Inicializamos el path.
+		path = null;
+		//Inicializamos al estado principal;
+		state = FSM.States.Idle;
+		life = lifeIni;
+		stateChanger();
+
+	}
+
+	void OnDisable() {	
+		//Re inicializamos el path;
+		path = null;
+		//Paramos la IA;
+		state = FSM.States.Idle;
+		StopAllCoroutines();
+	}
+
+
+
+
+	/// <summary>
+	/// Cambia su estado propio dentro de la FSM
+	/// </summary>
+	void stateChanger(){
+
+		StopAllCoroutines ();
+
+		if(state == FSM.States.Idle){
+			StartCoroutine(EnemyDetection());
+		}
+		if(state == FSM.States.Move){
+			if(path != null ){
+				if(path[path.Length - 1] != thisTransform.position){
+					StartCoroutine(EnemyDetection());
+					StartCoroutine(MoveAlongPath());
+				}
+			}else{
+				state = FSM.States.Idle;
+				stateChanger();
+			}
+		}
+		if(state == FSM.States.Attack){
+			StopCoroutine(EnemyDetection());
+			StartCoroutine(Attack());
+		}
+
 	}
 
 
 	/// <summary>
-	/// Mantiene al humano buscando enemigos alrededor suya
+	/// Mueve el creep a lo largo de path.
+	/// </summary>
+	IEnumerator MoveAlongPath(){
+		Debug.Log("Moving Along path");
+		if(path != null){
+			Vector3 currentWayPoint = path[0];
+			//Mantiene el bucle de movimiento.
+			bool loop =  true;
+			while(loop){
+
+				if(thisTransform.position == currentWayPoint){
+
+					targetIndex++;
+					if(targetIndex >= path.Length){
+						loop = false;
+						path = null;
+
+					}
+
+					currentWayPoint = path[targetIndex];
+				}
+				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
+				yield return null;
+			}
+		}
+		targetIndex = 0;
+		state = FSM.States.Idle;
+		stateChanger();
+	}
+
+	/// <summary>
+	/// Mantiene al creep buscando enemigos alrededor suya
 	/// </summary>
 	IEnumerator EnemyDetection(){
-		StopCoroutine (Attack ());
 		Collider2D[] colls = new Collider2D[25];//Maximo de colliders que detectara alrededor suya.
 		float points = -1;//Euristica de puntos para evaluar el mejor objetivo.
 		Collider2D bestTarget = null;//Objetivo designado.
 		bool loop = true;//Mantiene el bucle.
-		//Debug.Log("Checking for enemies");
+		//Debug.Log("Enemy DET");
 		while(loop){
-			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,skills[0].range,colls, 1 << LayerMask.NameToLayer("Creep"));
+			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Creep"));
 			if(collsNum > 0){
-				points = Vector2.Distance(thisTransform.position, colls[0].transform.position);
-				bestTarget = colls[0];
-				//Debug.Log ("Creep: "+ colls[0].name + " Dist: " + points);
-				for (int i = 1; i < colls.Length && colls[i] != null; i++){
-					//Debug.Log ("Creep: "+ colls[i].name + " Dist: " + Vector2.Distance(thisTransform.position, colls[i].transform.position));
-					if(points > Vector2.Distance(thisTransform.position, colls[i].transform.position)){
-						points = Vector2.Distance(thisTransform.position, colls[i].transform.position);
-						bestTarget = colls[i];
+				foreach(Collider2D coll in colls){
+					if(coll != null){
+						if(points < 1/(thisTransform.position -coll.gameObject.transform.position).magnitude){
+							points = 1/(thisTransform.position -coll.gameObject.transform.position).magnitude;
+							bestTarget = coll;
+						}
 					}
 				}
 				loop = false;
-				targetDistanceIni = points;
-
 				target = bestTarget.GetComponent<Unit>();
-				StartCoroutine(Attack());
 				state = FSM.States.Attack;
-			}else{
-				yield return new WaitForSeconds(Random.Range(0.05f,0.1f));
+				yield return new WaitForSeconds(Random.Range(0.1f,0.15f));
+				stateChanger();
 			}
+
+			yield return new WaitForSeconds(Random.Range(0.1f,0.15f));
 		}
+
 	}
+
 
 	/// <summary>
 	/// Ataca al target con la habilidad designada.
 	/// </summary>
 	IEnumerator Attack(){
-		StopCoroutine (EnemyDetection ());
+
 		bool loop = true;//Mantiene el bucle.
-		//Debug.Log("Attacking");
+		//Debug.Log("Attack");
 		while(loop){
-			if(target != null && Vector2.Distance(thisTransform.position, target.thisTransform.position) <= targetDistanceIni){
-				Vector3 dir = target.thisTransform.position - thisTransform.position;
-				float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-				angle -= 90;
-				thisTransform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-				skills[0].Use(this);
+			if(target != null && target.thisGameObject.activeInHierarchy){
+				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque
+					thisTransform.position = Vector3.MoveTowards (thisTransform.position, target.thisTransform.position, speedAlongPath * Time.deltaTime);
+					yield return null;
+				}else{
+					skills[0].Use(this);
 					yield return new WaitForSeconds(skills[0].coolDown);
+				}
+
 			}else{
+				target = null;
 				loop = false;
-				yield return new WaitForSeconds(0.05f);
-				StartCoroutine(EnemyDetection());
+				yield return new WaitForSeconds(0f);
 			}
 		}
 		state = FSM.States.Idle;
+		yield return new WaitForSeconds(0f);
+		stateChanger();
 	}
+		
 
 	public override void Dead ()
 	{
+
 		Destroy (thisGameObject);
 	}
+
 }
