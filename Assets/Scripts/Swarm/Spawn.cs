@@ -25,14 +25,17 @@ public class Spawn : MonoBehaviour {
 	public int coste = 0;
 	//Pool de creeps
 	private Pool pool;
+	//Texto con el numero de creeps
+	private NumberCreeps numberCreeps;
 
 	void Start () {
 		path = null;
 		Invoke("Create",spawnRate);
 		Invoke("CreateTier",spawnRateTier);
 		pool = GameObject.Find ("Pool").GetComponent<Pool> ();
+		numberCreeps = GameObject.Find ("CreepsText/Number").GetComponent<NumberCreeps> ();
 	}
-
+		
 	void Create(){
 
 		/*foreach(GameObject tempGO in creepPrefabs){
@@ -51,6 +54,7 @@ public class Spawn : MonoBehaviour {
 		                                             transform.position.y + Random.Range (-50, 50));
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
+			numberCreeps.Add ();
 		}
 		Invoke("Create",spawnRate);
 	}
@@ -65,6 +69,7 @@ public class Spawn : MonoBehaviour {
 		                                             transform.position.y + Random.Range (-50, 50));
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
+			numberCreeps.Add ();
 		}
 		Invoke("CreateTier",spawnRateTier);
 	}

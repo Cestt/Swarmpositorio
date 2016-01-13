@@ -66,7 +66,7 @@ public class Human : Unit {
 			}
 		}
 		if(state == FSM.States.Attack){
-			StopCoroutine(EnemyDetection());
+			StopAllCoroutines ();
 			StartCoroutine(Attack());
 		}
 
@@ -147,9 +147,11 @@ public class Human : Unit {
 		while(loop){
 			if(target != null && target.thisGameObject.activeInHierarchy){
 				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque
+					Utils.LookAt2D(thisTransform,target.thisTransform);
 					thisTransform.position = Vector3.MoveTowards (thisTransform.position, target.thisTransform.position, speedAlongPath * Time.deltaTime);
 					yield return null;
 				}else{
+					Utils.LookAt2D(thisTransform,target.thisTransform);
 					skills[0].Use(this);
 					yield return new WaitForSeconds(skills[0].coolDown);
 				}

@@ -28,8 +28,8 @@ public class Skill :MonoBehaviour{
 	/// <param name="owner">Owner. Unidad que usa la habilidad</param>
 	public void Use(Unit owner){
 		switch (typeSkill) {
-			case typesSkill.Instant:
-				Attack(owner.target);
+		case typesSkill.Instant:
+				Attack(owner);
 				break;
 		case typesSkill.Projectile:
 				Vector3 dir = owner.target.thisTransform.position - owner.thisTransform.position;
