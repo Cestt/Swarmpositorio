@@ -49,7 +49,7 @@ public class Spawn : MonoBehaviour {
 		CreepScript creep = pool.GetCreep (0);
 		if (creep != null) {
 			//creep.creep.name = "Creep";
-			creep.creep.transform.parent = this.transform;
+			//creep.creep.transform.parent = this.transform;
 			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),
 		                                             transform.position.y + Random.Range (-50, 50));
 			creep.creep.SetActive (true);
@@ -64,7 +64,7 @@ public class Spawn : MonoBehaviour {
 		if (creep != null) {
 			//creep.creep.name = "Creep";
 
-			creep.creep.transform.parent = this.transform;
+			//creep.creep.transform.parent = this.transform;
 			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),
 		                                             transform.position.y + Random.Range (-50, 50));
 			creep.creep.SetActive (true);
