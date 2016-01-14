@@ -48,6 +48,10 @@ public class HumanEditor : UnitEditor {
 	public override void OnInspectorGUI ()
 	{
 		base.OnInspectorGUI ();
+		Human humanScript = (Human)target;
+	
+		humanScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",humanScript.detectionRadius);
+		humanScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",humanScript.speedAlongPath);
 	}
 }
 

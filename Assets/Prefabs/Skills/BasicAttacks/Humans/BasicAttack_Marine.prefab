@@ -42,11 +42,12 @@ MonoBehaviour:
   coolDown: 0.3
   damage: 20
   armorPen: 0
-  range: 1024
+  range: 500
   typeSkill: 1
   typesAttacks: {fileID: 0}
   typeDamage: 0
   projectile: {fileID: 149370, guid: d4fb70adf7fc54e438e80587fae94a7c, type: 2}
+  enemyPenetration: 2
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -60,7 +61,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: range
-      value: 1024
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: coolDown

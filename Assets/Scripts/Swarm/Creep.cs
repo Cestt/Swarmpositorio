@@ -53,6 +53,7 @@ public class Creep : Unit{
 	void OnDisable() {	
 		//Re inicializamos el path;
 		path = null;
+		int numCreep;
 		//Paramos la IA;
 		state = FSM.States.Idle;
 		StopAllCoroutines();
@@ -294,6 +295,7 @@ public class Creep : Unit{
 		state = FSM.States.Idle;
 		StopAllCoroutines();
 		OriginSpawn = null;	
+		GameObject.Find ("CreepsText/Number").GetComponent<NumberCreeps> ().Remove();
 		gameObject.SetActive(false);
 	}
 

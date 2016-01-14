@@ -20,6 +20,7 @@ public class SkillEditor : Editor {
 		skillScript.typeDamage = EditorGUILayout.Popup ("Damage Type",skillScript.typeDamage ,listOfTypes.ToArray());
 		if (skillScript.typeSkill == Skill.typesSkill.Projectile) {
 			skillScript.projectile = (GameObject)EditorGUILayout.ObjectField("Projectile",skillScript.projectile,typeof(GameObject));
+			skillScript.enemyPenetration = EditorGUILayout.IntField ("EnemyPenetration", skillScript.enemyPenetration);
 		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
