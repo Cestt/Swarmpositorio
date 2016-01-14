@@ -198,7 +198,7 @@ public class Creep : Unit{
 	/// Ataca al target con la habilidad designada.
 	/// </summary>
 	IEnumerator Attack(){
-
+		
 	 bool loop = true;//Mantiene el bucle.
 		
 		while(loop){

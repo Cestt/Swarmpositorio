@@ -151,6 +151,11 @@ public class EVector2 {
 		return a.x * a.x + a.y * a.y;
 	}
 
+	/*public static float Distance (EVector2 a,EVector2 b)
+	{
+		return System.Math.Sqrt((System.Double)(((b.x - a.x)*(b.x - a.x)) + ((b.y - a.y)*(b.y - a.y))));
+	}*/
+
 
 
 }
