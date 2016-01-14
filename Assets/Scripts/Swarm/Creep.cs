@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Battlehub.Dispatcher;
+using CielaSpike;
 
 //Deriva de la clase basica Unit;
 //Clase basica de los creeps;
@@ -26,6 +27,8 @@ public class Creep : Unit{
 	public int subTier = 0;
 	//Lista de Creeps cercanos
 	public List<EVector2> NearbyAllies = new List<EVector2>();
+	//Task para manejar las coRutinas en los hilos.
+	Task task;
 
 	void Start(){
 		path = null;
@@ -36,7 +39,8 @@ public class Creep : Unit{
 	/// </summary>
 	void OnEnable () {
 		//Iniciar separacion de los creeps(Comentado hasta revision y optimizacion).
-		//StartCoroutine(CheckSeparation());
+
+		this.StartCoroutineAsync(CheckSeparation());
 		//Inicializamos el path.
 		path = null;
 		//Inicializamos al estado principal;
@@ -68,7 +72,7 @@ public class Creep : Unit{
 		if(state == FSM.States.Idle){
 			StartCoroutine(EnemyDetection());
 			if(path == null){
-				StartCoroutine(RequestPath());
+				this.StartCoroutineAsync(RequestPath(),out task);
 			}else{
 				state = FSM.States.Move;
 				stateChanger();
@@ -96,9 +100,9 @@ public class Creep : Unit{
 	/// Solicita un path de manera recursiva
 	/// </summary>
 	IEnumerator RequestPath(){
-		
 		if(path != null){
-			CancelInvoke();//Para de pedir un path.
+			task.Cancel();//Para de pedir un path.
+			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
 			stateChanger();
@@ -106,9 +110,15 @@ public class Creep : Unit{
 			if(OriginSpawn != null && OriginSpawn.path != null){
 				if(path != OriginSpawn.path){
 					path = OriginSpawn.path;
+					yield return Ninja.JumpToUnity;
 					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+
 				}
-					
+			}else{
+				task.Cancel();
+				yield return Ninja.JumpToUnity;
+				yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
+				this.StartCoroutineAsync(RequestPath(),out task);
 			} 
 		}
 	}
@@ -118,7 +128,6 @@ public class Creep : Unit{
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
 	IEnumerator MoveAlongPath(){
-		Debug.Log("Moving Along path");
 		if(path != null){
 			Vector3 currentWayPoint = path[0];
 			//Mantiene el bucle de movimiento.
@@ -149,9 +158,9 @@ public class Creep : Unit{
 	/// Mantiene al creep buscando enemigos alrededor suya
 	/// </summary>
 	IEnumerator EnemyDetection(){
+		Collider2D bestTarget = null;//Objetivo designado.
 		Collider2D[] colls = new Collider2D[25];//Maximo de colliders que detectara alrededor suya.
 		float points = -1;//Euristica de puntos para evaluar el mejor objetivo.
-		Collider2D bestTarget = null;//Objetivo designado.
 		bool loop = true;//Mantiene el bucle.
 		while(loop){
 			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Obstacles"));
@@ -217,12 +226,19 @@ public class Creep : Unit{
 	IEnumerator CheckSeparation(){
 		while(true){
 			NearbyAllies.Clear();
+			yield return Ninja.JumpToUnity;
 			Collider2D[] colls = Physics2D.OverlapCircleAll((Vector2)transform.position,7.5f);
 			for(int i = 0; i < colls.Length;i++){
 				NearbyAllies.Add(new EVector2(colls[i].transform.position.x,colls[i].transform.position.y));
 			}
-			if(NearbyAllies.Count >0)
-				StartCoroutine(SeparationCalc(NearbyAllies,SeparationResult,new EVector2(thisTransform.position.x,thisTransform.position.y)));
+			if(NearbyAllies.Count >0){
+				EVector2 tempEvector2 = new EVector2(thisTransform.position.x,thisTransform.position.y);
+				this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
+				yield return Ninja.JumpBack;
+			}else{
+				yield return Ninja.JumpBack;
+			}
+				
 			yield return new WaitForSeconds(0.5f);
 		}
 
@@ -233,7 +249,7 @@ public class Creep : Unit{
 
 	IEnumerator SeparationCalc(List<EVector2> allCars, System.Action <EVector2> SeparationCallback,EVector2 position)
 	{
-		Debug.Log("Separation calc");
+
 		int j = 0;
 		EVector2 separationForce = new EVector2(0,0);
 		EVector2 averageDirection = new EVector2(0,0);
@@ -241,7 +257,7 @@ public class Creep : Unit{
 		for (int i = 0; i < allCars.Count - 1; i++)
 		{
 			distance = position - allCars[i];
-			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 5f && allCars[i] != position)
+			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 50f && allCars[i] != position)
 			{
 				j++;
 				separationForce += position - allCars[i];
@@ -252,18 +268,18 @@ public class Creep : Unit{
 		}
 		if (j == 0)
 		{
-			Dispatcher.Current.BeginInvoke(() =>{
-				SeparationCallback (new EVector2(0,0));
-			});
+			yield return Ninja.JumpToUnity;
+			SeparationCallback (new EVector2(0,0));
+
 
 			yield return null;
 		}
 		else
 		{
-				Dispatcher.Current.BeginInvoke(() =>{
-					//averageDirection = averageDirection / j;
-					SeparationCallback (averageDirection);
-			});
+		  	averageDirection = averageDirection / j;
+			yield return Ninja.JumpToUnity;
+			SeparationCallback (averageDirection);
+		
 			
 			yield return null;
 		}
