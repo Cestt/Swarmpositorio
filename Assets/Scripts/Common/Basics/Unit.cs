@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Battlehub.Dispatcher;
+using CielaSpike;
 
 
 
@@ -43,25 +43,30 @@ public class Unit : MonoBehaviour {
 
 
 	#region Daño Hilos
+	public void LaunchDamage(int damage, int armorPen, int typeAttack, Unit enemy){
+		this.StartCoroutineAsync(Damage(damage,armorPen,typeAttack,enemy));
+	}
+
 	/// <summary>
 	/// Damage. Gestiona el daño recibido por un ataque. CON HILOS
 	/// </summary>
 	/// <param name="damage">Damage. Daño del ataque</param>
 	/// <param name="armorPen">Armor pen. Penetracion de armadura</param>
 	/// <param name="typeAttack">TypeAttack. Tipo del ataque</param> 
-	public void Damage(int damage, int armorPen, int typeAttack, Unit enemy){
+	 IEnumerator Damage(int damage, int armorPen, int typeAttack, Unit enemy){
 		int damageWeak = damage;
 		if (weaknessType == typeAttack) {
 			damageWeak = (int)(damage * typesAttacks.types[typeAttack].value);
 		}
-		int damageReal = Mathf.Max (0, damageWeak - Mathf.Max (0, armor - armorPen));
+		int damageReal = System.Math.Max (0, damageWeak - System.Math.Max (0, armor - armorPen));
 		life -= damageReal;
-		Dispatcher.Current.BeginInvoke(() =>{
-			if (life <= 0) {
-				enemy.target = null;
-				Dead();
-			}
-		});
+
+		if (life <= 0) {
+			enemy.target = null;
+			yield return Ninja.JumpToUnity;
+			Dead();
+		}
+
 
 	}
 	/// <summary>
