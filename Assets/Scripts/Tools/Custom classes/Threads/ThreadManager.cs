@@ -14,7 +14,7 @@ public class ThreadManager {
 	//LLama al metodo Damage
 	private static void  CallbackDamage(object data){
 		ParseQueue temp = (ParseQueue) data;
-		temp.unit.Damage(temp.damage,temp.armorPen,temp.typeAttack,temp.enemy);
+		//temp.unit.Damage(temp.damage,temp.armorPen,temp.typeAttack,temp.enemy);
 
 	}
 }

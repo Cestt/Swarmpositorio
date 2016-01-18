@@ -22,6 +22,7 @@ public class Skill :MonoBehaviour{
 	[HideInInspector]
 	public int enemyPenetration; //Numero de enemigos a los que puede dañar y penetrar la habilidad
 
+
 	/// <summary>
 	/// Usa la habilidad
 	/// </summary>
@@ -41,6 +42,7 @@ public class Skill :MonoBehaviour{
 
 	}
 
+
 	/// <summary>
 	/// Ataca al objetivo del propietario.
 	/// </summary>
@@ -52,8 +54,9 @@ public class Skill :MonoBehaviour{
 			owner.target.StartCheckDamage (owner);
 			 *********************************/
 			//El daño lo metemos en cola
-			ThreadManager.EnQueue (new ParseQueue (owner.target, damage, armorPen, typeDamage, owner));
-			//owner.target.Damage(damage,armorPen,typeDamage, owner);
+			//ThreadManager.EnQueue (new ParseQueue (owner.target, damage, armorPen, typeDamage, owner));
+			//Daño directo en hilo secundario
+			owner.target.LaunchDamage(damage,armorPen,typeDamage, owner);
 		}
 	}
 
@@ -69,8 +72,9 @@ public class Skill :MonoBehaviour{
 			owner.target.StartCheckDamage (owner);
 			*********************************/
 			//El daño lo metemos en cola
-			ThreadManager.EnQueue (new ParseQueue (target, damage, armorPen, typeDamage, owner));
-			//owner.target.Damage(damage,armorPen,typeDamage, owner);
+			//ThreadManager.EnQueue (new ParseQueue (target, damage, armorPen, typeDamage, owner));
+			//Daño en hilo secundario
+			target.LaunchDamage(damage,armorPen,typeDamage, owner);
 		}
 	}
 }
