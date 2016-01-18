@@ -3,16 +3,28 @@ using System.Collections;
 
 public class TouchManager : MonoBehaviour {
 
-	Spawn spawnSelected;
+	Spawn spawnSelected = null;
+	PathFinding pathfinder;
+	Camera camera;
 
-	// Use this for initialization
-	void Start () {
+	void Start(){
+		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
+		camera = Camera.main;
+	}
+
+	void FixedUpdate() {
 	
+		if(Input.GetMouseButtonUp(1)){
+			if(spawnSelected != null){
+				pathfinder.StartFindPath(spawnSelected.thisTransform.position,camera.ScreenToWorldPoint(Input.mousePosition),spawnSelected.SetPath);
+			}else{
+				Debug.Log("No Spawn selected");
+			}
+		}
 	}
 
 
-	public void ClickSpawn(Spawn spawn){
+	public void SelectSpawn(Spawn spawn){
 		spawnSelected = spawn;
-		Debug.Log (spawn.name);
 	}
 }

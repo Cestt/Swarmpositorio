@@ -93,6 +93,7 @@ public class Grid : MonoBehaviour {
 					Vector3 worldPoint = worldBottomLeft + Vector3.right * (k * nodeSize + (nodeSize/2)) + Vector3.up * (l * nodeSize + (nodeSize/2));
 					bool walkable = !(Physics2D.OverlapCircle(worldPoint,nodeSize/2,unwalkableMask));
 					grid[k,l] =  new Node(walkable,worldPoint,k,l,gridNum);
+					nodesAll.Add(grid[k,l]);
 					temp.Add(grid[k,l]);
 				}
 
@@ -205,19 +206,20 @@ public class Grid : MonoBehaviour {
 
 
 		
-
+	public List<Node> nodesAll = new List<Node>();
 	void OnDrawGizmos(){
 		
 		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,gridWorldSize.y,1));
 		//Comentado por la enorme cantidad de nodos actual.
 
-		/*if(grid != null & displayGizmos){
+		if(nodesAll != null & displayGizmos){
 			
-			foreach(Node n in grid){
+			foreach(Node n in nodesAll){
 					Gizmos.color = (n.walkable)?Color.white:Color.red;
-					Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeSize-.1f));
+					Gizmos.DrawCube(n.worldPosition, Vector2.one * (nodeSize-5f));
 			}
-		}*/
+			print("Node list size: "+nodesAll.Count);
+		}
 	}
 		
 		

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using CielaSpike;
 
 public class PathFinding : MonoBehaviour {
 
@@ -15,11 +16,12 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
-		StartCoroutine(FindPath(startPosition,targetPosition,callBack));
+		this.StartCoroutineAsync(FindPath(startPosition,targetPosition,callBack));
 	}
 
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
 		yield return new WaitForEndOfFrame();
+		yield return Ninja.JumpToUnity;
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
 
@@ -27,7 +29,7 @@ public class PathFinding : MonoBehaviour {
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
-		
+		yield return Ninja.JumpBack;
 			if(startNode.walkable & targetNode.walkable){
 				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
 				HashSet<Node> closedSet = new HashSet<Node>();
@@ -68,8 +70,8 @@ public class PathFinding : MonoBehaviour {
 					}
 				}
 			}
-
-		yield return null;
+			
+		yield return Ninja.JumpToUnity;
 			if(pathSuccess){
 				waypoints = RetracePath(startNode,targetNode);
 			}
