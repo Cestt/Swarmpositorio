@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Battlehub.Dispatcher;
-
+using CielaSpike;
 
 [System.Serializable]
 public class Unit : MonoBehaviour {
@@ -41,6 +41,9 @@ public class Unit : MonoBehaviour {
 
 
 
+	public void LaunchDamage(int damage, int armorPen, int typeAttack, Unit enemy){
+		this.StartCoroutineAsync (Damage (damage, armorPen, typeAttack, enemy));
+	}
 
 	#region Daño Hilos
 	/// <summary>
@@ -49,23 +52,21 @@ public class Unit : MonoBehaviour {
 	/// <param name="damage">Damage. Daño del ataque</param>
 	/// <param name="armorPen">Armor pen. Penetracion de armadura</param>
 	/// <param name="typeAttack">TypeAttack. Tipo del ataque</param> 
-	public void Damage(int damage, int armorPen, int typeAttack, Unit enemy){
+	IEnumerator Damage(int damage, int armorPen, int typeAttack, Unit enemy){
 		int damageWeak = damage;
 		if (weaknessType == typeAttack) {
 			damageWeak = (int)(damage * typesAttacks.types[typeAttack].value);
 		}
 		int damageReal = Mathf.Max (0, damageWeak - Mathf.Max (0, armor - armorPen));
 		life -= damageReal;
-		Dispatcher.Current.BeginInvoke(() =>{
-			if (life <= 0) {
-				enemy.target = null;
-				if (state != FSM.States.Dead){
-					Dead();
-					state = FSM.States.Dead;
-				}
+		if (life <= 0) {
+			yield return Ninja.JumpToUnity;
+			enemy.target = null;
+			if (state != FSM.States.Dead){
+				Dead();
+				state = FSM.States.Dead;
 			}
-		});
-
+		}
 	}
 	/// <summary>
 	/// Metodo que llama a la corrutina que comprueba si ha finalizado el ataque

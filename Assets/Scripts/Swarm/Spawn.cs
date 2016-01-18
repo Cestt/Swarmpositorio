@@ -26,7 +26,7 @@ public class Spawn : Unit {
 	//Pool de creeps
 	private Pool pool;
 	//Texto con el numero de creeps
-	private NumberCreeps numberCreeps;
+	private UITest numberCreeps;
 
 	void Start () {
 		//Inicializamos el path para evitar errores;
@@ -38,14 +38,14 @@ public class Spawn : Unit {
 		//Iniciamos la solicitud de creeps de tier;
 		Invoke("CreateTier",spawnRateTier);
 		//Texto para ver el numero de creeps;
-		numberCreeps = GameObject.Find ("CreepsText/Number").GetComponent<NumberCreeps> ();
+		numberCreeps = GameObject.Find ("CreepsText/Number").GetComponent<UITest> ();
 	}
 
 	/// <summary>
 	/// Solicita creeps basicos a la pool.
 	/// </summary>
 	void Create(){
-
+		
 		CreepScript creep = pool.GetCreep (0);
 		if (creep != null) {
 			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),

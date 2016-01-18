@@ -68,12 +68,13 @@ MonoBehaviour:
   skills:
   - {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8, type: 2}
   OriginSpawn: {fileID: 0}
-  detectionRadius: 100
-  speedAlongPath: 100
+  detectionRadius: 1000
+  speedAlongPath: 40
   path: []
   tier: 0
   subTier: 0
   NearbyAllies: []
+  costGene: 2
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1

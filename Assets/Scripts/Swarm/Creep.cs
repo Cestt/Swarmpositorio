@@ -29,6 +29,10 @@ public class Creep : Unit{
 	public List<EVector2> NearbyAllies = new List<EVector2>();
 	//Task para manejar las coRutinas en los hilos.
 	Task task;
+	//Coste de genes del creep
+	public int costGene;
+	//Dice si ha llegado al destino
+	bool arrive = false;
 
 	void Start(){
 		path = null;
@@ -71,7 +75,9 @@ public class Creep : Unit{
 		if(state == FSM.States.Idle){
 			StartCoroutine(EnemyDetection());
 			if(path == null){
-				this.StartCoroutineAsync(RequestPath(),out task);
+				if (!arrive) {
+					this.StartCoroutineAsync (RequestPath (), out task);
+				}
 			}else{
 				state = FSM.States.Move;
 				stateChanger();
@@ -142,6 +148,7 @@ public class Creep : Unit{
 
 					targetIndex++;
 					if(targetIndex >= path.Length){
+						arrive = true;
 						loop = false;
 						path = null;
 
@@ -300,7 +307,7 @@ public class Creep : Unit{
 		state = FSM.States.Idle;
 		StopAllCoroutines();
 		OriginSpawn = null;	
-		GameObject.Find ("CreepsText/Number").GetComponent<NumberCreeps> ().Remove();
+		GameObject.Find ("CreepsText/Number").GetComponent<UITest> ().Remove();
 		gameObject.SetActive(false);
 	}
 
