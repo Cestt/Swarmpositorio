@@ -52,6 +52,10 @@ public class HumanEditor : UnitEditor {
 	
 		humanScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",humanScript.detectionRadius);
 		humanScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",humanScript.speedAlongPath);
+		humanScript.biomatterGain = EditorGUILayout.IntField ("Bio Matter Gain", humanScript.biomatterGain);
+		if (GUI.changed) {
+			EditorUtility.SetDirty(target);
+		}
 	}
 }
 
@@ -65,6 +69,10 @@ public class CreepEditor : UnitEditor {
 		creepScript.tier = EditorGUILayout.IntField("Tier",creepScript.tier);
 		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
+		creepScript.costGene = EditorGUILayout.IntField("Cost Gene",creepScript.costGene);
+		if (GUI.changed) {
+			EditorUtility.SetDirty(target);
+		}
 	}
 }
 
