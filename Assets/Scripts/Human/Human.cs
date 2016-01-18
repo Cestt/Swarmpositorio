@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Human : Unit {
 
 	//Radio deteccion del humano;
@@ -13,6 +14,8 @@ public class Human : Unit {
 	public Vector3[] path;
 	//Punto de la ruta en la que se encuentra
 	int targetIndex = 0;
+	//Biomateria que da cuando muere
+	public int biomatterGain;
 
 	void Start(){
 		path = null;
@@ -174,6 +177,7 @@ public class Human : Unit {
 
 	public override void Dead ()
 	{
+		GameObject.Find ("Pool").GetComponent<Pool> ().biomatter += biomatterGain;
 		Destroy (thisGameObject);
 	}
 

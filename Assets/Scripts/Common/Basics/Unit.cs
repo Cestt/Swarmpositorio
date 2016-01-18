@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Battlehub.Dispatcher;
 
 
-
+[System.Serializable]
 public class Unit : MonoBehaviour {
 
 	public int life = 1; //Vida de la unidad
@@ -59,7 +59,10 @@ public class Unit : MonoBehaviour {
 		Dispatcher.Current.BeginInvoke(() =>{
 			if (life <= 0) {
 				enemy.target = null;
-				Dead();
+				if (state != FSM.States.Dead){
+					Dead();
+					state = FSM.States.Dead;
+				}
 			}
 		});
 

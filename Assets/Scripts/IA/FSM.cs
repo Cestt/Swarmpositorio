@@ -8,7 +8,8 @@ public static class FSM {
 		Idle,
 		Move,
 		Chase,
-		Attack
+		Attack,
+		Dead
 	};
 
 }
