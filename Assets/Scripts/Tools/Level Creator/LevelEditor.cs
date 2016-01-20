@@ -12,12 +12,8 @@ public class LevelEditor : MonoBehaviour {
 		//grid = GameObject.Find("A*Path").GetComponent<Grid>();
 	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void SetOrthographicSize(){
-		Camera.main.orthographicSize = (nativeResolution.y / 2)* pixelPerUnit;
+		//Camera.main.orthographicSize = (nativeResolution.y / 2)* pixelPerUnit/100;
 	}
 }

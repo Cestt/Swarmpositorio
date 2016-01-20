@@ -12,11 +12,11 @@ public class EditorLevelEditor : Editor {
 		LevelEditor levelEditorScript = (LevelEditor) target;
 
 
-		levelEditorScript.nativeResolution = EditorGUILayout.Vector2Field("Camera Size",levelEditorScript.nativeResolution,GUILayout.MaxWidth(150));
+		levelEditorScript.nativeResolution = EditorGUILayout.Vector2Field("Camera Size",levelEditorScript.nativeResolution);
 
 			EditorGUILayout.Space();
 
-		levelEditorScript.pixelPerUnit = EditorGUILayout.FloatField("Pixels per Unit",levelEditorScript.pixelPerUnit,GUILayout.MaxWidth(150));
+		levelEditorScript.pixelPerUnit = EditorGUILayout.FloatField("Pixels per Unit",levelEditorScript.pixelPerUnit,GUILayout.MaxWidth(250));
 
 			if(levelEditorScript.pixelPerUnit <= 0.1f){
 				levelEditorScript.pixelPerUnit = 0.1f;
@@ -30,7 +30,7 @@ public class EditorLevelEditor : Editor {
 
 			EditorGUILayout.Space();
 
-		levelEditorScript.worldSize = EditorGUILayout.Vector2Field("World Size",levelEditorScript.worldSize,GUILayout.MaxWidth(150));
+		levelEditorScript.worldSize = EditorGUILayout.Vector2Field("World Size",levelEditorScript.worldSize);
 			if(levelEditorScript.pixelPerUnit >= levelEditorScript.worldSize.x)
 				EditorGUILayout.HelpBox("Pixel per Unit cannot exceed World heigth",MessageType.Error,true);
 			if(levelEditorScript.pixelPerUnit >= levelEditorScript.worldSize.x)
