@@ -40,12 +40,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 2343356711
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: UI
-    uniqueID: 3985667031
-    locked: 0
   - name: Creeps
     uniqueID: 510380539
+    locked: 0
+  - name: UI
+    uniqueID: 3985667031
     locked: 0
