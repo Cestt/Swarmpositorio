@@ -33,11 +33,13 @@ public class Creep : Unit{
 	public int costGene;
 	//Dice si ha llegado al destino
 	bool arrive = false;
+	//Punto de ruta al que se dirije
+	WayPoint wayPoint;
 
 	void Start(){
 		path = null;
-
 	}
+
 	/// <summary>
 	/// Raises the enable event.
 	/// </summary>
@@ -77,7 +79,11 @@ public class Creep : Unit{
 			if(path == null){
 				if (!arrive) {
 					this.StartCoroutineAsync (RequestPath (), out task);
-				}
+				} /*else {
+					Debug.Log ("A");
+					arrive = false;
+					this.StartCoroutineAsync (RequestPathWayPoint (), out task);
+				}*/
 			}else{
 				state = FSM.States.Move;
 				stateChanger();
@@ -132,7 +138,34 @@ public class Creep : Unit{
 		}
 	}
 
+	/// <summary>
+	/// Solicita el path al punto de ruta en el que esta
+	/// </summary>
+	IEnumerator RequestPathWayPoint(){
+		if(path != null){
+			Debug.Log("Path found");
+			yield return Ninja.JumpToUnity;
+			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+			state = FSM.States.Move;
+			stateChanger();
 
+		}else{
+			if(wayPoint != null){
+				if(wayPoint.path != null){
+					path = wayPoint.path;
+					wayPoint = wayPoint.nextWayPoint;
+					yield return Ninja.JumpToUnity;
+					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
+
+				}else{
+					yield return Ninja.JumpToUnity;
+					yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
+					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
+				}
+			} 
+		}
+	}
 	/// <summary>
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
@@ -150,10 +183,10 @@ public class Creep : Unit{
 					if(targetIndex >= path.Length){
 						arrive = true;
 						loop = false;
-						path = null;
+						//path = null;
 
 					}
-					if(path !=null)
+					else if(path !=null)
 						currentWayPoint = path[targetIndex];
 				}
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
@@ -242,7 +275,7 @@ public class Creep : Unit{
 			for(int i = 0; i < colls.Length;i++){
 				NearbyAllies.Add(new EVector2(colls[i].transform.position.x,colls[i].transform.position.y));
 			}
-			if(NearbyAllies.Count >0){
+			if(NearbyAllies.Count >5){
 				EVector2 tempEvector2 = new EVector2(thisTransform.position.x,thisTransform.position.y);
 				this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
 				yield return Ninja.JumpBack;
@@ -306,6 +339,7 @@ public class Creep : Unit{
 	{
 		state = FSM.States.Idle;
 		StopAllCoroutines();
+		OriginSpawn.CreepDead ();
 		OriginSpawn = null;	
 		GameObject.Find ("CreepsText/Number").GetComponent<UITest> ().Remove();
 		gameObject.SetActive(false);

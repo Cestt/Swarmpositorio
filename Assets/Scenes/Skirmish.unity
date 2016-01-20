@@ -502,7 +502,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
       propertyPath: spawnRate
-      value: 0.3
+      value: 0.1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11477908, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
@@ -27563,6 +27563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 635e21ae41e88a6478810179a95c3537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPointPrefab: {fileID: 0}
 --- !u!1 &1609903401
 GameObject:
   m_ObjectHideFlags: 0
