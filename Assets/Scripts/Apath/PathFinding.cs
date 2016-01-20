@@ -9,6 +9,8 @@ public class PathFinding : MonoBehaviour {
 
 	Grid grid;
 	PathRequestManager pathManager;
+	Queue<ApathQueue> queueFindPaths = new Queue<ApathQueue>();
+	bool running = false;
 
 	void Awake(){
 		grid = GetComponentInParent<Grid>();
@@ -16,15 +18,18 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
-		this.StartCoroutineAsync(FindPath(startPosition,targetPosition,callBack));
+		queueFindPaths.Enqueue(new ApathQueue(startPosition,targetPosition,callBack));
+		if(!running)
+			StartCoroutine(CheckQueue());
+
 	}
 
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
+		running = true;
 		yield return new WaitForEndOfFrame();
 		yield return Ninja.JumpToUnity;
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
-
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
@@ -77,7 +82,11 @@ public class PathFinding : MonoBehaviour {
 			}
 		callBack(waypoints);
 		sw.Stop();
+		running = false;
+		StartCoroutine(CheckQueue());
+
 		print("Found path in "+sw.ElapsedMilliseconds+" ms");
+
 
 	}
 
@@ -116,6 +125,18 @@ public class PathFinding : MonoBehaviour {
 		if(disX > disY)
 			return 14*disY + 10*(disX - disY);
 		return 14*disX + 10*(disY - disX);
+	}
+
+	IEnumerator CheckQueue(){
+		if(queueFindPaths.Count > 0){
+			
+			if(!running){
+				print("2. Queue length "+queueFindPaths.Count);
+				ApathQueue temp = queueFindPaths.Dequeue();
+				yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f,0.4f));
+				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback));
+			}
+		}
 	}
 
 }

@@ -34,6 +34,9 @@ public class Spawn : Unit {
 	//Dice a que punto de ruta marca el spawn de inicio
 	WayPoint actualWayPoint;
 
+	public int loops = 0;
+	private PathFinding pathfinder;
+
 	void Start () {
 		//Inicializamos el path para evitar errores;
 		path = null;
@@ -47,8 +50,13 @@ public class Spawn : Unit {
 		textNumberCreeps = GameObject.Find ("CreepsText/Number").GetComponent<UITest> ();
 		wayPoints = new List<WayPoint> ();
 		numberCreeps = 0;
+		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
 	}
-
+	void Update(){
+		if(loops >= 5){
+			Debug.LogError("Loops "+loops);
+		}
+	}
 	/// <summary>
 	/// Solicita creeps basicos a la pool.
 	/// </summary>
@@ -99,7 +107,7 @@ public class Spawn : Unit {
 	/// <param name="_path">Path.</param>
 	public void SetPath(Vector3[] _path){
 		path = _path;
-		actualWayPoint = wayPoints [wayPoints.Count - 1];
+
 	}
 
 	/// <summary>
@@ -107,12 +115,17 @@ public class Spawn : Unit {
 	/// </summary>
 	/// <param name="wayPoint">Punto de ruta clase WayPoint</param>
 	public void AddWayPoint(WayPoint wayPoint){
-		wayPoint.Ini (this, numberCreeps);
-		wayPoints.Add (wayPoint);
+		wayPoint.Ini(this, numberCreeps);
+
+		//Debug.Log("Mouse Up");
+		wayPoints.Add(wayPoint);
+		actualWayPoint = wayPoint;
 		if (wayPoints.Count > 1) {
-			Debug.Log ("NUM WP: " + (wayPoints.Count - 2));
-			wayPoints [wayPoints.Count - 2].NewPath (wayPoint);
+			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
+			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position);
+			pathfinder.StartFindPath(wayPoints[wayPoints.Count - 2].position,wayPoint.position,wayPoints[wayPoints.Count - 2].SetPath);
 		}
+
 	}
 		
 

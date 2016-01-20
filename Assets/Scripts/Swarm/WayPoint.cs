@@ -13,15 +13,14 @@ public class WayPoint{
 	//Spawn al que pertence
 	Spawn spawn;
 
-	PathFinding pathfinder;
+
 
 	public WayPoint(){
 		
 	}
 
 	public WayPoint(Vector3 pos){
-		Debug.Log ("Nuevo wayPoint: " + pos);
-		position = pos;
+		position = new Vector3(pos.x,pos.y,0);
 	}
 	/// <summary>
 	/// Inicializa el punto de ruta
@@ -32,18 +31,9 @@ public class WayPoint{
 		spawn = _spawn;
 		path = null;
 		numCreeps = _numCreeps;
-		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
+
 	}
 
-	/// <summary>
-	/// Se calcula el nuevo path al nuevo punto de ruta
-	/// </summary>
-	/// <param name="next">Next. Siguiente punto de ruta</param>
-	public void NewPath(WayPoint next){
-		nextWayPoint = next;
-		nextWayPoint.Ini (spawn, numCreeps);
-		pathfinder.StartFindPath(position,next.position,this.SetPath);
-	}
 
 	/// <summary>
 	/// Callback para asignar el path

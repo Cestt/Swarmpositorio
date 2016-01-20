@@ -170,7 +170,7 @@ public class Creep : Unit{
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
 	IEnumerator MoveAlongPath(){
-		Debug.Log("Move Along path");
+		//Debug.Log("Move Along path");
 		if(path != null){
 			Vector3 currentWayPoint = path[0];
 			//Mantiene el bucle de movimiento.
