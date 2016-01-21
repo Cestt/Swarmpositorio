@@ -35,51 +35,54 @@ public class PathFinding : MonoBehaviour {
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
 		yield return Ninja.JumpBack;
+		if(startNode != targetNode){
 			if(startNode.walkable & targetNode.walkable){
-				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
-				HashSet<Node> closedSet = new HashSet<Node>();
-				
-				openSet.Add(startNode);
-				
-				while(openSet.Count >0){
-					Node currentNode = openSet.RemoveFirst();
-					
-					
-					closedSet.Add(currentNode);
-					
-					if(currentNode == targetNode){
-						pathSuccess = true;
-						break;
-					}
-					
-					foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+					Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
+					HashSet<Node> closedSet = new HashSet<Node>();
 
-						if(!neighbour.walkable || closedSet.Contains(neighbour)){
-							continue;
+					openSet.Add(startNode);
+
+					while(openSet.Count >0){
+						Node currentNode = openSet.RemoveFirst();
+
+
+						closedSet.Add(currentNode);
+
+						if(currentNode == targetNode){
+							pathSuccess = true;
+							break;
 						}
-						
-						int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
-						
-						if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
-							neighbour.gCost = newMovementCostToNeighbour;
-							neighbour.hCost = Getdistance(neighbour,targetNode);
-							neighbour.parent =currentNode;
-							
-							if(!openSet.Containts(neighbour)){
-								openSet.Add(neighbour);
-							}else{
-								openSet.UpdateItem(neighbour);
+
+						foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+
+							if(!neighbour.walkable || closedSet.Contains(neighbour)){
+								continue;
 							}
-							
+
+							int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
+
+							if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
+								neighbour.gCost = newMovementCostToNeighbour;
+								neighbour.hCost = Getdistance(neighbour,targetNode);
+								neighbour.parent =currentNode;
+
+								if(!openSet.Containts(neighbour)){
+									openSet.Add(neighbour);
+								}else{
+									openSet.UpdateItem(neighbour);
+								}
+
+							}
 						}
 					}
 				}
 			}
+				
 			
 		yield return Ninja.JumpToUnity;
-			if(pathSuccess){
-				waypoints = RetracePath(startNode,targetNode);
-			}
+		if(pathSuccess){
+			waypoints = RetracePath(startNode,targetNode);
+		}
 		callBack(waypoints);
 		sw.Stop();
 		running = false;
