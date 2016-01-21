@@ -9,6 +9,8 @@ public class PathFinding : MonoBehaviour {
 
 	Grid grid;
 	PathRequestManager pathManager;
+	Queue<ApathQueue> queueFindPaths = new Queue<ApathQueue>();
+	bool running = false;
 
 	void Awake(){
 		grid = GetComponentInParent<Grid>();
@@ -16,68 +18,78 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
-		this.StartCoroutineAsync(FindPath(startPosition,targetPosition,callBack));
+		queueFindPaths.Enqueue(new ApathQueue(startPosition,targetPosition,callBack));
+		if(!running)
+			StartCoroutine(CheckQueue());
+
 	}
 
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
+		running = true;
 		yield return new WaitForEndOfFrame();
 		yield return Ninja.JumpToUnity;
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
-
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
 		yield return Ninja.JumpBack;
+		if(startNode != targetNode){
 			if(startNode.walkable & targetNode.walkable){
-				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
-				HashSet<Node> closedSet = new HashSet<Node>();
-				
-				openSet.Add(startNode);
-				
-				while(openSet.Count >0){
-					Node currentNode = openSet.RemoveFirst();
-					
-					
-					closedSet.Add(currentNode);
-					
-					if(currentNode == targetNode){
-						pathSuccess = true;
-						break;
-					}
-					
-					foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+					Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
+					HashSet<Node> closedSet = new HashSet<Node>();
 
-						if(!neighbour.walkable || closedSet.Contains(neighbour)){
-							continue;
+					openSet.Add(startNode);
+
+					while(openSet.Count >0){
+						Node currentNode = openSet.RemoveFirst();
+
+
+						closedSet.Add(currentNode);
+
+						if(currentNode == targetNode){
+							pathSuccess = true;
+							break;
 						}
-						
-						int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
-						
-						if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
-							neighbour.gCost = newMovementCostToNeighbour;
-							neighbour.hCost = Getdistance(neighbour,targetNode);
-							neighbour.parent =currentNode;
-							
-							if(!openSet.Containts(neighbour)){
-								openSet.Add(neighbour);
-							}else{
-								openSet.UpdateItem(neighbour);
+
+						foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+
+							if(!neighbour.walkable || closedSet.Contains(neighbour)){
+								continue;
 							}
-							
+
+							int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
+
+							if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
+								neighbour.gCost = newMovementCostToNeighbour;
+								neighbour.hCost = Getdistance(neighbour,targetNode);
+								neighbour.parent =currentNode;
+
+								if(!openSet.Containts(neighbour)){
+									openSet.Add(neighbour);
+								}else{
+									openSet.UpdateItem(neighbour);
+								}
+
+							}
 						}
 					}
 				}
 			}
+				
 			
 		yield return Ninja.JumpToUnity;
-			if(pathSuccess){
-				waypoints = RetracePath(startNode,targetNode);
-			}
+		if(pathSuccess){
+			waypoints = RetracePath(startNode,targetNode);
+		}
 		callBack(waypoints);
 		sw.Stop();
+		running = false;
+		StartCoroutine(CheckQueue());
+
 		print("Found path in "+sw.ElapsedMilliseconds+" ms");
+
 
 	}
 
@@ -116,6 +128,18 @@ public class PathFinding : MonoBehaviour {
 		if(disX > disY)
 			return 14*disY + 10*(disX - disY);
 		return 14*disX + 10*(disY - disX);
+	}
+
+	IEnumerator CheckQueue(){
+		if(queueFindPaths.Count > 0){
+			
+			if(!running){
+				print("2. Queue length "+queueFindPaths.Count);
+				ApathQueue temp = queueFindPaths.Dequeue();
+				yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f,0.4f));
+				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback));
+			}
+		}
 	}
 
 }

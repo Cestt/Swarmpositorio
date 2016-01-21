@@ -33,11 +33,13 @@ public class Creep : Unit{
 	public int costGene;
 	//Dice si ha llegado al destino
 	bool arrive = false;
+	//Punto de ruta al que se dirije
+	public WayPoint wayPoint;
 
 	void Start(){
 		path = null;
-
 	}
+
 	/// <summary>
 	/// Raises the enable event.
 	/// </summary>
@@ -77,6 +79,9 @@ public class Creep : Unit{
 			if(path == null){
 				if (!arrive) {
 					this.StartCoroutineAsync (RequestPath (), out task);
+				} else {
+					path = null;
+					this.StartCoroutineAsync (RequestPathWayPoint (), out task);
 				}
 			}else{
 				state = FSM.States.Move;
@@ -109,7 +114,7 @@ public class Creep : Unit{
 	IEnumerator RequestPath(){
 		
 		if(path != null){
-			Debug.Log("Path found");
+			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
@@ -119,6 +124,7 @@ public class Creep : Unit{
 			if(OriginSpawn != null){
 				if(OriginSpawn.path != null){
 						path = OriginSpawn.path;
+						wayPoint = OriginSpawn.actualWayPoint;
 						yield return Ninja.JumpToUnity;
 						yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 						this.StartCoroutineAsync(RequestPath(),out task);
@@ -132,12 +138,41 @@ public class Creep : Unit{
 		}
 	}
 
+	/// <summary>
+	/// Solicita el path al punto de ruta en el que esta
+	/// </summary>
+	IEnumerator RequestPathWayPoint(){
+		if(path != null){
+			//Debug.Log("Path found");
+			yield return Ninja.JumpToUnity;
+			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+			state = FSM.States.Move;
+			stateChanger();
 
+		}else{
+			if(wayPoint != null){
+				if(wayPoint.path != null){
+					path = wayPoint.path;
+					WayPoint nextWP = wayPoint.nextWayPoint;
+					wayPoint.RemoveCreep();
+					wayPoint = nextWP;
+					yield return Ninja.JumpToUnity;
+					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
+					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
+
+				}else{
+					yield return Ninja.JumpToUnity;
+					yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
+					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
+				}
+			} 
+		}
+	}
 	/// <summary>
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
 	IEnumerator MoveAlongPath(){
-		Debug.Log("Move Along path");
+		//Debug.Log("Move Along path");
 		if(path != null){
 			Vector3 currentWayPoint = path[0];
 			//Mantiene el bucle de movimiento.
@@ -153,7 +188,7 @@ public class Creep : Unit{
 						path = null;
 
 					}
-					if(path !=null)
+					else if(path !=null)
 						currentWayPoint = path[targetIndex];
 				}
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
@@ -242,7 +277,7 @@ public class Creep : Unit{
 			for(int i = 0; i < colls.Length;i++){
 				NearbyAllies.Add(new EVector2(colls[i].transform.position.x,colls[i].transform.position.y));
 			}
-			if(NearbyAllies.Count >0){
+			if(NearbyAllies.Count >5){
 				EVector2 tempEvector2 = new EVector2(thisTransform.position.x,thisTransform.position.y);
 				this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
 				yield return Ninja.JumpBack;
@@ -306,6 +341,7 @@ public class Creep : Unit{
 	{
 		state = FSM.States.Idle;
 		StopAllCoroutines();
+		OriginSpawn.CreepDead ();
 		OriginSpawn = null;	
 		GameObject.Find ("CreepsText/Number").GetComponent<UITest> ().Remove();
 		gameObject.SetActive(false);

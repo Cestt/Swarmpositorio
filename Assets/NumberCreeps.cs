@@ -5,7 +5,7 @@ using System.Threading;
 
 public class NumberCreeps : MonoBehaviour {
 	TextMesh mesh;
-	int numero = 0;
+	public int numero = 0;
 
 	// Use this for initialization
 	void Start () {
