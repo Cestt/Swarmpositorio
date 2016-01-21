@@ -32,7 +32,7 @@ public class Spawn : Unit {
 	//Lista de los punto de ruta del criadero
 	public List<WayPoint> wayPoints;
 	//Dice a que punto de ruta marca el spawn de inicio
-	WayPoint actualWayPoint;
+	public WayPoint actualWayPoint;
 
 	public int loops = 0;
 	private PathFinding pathfinder;
@@ -73,7 +73,7 @@ public class Spawn : Unit {
 			if (actualWayPoint != null)
 				actualWayPoint.AddCreep ();
 		}
-		//Invoke("Create",spawnRate);
+		Invoke("Create",spawnRate);
 	}
 
 	/// <summary>
@@ -114,12 +114,16 @@ public class Spawn : Unit {
 	/// Añade un punto de ruta al spawn
 	/// </summary>
 	/// <param name="wayPoint">Punto de ruta clase WayPoint</param>
-	public void AddWayPoint(WayPoint wayPoint){
+	public void AddWayPoint(WayPoint wayPoint, bool shiftPressed){
 		wayPoint.Ini(this, numberCreeps);
 
 		//Debug.Log("Mouse Up");
 		wayPoints.Add(wayPoint);
-		actualWayPoint = wayPoint;
+		if (!shiftPressed) {
+			actualWayPoint = wayPoint;
+			Debug.Log ("NOSHIFT");
+		} else
+			Debug.Log ("SHIFT");
 		if (wayPoints.Count > 1) {
 			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
 			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position);
@@ -135,6 +139,7 @@ public class Spawn : Unit {
 	public void RemoveWayPoint(){
 		//Destroy (wayPoints [0]);
 		wayPoints.RemoveAt (0);
+		Debug.Log("RemoveWayPoint Total:" + wayPoints.Count);
 	}
 
 }

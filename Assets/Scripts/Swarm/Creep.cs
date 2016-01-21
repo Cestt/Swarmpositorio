@@ -34,7 +34,7 @@ public class Creep : Unit{
 	//Dice si ha llegado al destino
 	bool arrive = false;
 	//Punto de ruta al que se dirije
-	WayPoint wayPoint;
+	public WayPoint wayPoint;
 
 	void Start(){
 		path = null;
@@ -79,11 +79,10 @@ public class Creep : Unit{
 			if(path == null){
 				if (!arrive) {
 					this.StartCoroutineAsync (RequestPath (), out task);
-				} /*else {
-					Debug.Log ("A");
-					arrive = false;
+				} else {
+					path = null;
 					this.StartCoroutineAsync (RequestPathWayPoint (), out task);
-				}*/
+				}
 			}else{
 				state = FSM.States.Move;
 				stateChanger();
@@ -115,7 +114,7 @@ public class Creep : Unit{
 	IEnumerator RequestPath(){
 		
 		if(path != null){
-			Debug.Log("Path found");
+			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
@@ -125,6 +124,7 @@ public class Creep : Unit{
 			if(OriginSpawn != null){
 				if(OriginSpawn.path != null){
 						path = OriginSpawn.path;
+						wayPoint = OriginSpawn.actualWayPoint;
 						yield return Ninja.JumpToUnity;
 						yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 						this.StartCoroutineAsync(RequestPath(),out task);
@@ -143,7 +143,7 @@ public class Creep : Unit{
 	/// </summary>
 	IEnumerator RequestPathWayPoint(){
 		if(path != null){
-			Debug.Log("Path found");
+			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
@@ -153,7 +153,9 @@ public class Creep : Unit{
 			if(wayPoint != null){
 				if(wayPoint.path != null){
 					path = wayPoint.path;
-					wayPoint = wayPoint.nextWayPoint;
+					WayPoint nextWP = wayPoint.nextWayPoint;
+					wayPoint.RemoveCreep();
+					wayPoint = nextWP;
 					yield return Ninja.JumpToUnity;
 					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
@@ -183,7 +185,7 @@ public class Creep : Unit{
 					if(targetIndex >= path.Length){
 						arrive = true;
 						loop = false;
-						//path = null;
+						path = null;
 
 					}
 					else if(path !=null)

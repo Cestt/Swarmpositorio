@@ -12,8 +12,8 @@ public class WayPoint{
 	public int numCreeps;
 	//Spawn al que pertence
 	Spawn spawn;
-
-
+	//Mira si esta siendo destruido
+	bool isRemoved;
 
 	public WayPoint(){
 		
@@ -21,6 +21,7 @@ public class WayPoint{
 
 	public WayPoint(Vector3 pos){
 		position = new Vector3(pos.x,pos.y,0);
+		isRemoved = false;
 	}
 	/// <summary>
 	/// Inicializa el punto de ruta
@@ -40,6 +41,7 @@ public class WayPoint{
 	/// </summary>
 	/// <param name="_path">Path.</param>
 	public void SetPath(Vector3[] _path){
+		Debug.Log ("Path WP");
 		path = _path;
 	}
 
@@ -54,7 +56,8 @@ public class WayPoint{
 
 	public void RemoveCreep(){
 		numCreeps--;
-		if (numCreeps <= 0) {
+		if (numCreeps <= 0 && !isRemoved) {
+			isRemoved = true;
 			spawn.RemoveWayPoint ();
 		}
 	}

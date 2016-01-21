@@ -20,9 +20,18 @@ public class TouchManager : MonoBehaviour {
 				//GameObject wayPoint = (GameObject)Instantiate (wayPointPrefab, pos, Quaternion.identity);
 				//wayPoint.transform.parent = spawnSelected.thisTransform;
 				//spawnSelected.AddWayPoint (wayPoint.GetComponent <WayPoint>());
-				Selected.AddWayPoint(new WayPoint(camera.ScreenToWorldPoint (Input.mousePosition)));
-				pathfinder.StartFindPath(Selected.thisTransform.position,camera.ScreenToWorldPoint (Input.mousePosition),Selected.SetPath);
+				if (Selected.path == null) {
+					Debug.Log ("PRIMER PATH");
+					Selected.AddWayPoint (new WayPoint (camera.ScreenToWorldPoint (Input.mousePosition)), false);
+					pathfinder.StartFindPath (Selected.thisTransform.position, camera.ScreenToWorldPoint (Input.mousePosition), Selected.SetPath);
 
+				} else {
+					bool shiftPressed = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
+					Selected.AddWayPoint (new WayPoint (camera.ScreenToWorldPoint (Input.mousePosition)), shiftPressed);
+					if (!shiftPressed) {
+						pathfinder.StartFindPath (Selected.thisTransform.position, camera.ScreenToWorldPoint (Input.mousePosition), Selected.SetPath);
+					}
+				}
 			}else{
 				Debug.Log("No Spawn selected");
 			}
