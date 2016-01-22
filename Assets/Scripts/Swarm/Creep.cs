@@ -38,6 +38,7 @@ public class Creep : Unit{
 
 	void Start(){
 		path = null;
+
 	}
 
 	/// <summary>
@@ -78,6 +79,7 @@ public class Creep : Unit{
 			StartCoroutine(EnemyDetection());
 			if(path == null){
 				if (!arrive) {
+					path = null;
 					this.StartCoroutineAsync (RequestPath (), out task);
 				} else {
 					path = null;
@@ -92,10 +94,17 @@ public class Creep : Unit{
 			if(task != null)
 				task.Cancel();//Para de pedir un path;
 			if(path != null ){
-				if(path[path.Length - 1] != thisTransform.position){
-					StartCoroutine(EnemyDetection());
-					StartCoroutine(MoveAlongPath());
+				if(path.Length > 0){
+					if(path[path.Length - 1] != thisTransform.position){
+						StartCoroutine(EnemyDetection());
+						StartCoroutine(MoveAlongPath());
+					}
+				}else{
+					path = null;
+					state = FSM.States.Idle;
+					stateChanger();
 				}
+					
 			}else{
 				state = FSM.States.Idle;
 				stateChanger();

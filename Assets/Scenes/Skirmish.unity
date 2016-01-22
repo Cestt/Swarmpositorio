@@ -502,7 +502,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
       propertyPath: spawnRate
-      value: 0.1
+      value: 0.01
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11477908, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
@@ -27576,7 +27576,7 @@ GameObject:
   - 114: {fileID: 1593478294}
   - 114: {fileID: 1593478293}
   m_Layer: 0
-  m_Name: Heroe
+  m_Name: Hero
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27605,7 +27605,7 @@ MonoBehaviour:
   target: {fileID: 0}
   skills: []
   path: []
-  speedAlongPath: 0
+  speedAlongPath: 250
 --- !u!114 &1593478294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27674,7 +27674,7 @@ Transform:
   m_GameObject: {fileID: 1593478292}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 55, y: 50, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 14

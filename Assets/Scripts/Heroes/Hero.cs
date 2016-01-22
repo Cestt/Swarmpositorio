@@ -12,7 +12,7 @@ public class Hero : Unit {
 	/// Callback que recibe el path y lo inicia.
 	/// </summary>
 	/// <param name="callBackData">Path del heroe.</param>
-	public void StartPath(Vector3[] callBackData){
+	public void SetPath(Vector3[] callBackData){
 		StopAllCoroutines();
 		path = callBackData;
 		StartCoroutine(MoveAlongPath());
