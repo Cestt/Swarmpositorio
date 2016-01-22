@@ -323,7 +323,7 @@ public class Creep : Unit{
 				j++;
 				separationForce += position - allCars[i];
 				separationForce = EVector2.Normalized(separationForce);
-				separationForce = separationForce * (20f);
+				separationForce = separationForce * (3f);
 				averageDirection = averageDirection + separationForce;
 			}
 		}
@@ -348,7 +348,7 @@ public class Creep : Unit{
 
 	void SeparationResult(EVector2 result){
 		Vector3 final = new Vector3(result.x,result.y,0);
-		thisTransform.position += final * 10f * Time.deltaTime;
+		thisTransform.position += final * 0.1f * Time.deltaTime;
 	}
 
 	public override void Dead ()

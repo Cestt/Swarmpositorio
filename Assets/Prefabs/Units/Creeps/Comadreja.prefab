@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
   - 114: {fileID: 11458616}
-  - 61: {fileID: 6130460}
+  - 61: {fileID: 6176556}
   m_Layer: 9
   m_Name: Comadreja
   m_TagString: Untagged
@@ -30,7 +30,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &6130460
+--- !u!61 &6176556
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -43,7 +43,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 60, y: 126}
+  m_Size: {x: 0.6, y: 1.26}
 --- !u!114 &11458616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -69,12 +69,13 @@ MonoBehaviour:
   - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
   OriginSpawn: {fileID: 0}
   detectionRadius: 1024
-  speedAlongPath: 100
+  speedAlongPath: 1
   path: []
   tier: 1
   subTier: 0
   NearbyAllies: []
   costGene: 100
+  numchecks: 0
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1

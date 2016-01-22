@@ -65,8 +65,8 @@ public class Spawn : Unit {
 		
 		CreepScript creep = pool.GetCreep (0);
 		if (creep != null) {
-			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),
-		                                             transform.position.y + Random.Range (-50, 50));
+			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
+													transform.position.y + Random.Range (-0.5f, 0.5f));
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
@@ -83,8 +83,8 @@ public class Spawn : Unit {
 	void CreateTier(){
 		CreepScript creep = pool.GetCreep (tier);
 		if (creep != null) {
-			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-50, 50),
-		                                             transform.position.y + Random.Range (-50, 50));
+			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
+												transform.position.y + Random.Range (-0.5f, 0.5f));
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
