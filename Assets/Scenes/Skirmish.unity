@@ -27799,6 +27799,68 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!1001 &1250132233
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -224
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -42
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 470850, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464022, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: typesAttacks
+      value: 
+      objectReference: {fileID: 509612386}
+    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_Name
+      value: MarineHuman (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464022, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: biomatterGain
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464022, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: life
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: 123302, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 5ce4f47e96cd0a04b88262285744b346, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1439399901
 GameObject:
   m_ObjectHideFlags: 0
@@ -27838,6 +27900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 635e21ae41e88a6478810179a95c3537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wayPointPrefab: {fileID: 0}
 --- !u!1 &1573357555
 GameObject:
   m_ObjectHideFlags: 0
