@@ -35,7 +35,7 @@ public class Creep : Unit{
 	bool arrive = false;
 	//Punto de ruta al que se dirije
 	public WayPoint wayPoint;
-
+	public int numchecks;
 	void Start(){
 		path = null;
 
@@ -79,9 +79,14 @@ public class Creep : Unit{
 			StartCoroutine(EnemyDetection());
 			if(path == null){
 				if (!arrive) {
+<<<<<<< HEAD
 					path = null;
+=======
+					numchecks = 0;
+>>>>>>> origin/master
 					this.StartCoroutineAsync (RequestPath (), out task);
 				} else {
+					numchecks = 0;
 					path = null;
 					this.StartCoroutineAsync (RequestPathWayPoint (), out task);
 				}
@@ -121,7 +126,7 @@ public class Creep : Unit{
 	/// Solicita un path de manera recursiva
 	/// </summary>
 	IEnumerator RequestPath(){
-		
+		numchecks++;
 		if(path != null){
 			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
@@ -134,6 +139,7 @@ public class Creep : Unit{
 				if(OriginSpawn.path != null){
 						path = OriginSpawn.path;
 						wayPoint = OriginSpawn.actualWayPoint;
+						wayPoint.AddCreep ();
 						yield return Ninja.JumpToUnity;
 						yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 						this.StartCoroutineAsync(RequestPath(),out task);
@@ -151,6 +157,7 @@ public class Creep : Unit{
 	/// Solicita el path al punto de ruta en el que esta
 	/// </summary>
 	IEnumerator RequestPathWayPoint(){
+		numchecks++;
 		if(path != null){
 			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
@@ -165,6 +172,7 @@ public class Creep : Unit{
 					WayPoint nextWP = wayPoint.nextWayPoint;
 					wayPoint.RemoveCreep();
 					wayPoint = nextWP;
+					nextWP.AddCreep ();
 					yield return Ninja.JumpToUnity;
 					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
