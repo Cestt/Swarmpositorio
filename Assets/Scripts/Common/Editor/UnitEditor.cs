@@ -71,8 +71,11 @@ public class CreepEditor : UnitEditor {
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
 		creepScript.costGene = EditorGUILayout.IntField("Cost Gene",creepScript.costGene);
 		EditorGUILayout.IntField ("NUMCHECKS", creepScript.numchecks);
-		EditorGUILayout.Vector3Field ("PosWP", creepScript.wayPoint.position);
-		EditorGUILayout.Vector3Field ("Path1", creepScript.wayPoint.nextWayPoint.position);
+		if (creepScript.wayPoint != null) {
+			EditorGUILayout.Vector3Field ("PosWP", creepScript.wayPoint.position);
+			if (creepScript.wayPoint.nextWayPoint != null)
+				EditorGUILayout.Vector3Field ("Path1", creepScript.wayPoint.nextWayPoint.position);
+		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}
