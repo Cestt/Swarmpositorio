@@ -79,11 +79,8 @@ public class Creep : Unit{
 			StartCoroutine(EnemyDetection());
 			if(path == null){
 				if (!arrive) {
-<<<<<<< HEAD
 					path = null;
-=======
 					numchecks = 0;
->>>>>>> origin/master
 					this.StartCoroutineAsync (RequestPath (), out task);
 				} else {
 					numchecks = 0;

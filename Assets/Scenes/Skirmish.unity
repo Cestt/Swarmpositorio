@@ -27626,11 +27626,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wayPointPrefab: {fileID: 0}
-<<<<<<< HEAD
+
 --- !u!1 &1573357555
-=======
+
 --- !u!1 &1593478292
->>>>>>> bd2819efa1d3d0524060d44e3f2424ff27bc9ed1
+ bd2819efa1d3d0524060d44e3f2424ff27bc9ed1
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
