@@ -10,9 +10,9 @@ GameObject:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
   - 114: {fileID: 11458616}
-  - 61: {fileID: 6130102}
+  - 61: {fileID: 6176556}
   m_Layer: 9
-  m_Name: Cucaracha
+  m_Name: Tunneler
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30,7 +30,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &6130102
+--- !u!61 &6176556
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -43,7 +43,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.42, y: 0.64}
+  m_Size: {x: 0.6, y: 1.26}
 --- !u!114 &11458616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,8 +55,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce900cb709ea93f499aeaeb9a5d41672, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 10
-  armor: 0
+  life: 60
+  armor: 10
   lifeIni: 0
   canAttack: 1
   state: 0
@@ -66,15 +66,15 @@ MonoBehaviour:
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
   skills:
-  - {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8, type: 2}
+  - {fileID: 11409314, guid: bec8e394177fb5248b4166e0c5c40ef0, type: 2}
   OriginSpawn: {fileID: 0}
   detectionRadius: 1024
-  speedAlongPath: 2
+  speedAlongPath: 5
   path: []
-  tier: 0
+  tier: 3
   subTier: 0
   NearbyAllies: []
-  costGene: 0
+  costGene: 700
   numchecks: 0
 --- !u!212 &21234492
 SpriteRenderer:
@@ -102,7 +102,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 510380539
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 60f14d3c91b7f4641823a0e1b3123efe, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -113,6 +113,16 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: skills.Array.data[0]
+      value: 
+      objectReference: {fileID: 11409314, guid: bec8e394177fb5248b4166e0c5c40ef0,
+        type: 2}
     - target: {fileID: 0}
       propertyPath: m_IsActive
       value: 0
@@ -126,12 +136,8 @@ Prefab:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 0}
-      propertyPath: m_LocalScale.y
-      value: 1
+      propertyPath: m_FlipX
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

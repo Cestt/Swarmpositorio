@@ -69,7 +69,7 @@ MonoBehaviour:
   - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
   OriginSpawn: {fileID: 0}
   detectionRadius: 1024
-  speedAlongPath: 1
+  speedAlongPath: 2
   path: []
   tier: 1
   subTier: 0
