@@ -22,16 +22,16 @@ public class WayPoint{
 	public WayPoint(Vector3 pos){
 		position = new Vector3(pos.x,pos.y,0);
 		isRemoved = false;
-		numCreeps = 0;
 	}
 	/// <summary>
 	/// Inicializa el punto de ruta
 	/// </summary>
 	/// <param name="_spawn">Spawn. Spawn propietario</param>
 	/// <param name="creeps">Creeps. Numero de creeps de inicio</param>
-	public void Ini(Spawn _spawn){
+	public void Ini(Spawn _spawn, int _numCreeps){
 		spawn = _spawn;
 		path = null;
+		numCreeps = _numCreeps;
 
 	}
 
@@ -54,9 +54,6 @@ public class WayPoint{
 			nextWayPoint.AddCreep ();
 	}
 
-	/// <summary>
-	/// Elimina un creep. En caso de que se llegue a 0 se elimina
-	/// </summary>
 	public void RemoveCreep(){
 		numCreeps--;
 		if (numCreeps <= 0 && !isRemoved) {

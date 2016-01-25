@@ -216,7 +216,7 @@ public class Grid : MonoBehaviour {
 			
 			foreach(Node n in nodesAll){
 					Gizmos.color = (n.walkable)?Color.white:Color.red;
-					Gizmos.DrawCube(n.worldPosition, Vector2.one * (nodeSize-0.1f));
+					Gizmos.DrawCube(n.worldPosition, Vector2.one * (nodeSize-5f));
 			}
 			print("Node list size: "+nodesAll.Count);
 		}
