@@ -522,7 +522,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
       propertyPath: spawnRate
-      value: 0.001
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 11477908, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}

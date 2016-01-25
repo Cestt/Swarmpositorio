@@ -78,6 +78,7 @@ public class Creep : Unit{
 			StartCoroutine(EnemyDetection());
 			if(path == null){
 				if (!arrive) {
+					path = null;
 					this.StartCoroutineAsync (RequestPath (), out task);
 				} else {
 					path = null;
@@ -91,12 +92,15 @@ public class Creep : Unit{
 		if(state == FSM.States.Move){
 			if(task != null)
 				task.Cancel();//Para de pedir un path;
-			if(path != null ){
-				if(path[path.Length - 1] != thisTransform.position){
-					StartCoroutine(EnemyDetection());
-					StartCoroutine(MoveAlongPath());
+			if(path != null){
+				if (path.Length > 0) {
+					if (path [path.Length - 1] != thisTransform.position) {
+						StartCoroutine (EnemyDetection ());
+						StartCoroutine (MoveAlongPath ());
+					}
 				}
 			}else{
+				path = null;
 				state = FSM.States.Idle;
 				stateChanger();
 			}
@@ -124,6 +128,7 @@ public class Creep : Unit{
 				if(OriginSpawn.path != null){
 						path = OriginSpawn.path;
 						wayPoint = OriginSpawn.actualWayPoint;
+						wayPoint.AddCreep ();
 						yield return Ninja.JumpToUnity;
 						yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 						this.StartCoroutineAsync(RequestPath(),out task);
@@ -154,6 +159,7 @@ public class Creep : Unit{
 					WayPoint nextWP = wayPoint.nextWayPoint;
 					wayPoint.RemoveCreep();
 					wayPoint = nextWP;
+					nextWP.AddCreep ();
 					yield return Ninja.JumpToUnity;
 					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 					this.StartCoroutineAsync(RequestPathWayPoint(),out task);

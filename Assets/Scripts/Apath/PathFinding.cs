@@ -37,48 +37,48 @@ public class PathFinding : MonoBehaviour {
 		yield return Ninja.JumpBack;
 		if(startNode != targetNode){
 			if(startNode.walkable & targetNode.walkable){
-					Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
-					HashSet<Node> closedSet = new HashSet<Node>();
+				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
+				HashSet<Node> closedSet = new HashSet<Node>();
 
-					openSet.Add(startNode);
+				openSet.Add(startNode);
 
-					while(openSet.Count >0){
-						Node currentNode = openSet.RemoveFirst();
+				while(openSet.Count >0){
+					Node currentNode = openSet.RemoveFirst();
 
 
-						closedSet.Add(currentNode);
+					closedSet.Add(currentNode);
 
-						if(currentNode == targetNode){
-							pathSuccess = true;
-							break;
+					if(currentNode == targetNode){
+						pathSuccess = true;
+						break;
+					}
+
+					foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+
+						if(!neighbour.walkable || closedSet.Contains(neighbour)){
+							continue;
 						}
 
-						foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+						int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
 
-							if(!neighbour.walkable || closedSet.Contains(neighbour)){
-								continue;
+						if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
+							neighbour.gCost = newMovementCostToNeighbour;
+							neighbour.hCost = Getdistance(neighbour,targetNode);
+							neighbour.parent =currentNode;
+
+							if(!openSet.Containts(neighbour)){
+								openSet.Add(neighbour);
+							}else{
+								openSet.UpdateItem(neighbour);
 							}
 
-							int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
-
-							if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
-								neighbour.gCost = newMovementCostToNeighbour;
-								neighbour.hCost = Getdistance(neighbour,targetNode);
-								neighbour.parent =currentNode;
-
-								if(!openSet.Containts(neighbour)){
-									openSet.Add(neighbour);
-								}else{
-									openSet.UpdateItem(neighbour);
-								}
-
-							}
 						}
 					}
 				}
 			}
-				
-			
+		}
+
+
 		yield return Ninja.JumpToUnity;
 		if(pathSuccess){
 			waypoints = RetracePath(startNode,targetNode);
@@ -87,6 +87,9 @@ public class PathFinding : MonoBehaviour {
 		sw.Stop();
 		running = false;
 		StartCoroutine(CheckQueue());
+
+		print("Found path in "+sw.ElapsedMilliseconds+" ms");
+
 
 	}
 
@@ -129,10 +132,11 @@ public class PathFinding : MonoBehaviour {
 
 	IEnumerator CheckQueue(){
 		if(queueFindPaths.Count > 0){
-			
+
 			if(!running){
+				print("2. Queue length "+queueFindPaths.Count);
 				ApathQueue temp = queueFindPaths.Dequeue();
-				yield return new WaitForSeconds(UnityEngine.Random.Range(0.4f,0.8f));
+				yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f,0.4f));
 				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback));
 			}
 		}
