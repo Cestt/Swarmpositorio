@@ -33,8 +33,7 @@ public class Spawn : Unit {
 	public List<WayPoint> wayPoints;
 	//Dice a que punto de ruta marca el spawn de inicio
 	public WayPoint actualWayPoint;
-	//Auxiliar para guardar el punto de ruta ultimo
-	private WayPoint lastWayPoint;
+
 	public int loops = 0;
 	private PathFinding pathfinder;
 
@@ -66,7 +65,7 @@ public class Spawn : Unit {
 		CreepScript creep = pool.GetCreep (0);
 		if (creep != null) {
 			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
-													transform.position.y + Random.Range (-0.5f, 0.5f));
+		                                             transform.position.y + Random.Range (-0.5f, 0.5f));
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
@@ -84,7 +83,7 @@ public class Spawn : Unit {
 		CreepScript creep = pool.GetCreep (tier);
 		if (creep != null) {
 			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
-												transform.position.y + Random.Range (-0.5f, 0.5f));
+				transform.position.y + Random.Range (-0.5f, 0.5f));
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
@@ -108,7 +107,7 @@ public class Spawn : Unit {
 	/// <param name="_path">Path.</param>
 	public void SetPath(Vector3[] _path){
 		path = _path;
-		actualWayPoint = lastWayPoint;
+
 	}
 
 	/// <summary>
@@ -116,12 +115,12 @@ public class Spawn : Unit {
 	/// </summary>
 	/// <param name="wayPoint">Punto de ruta clase WayPoint</param>
 	public void AddWayPoint(WayPoint wayPoint, bool shiftPressed){
-		wayPoint.Ini(this);
+		wayPoint.Ini(this, numberCreeps);
 
 		//Debug.Log("Mouse Up");
 		wayPoints.Add(wayPoint);
 		if (!shiftPressed) {
-			lastWayPoint = wayPoint;
+			actualWayPoint = wayPoint;
 			Debug.Log ("NOSHIFT");
 		} else
 			Debug.Log ("SHIFT");

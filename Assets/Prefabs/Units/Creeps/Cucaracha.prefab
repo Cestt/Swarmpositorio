@@ -68,8 +68,13 @@ MonoBehaviour:
   skills:
   - {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8, type: 2}
   OriginSpawn: {fileID: 0}
+<<<<<<< HEAD
   detectionRadius: 1024
   speedAlongPath: 2
+=======
+  detectionRadius: 10
+  speedAlongPath: 3
+>>>>>>> origin/master
   path: []
   tier: 0
   subTier: 0

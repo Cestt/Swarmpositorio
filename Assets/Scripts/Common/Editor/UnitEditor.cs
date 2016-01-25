@@ -35,7 +35,7 @@ public class UnitEditor : Editor {
 			EditorGUILayout.PropertyField(serializedObject.FindProperty("skills"), true);
 			serializedObject.ApplyModifiedProperties();
 		}
-		EditorGUILayout.TextField ("State", unitScript.state.ToString());
+
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}
@@ -70,12 +70,6 @@ public class CreepEditor : UnitEditor {
 		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
 		creepScript.costGene = EditorGUILayout.IntField("Cost Gene",creepScript.costGene);
-		EditorGUILayout.IntField ("NUMCHECKS", creepScript.numchecks);
-		if (creepScript.wayPoint != null) {
-			EditorGUILayout.Vector3Field ("PosWP", creepScript.wayPoint.position);
-			if (creepScript.wayPoint.nextWayPoint != null)
-				EditorGUILayout.Vector3Field ("Path1", creepScript.wayPoint.nextWayPoint.position);
-		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}

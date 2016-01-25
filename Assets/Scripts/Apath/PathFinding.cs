@@ -11,30 +11,19 @@ public class PathFinding : MonoBehaviour {
 	PathRequestManager pathManager;
 	Queue<ApathQueue> queueFindPaths = new Queue<ApathQueue>();
 	bool running = false;
-	Task task = null;
 
 	void Awake(){
 		grid = GetComponentInParent<Grid>();
 		pathManager = GetComponent<PathRequestManager>();
 	}
-	/// <summary>
-	/// Lanza la busqueda del path
-	/// </summary>
-	/// <param name="startPosition">Start position.</param>
-	/// <param name="targetPosition">Target position.</param>
-	/// <param name="callBack">Call back.</param>
+
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
 		queueFindPaths.Enqueue(new ApathQueue(startPosition,targetPosition,callBack));
-		StartCoroutine(CheckQueue());
+		if(!running)
+			StartCoroutine(CheckQueue());
 
 	}
-	/// <summary>
-	/// Obtienes el path entre dos posiciones
-	/// </summary>
-	/// <returns>El path al callback</returns>
-	/// <param name="startPosition">Posicion inicial</param>
-	/// <param name="targetPosition">Posiion final</param>
-	/// <param name="callBack">Call back.</param>
+
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
 		running = true;
 		yield return new WaitForEndOfFrame();
@@ -99,16 +88,8 @@ public class PathFinding : MonoBehaviour {
 		running = false;
 		StartCoroutine(CheckQueue());
 
-		print("Found path in "+sw.ElapsedMilliseconds+" ms");
-
-
 	}
-	/// <summary>
-	/// Da la vuelta al path para ordenarlo de inicio a final
-	/// </summary>
-	/// <returns>Path ordenado</returns>
-	/// <param name="startNode">Start node.</param>
-	/// <param name="endNode">End node.</param>
+
 	Vector3[] RetracePath(Node startNode, Node endNode){
 
 		List<Node> path = new List<Node>();
@@ -123,11 +104,6 @@ public class PathFinding : MonoBehaviour {
 
 		return wayPoints;
 	}
-	/// <summary>
-	/// Simplifica el path.
-	/// </summary>
-	/// <returns>Devuelve el path simplificado</returns>
-	/// <param name="path">Recive el path complejo</param>
 	Vector3[] simplifyPath(List<Node> path){
 		List<Vector3> waypoints = new List<Vector3>();
 		Vector2 directionOld = Vector2.zero;
@@ -141,11 +117,7 @@ public class PathFinding : MonoBehaviour {
 		}
 		return waypoints.ToArray();
 	}
-	/// <summary>
-	/// Obtiene la distancia especificada entre dos Nodos
-	/// </summary>
-	/// <param name="nodeA">Node a.</param>
-	/// <param name="nodeB">Node b.</param>
+
 	int Getdistance(Node nodeA, Node nodeB){
 		int disX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
 		int disY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
@@ -154,23 +126,16 @@ public class PathFinding : MonoBehaviour {
 			return 14*disY + 10*(disX - disY);
 		return 14*disX + 10*(disY - disX);
 	}
-	/// <summary>
-	/// Comprueba si hay otros hilos ejecutandose y espera a que termine
-	/// </summary>
+
 	IEnumerator CheckQueue(){
 		if(queueFindPaths.Count > 0){
 			
-			if(task != null){
-				if(task.State != TaskState.Running){
-					ApathQueue temp = queueFindPaths.Dequeue();
-					this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback),out task);
-				}
-			}else{
+			if(!running){
 				ApathQueue temp = queueFindPaths.Dequeue();
-				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback),out task);
+				yield return new WaitForSeconds(UnityEngine.Random.Range(0.4f,0.8f));
+				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback));
 			}
 		}
-		yield return null;
 	}
 
 }
