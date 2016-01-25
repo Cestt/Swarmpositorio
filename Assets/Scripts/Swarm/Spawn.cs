@@ -33,6 +33,8 @@ public class Spawn : Unit {
 	public List<WayPoint> wayPoints;
 	//Dice a que punto de ruta marca el spawn de inicio
 	public WayPoint actualWayPoint;
+	//Auxiliar para guardar el punto de ruta ultimo
+	private WayPoint lastWayPoint;
 
 	public int loops = 0;
 	private PathFinding pathfinder;
@@ -106,8 +108,9 @@ public class Spawn : Unit {
 	/// </summary>
 	/// <param name="_path">Path.</param>
 	public void SetPath(Vector3[] _path){
+		Debug.Log ("New Path");
 		path = _path;
-
+		actualWayPoint = lastWayPoint;
 	}
 
 	/// <summary>
@@ -115,15 +118,14 @@ public class Spawn : Unit {
 	/// </summary>
 	/// <param name="wayPoint">Punto de ruta clase WayPoint</param>
 	public void AddWayPoint(WayPoint wayPoint, bool shiftPressed){
-		wayPoint.Ini(this, numberCreeps);
+		wayPoint.Ini(this);
 
 		//Debug.Log("Mouse Up");
 		wayPoints.Add(wayPoint);
 		if (!shiftPressed) {
-			actualWayPoint = wayPoint;
-			Debug.Log ("NOSHIFT");
-		} else
-			Debug.Log ("SHIFT");
+			lastWayPoint = wayPoint;
+			//Debug.Log ("NOSHIFT");
+		}
 		if (wayPoints.Count > 1) {
 			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
 			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position);
