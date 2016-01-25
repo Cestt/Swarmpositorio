@@ -107,7 +107,15 @@ public class EVector2 {
 	
 	public static bool operator == (EVector2 lhs, EVector2 rhs)
 	{
+
+		if(object.ReferenceEquals(lhs,null)){
+			return object.ReferenceEquals(rhs,null);
+		}else if(object.ReferenceEquals(rhs,null)){
+			return false;
+		}
+
 		return EVector2.SqrMagnitude (lhs - rhs) < 9.99999944E-11f;
+
 	}
 	
 	public static implicit operator EVector2 (EVector3 v)
@@ -122,7 +130,9 @@ public class EVector2 {
 	
 	public static bool operator != (EVector2 lhs, EVector2 rhs)
 	{
-		return EVector2.SqrMagnitude (lhs - rhs) >= 9.99999944E-11f;
+		
+		return !(lhs == rhs);
+
 	}
 	
 	public static EVector2 operator * (float d, EVector2 a)

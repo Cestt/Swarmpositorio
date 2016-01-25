@@ -4,12 +4,14 @@ using System.Threading;
 
 public class TouchManager : MonoBehaviour {
 
+	Hero hero;
 	Spawn Selected = null;
 	PathFinding pathfinder;
 	Camera camera;
 	public GameObject wayPointPrefab;
 
 	void Start(){
+		hero = GameObject.Find("Hero").GetComponent<Hero>();
 		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
 		camera = Camera.main;
 		int cores=  System.Environment.ProcessorCount;
@@ -39,8 +41,8 @@ public class TouchManager : MonoBehaviour {
 				Debug.Log("No Spawn selected");
 			}
 		}else if(Input.GetMouseButtonUp(0)){
-			//Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-			//pathfinder.StartFindPath(Selected.thisTransform.position,pos,Selected.SetPath);
+			Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
+			pathfinder.StartFindPath(hero.thisTransform.position,pos,hero.SetPath);
 		}
 	}
 

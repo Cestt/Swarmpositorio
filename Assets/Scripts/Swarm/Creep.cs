@@ -114,7 +114,6 @@ public class Creep : Unit{
 	IEnumerator RequestPath(){
 		
 		if(path != null){
-			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
@@ -143,7 +142,6 @@ public class Creep : Unit{
 	/// </summary>
 	IEnumerator RequestPathWayPoint(){
 		if(path != null){
-			//Debug.Log("Path found");
 			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
@@ -172,7 +170,6 @@ public class Creep : Unit{
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
 	IEnumerator MoveAlongPath(){
-		//Debug.Log("Move Along path");
 		if(path != null){
 			Vector3 currentWayPoint = path[0];
 			//Mantiene el bucle de movimiento.
@@ -271,28 +268,24 @@ public class Creep : Unit{
 
 	IEnumerator CheckSeparation(){
 		while(true){
-			NearbyAllies.Clear();
 			yield return Ninja.JumpToUnity;
-			Collider2D[] colls = new Collider2D[10];
-			int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls);
-				if(collsNum > 5){
-					for(int i = 0; i < colls.Length;i++){
-						if(colls[i] != null)
-							NearbyAllies.Add(new EVector2(colls[i].transform.position.x,colls[i].transform.position.y));
-					print("Coll "+colls[i]);
-					}
-
-						EVector2 tempEvector2 = new EVector2(thisTransform.position.x,thisTransform.position.y);
-						this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
-						yield return Ninja.JumpBack;
-				}else{
-					yield return Ninja.JumpBack;
+			Collider2D[] colls = new Collider2D[11];
+			int numColls = Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls);
+			if(colls.Length > 10){
+				NearbyAllies.Clear();
+				for(int i = 0; i < colls.Length;i++){
+					if(colls[i] != null)
+						NearbyAllies.Add(new EVector2(colls[i].transform.position.x,colls[i].transform.position.y));
 				}
-			}
 
-			System.Random rnd = new System.Random();
-			int temp = rnd.Next(20,60);
-			yield return new WaitForSeconds(temp/100);
+					EVector2 tempEvector2 = new EVector2(thisTransform.position.x,thisTransform.position.y);
+					this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
+					yield return Ninja.JumpBack;
+			}
+				System.Random rnd = new System.Random();
+				int temp = rnd.Next(30,60);
+				yield return new WaitForSeconds(temp/100f);
+			}
 		}
 
 
@@ -300,29 +293,30 @@ public class Creep : Unit{
 
 	IEnumerator SeparationCalc(List<EVector2> allCreeps, System.Action <EVector2> SeparationCallback,EVector2 position)
 	{
-
 		int j = 0;
 		EVector2 separationForce = new EVector2(0,0);
 		EVector2 averageDirection = new EVector2(0,0);
 		EVector2 distance = new EVector2(0,0);
-		for (int i = 0; i < allCreeps.Count - 1; i++)
-		{
-			distance = position - allCreeps[i];
-			if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 50f && allCreeps[i] != position)
+		if(allCreeps != null){
+			for (int i = 0; i < allCreeps.Count - 1; i++)
 			{
-				j++;
-				separationForce += position - allCreeps[i];
-				separationForce = EVector2.Normalized(separationForce);
-				separationForce = separationForce * (20f);
-				averageDirection = averageDirection + separationForce;
+				if(allCreeps[i] != null){
+					distance = position - allCreeps[i];
+					if (Mathf.Sqrt((distance.x * distance.x)+(distance.y * distance.y))  < 0.5f && allCreeps[i] != position)
+					{
+						j++;
+						separationForce += position - allCreeps[i];
+						separationForce = EVector2.Normalized(separationForce);
+						separationForce = separationForce * (4f);
+						averageDirection = averageDirection + separationForce;
+					}
+				}
+
 			}
 		}
+
 		if (j == 0)
 		{
-			yield return Ninja.JumpToUnity;
-			SeparationCallback (new EVector2(0,0));
-
-
 			yield return null;
 		}
 		else
@@ -338,7 +332,7 @@ public class Creep : Unit{
 
 	void SeparationResult(EVector2 result){
 		Vector3 final = new Vector3(result.x,result.y,0);
-		thisTransform.position += final * 10f * Time.deltaTime;
+		thisTransform.position += final * 1f * Time.deltaTime;
 	}
 
 	public override void Dead ()

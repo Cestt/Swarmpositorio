@@ -88,9 +88,6 @@ public class PathFinding : MonoBehaviour {
 		running = false;
 		StartCoroutine(CheckQueue());
 
-		print("Found path in "+sw.ElapsedMilliseconds+" ms");
-
-
 	}
 
 	Vector3[] RetracePath(Node startNode, Node endNode){
@@ -134,9 +131,8 @@ public class PathFinding : MonoBehaviour {
 		if(queueFindPaths.Count > 0){
 			
 			if(!running){
-				print("2. Queue length "+queueFindPaths.Count);
 				ApathQueue temp = queueFindPaths.Dequeue();
-				yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f,0.4f));
+				yield return new WaitForSeconds(UnityEngine.Random.Range(0.4f,0.8f));
 				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback));
 			}
 		}
