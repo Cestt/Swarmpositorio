@@ -85,60 +85,6 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &132621845 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 143900, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
-  m_PrefabInternal: {fileID: 463196254}
---- !u!114 &132621846 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc,
-    type: 2}
-  m_PrefabInternal: {fileID: 463196254}
-  m_Script: {fileID: 11500000, guid: 0ebd86bbce1c1f14abb181c7ecf76161, type: 3}
---- !u!114 &132621847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 132621845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1862395651, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1439399903}
-          m_MethodName: SelectSpawn
-          m_Mode: 2
-          m_Arguments:
-            m_ObjectArgument: {fileID: 132621846}
-            m_ObjectArgumentAssemblyTypeName: Spawn, Assembly-CSharp
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-      m_TypeName: UnityEngine.EventSystems.EventTrigger+TriggerEvent, UnityEngine.UI,
-        Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  delegates: []
---- !u!61 &132621848
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 132621845}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 2.8100002, y: 2.7200003}
 --- !u!1 &230459112
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,28 +450,39 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
-    - target: {fileID: 11475582, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+    - target: {fileID: 11407658, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
       propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1439399903}
-    - target: {fileID: 11477908, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
-      propertyPath: typesAttacks
-      value: 
-      objectReference: {fileID: 509612386}
-    - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
-      propertyPath: canAttack
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
-      propertyPath: spawnRateTier
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 11407344, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
       propertyPath: spawnRate
-      value: 0.2
+      value: 10
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 11477908, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+    - target: {fileID: 143900, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 186448, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 180848, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 173864, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 195256, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 149752, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c596522ba9cd39b41a75c89af6b585bc, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &509612384

@@ -70,6 +70,7 @@ public class CreepEditor : UnitEditor {
 		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
 		creepScript.costGene = EditorGUILayout.IntField("Cost Gene",creepScript.costGene);
+		EditorGUILayout.TextField ("Spawn", creepScript.OriginSpawn.name);
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}

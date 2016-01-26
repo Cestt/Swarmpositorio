@@ -6,7 +6,7 @@ public class Spawn : Unit {
 
 	//Rate de genes/segundo
 	public int geneConsumption;
-	//Rate de spawn;
+	//Rate de spawn; Creeps/segundo
 	public float spawnRate;
 	public float spawnRateTier;
 	//Path que obtendran los creeps;
@@ -39,13 +39,28 @@ public class Spawn : Unit {
 	public int loops = 0;
 	private PathFinding pathfinder;
 
+	//Gen generado por cada creep de tier 0
+	public int geneGain = 100;
+	//Porcentaje (de 0 a 1) de creeps asignado a la generacion
+	private float geneSpeed;
+	//Boolean para saber si se esta ejecutando los invoke de crear tier 0 y generacion
+	private bool[] invokeGene = new bool[2];
+
+	/***************************
+	 * SOLO PARA LAS PRUEBAS DE LA BARRA DE GENERACION*/
+	private SpriteRenderer[] spritesGene = new SpriteRenderer[5];
+	/**************************/
+
+
 	void Start () {
 		//Inicializamos el path para evitar errores;
 		path = null;
 		//Buscamos la pool para solicitar los creeps;
 		pool = GameObject.Find ("Pool").GetComponent<Pool> ();
 		//Iniciamos la solicitud de creeps basicos;
-		Invoke("Create",spawnRate);
+		invokeGene [0] = true;
+		invokeGene [1] = false;
+		Invoke("Create",1f/spawnRate);
 		//Iniciamos la solicitud de creeps de tier;
 		//Invoke("CreateTier",spawnRateTier);
 		//Texto para ver el numero de creeps;
@@ -53,6 +68,15 @@ public class Spawn : Unit {
 		wayPoints = new List<WayPoint> ();
 		numberCreeps = 0;
 		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
+		geneSpeed = 0;
+		/***************************
+	 	* SOLO PARA LAS PRUEBAS DE LA BARRA DE GENERACION*/
+		spritesGene [0] = transform.FindChild ("ProductionBar/Prod_0").GetComponent<SpriteRenderer> ();
+		spritesGene [1] = transform.FindChild ("ProductionBar/Prod_1").GetComponent<SpriteRenderer> ();
+		spritesGene [2] = transform.FindChild ("ProductionBar/Prod_2").GetComponent<SpriteRenderer> ();
+		spritesGene [3] = transform.FindChild ("ProductionBar/Prod_3").GetComponent<SpriteRenderer> ();
+		spritesGene [4] = transform.FindChild ("ProductionBar/Prod_4").GetComponent<SpriteRenderer> ();
+		/*****************************/
 	}
 	void Update(){
 		if(loops >= 5){
@@ -69,13 +93,17 @@ public class Spawn : Unit {
 			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
 		                                             transform.position.y + Random.Range (-0.5f, 0.5f));
 			creep.creep.SetActive (true);
+
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
 			numberCreeps++;
 			if (actualWayPoint != null)
 				actualWayPoint.AddCreep ();
 		}
-		Invoke("Create",spawnRate);
+		if (geneSpeed < 1)
+			Invoke ("Create", 1f / (spawnRate * (1f - geneSpeed)));
+		else
+			invokeGene [0] = false;
 	}
 
 	/// <summary>
@@ -93,7 +121,18 @@ public class Spawn : Unit {
 			if (actualWayPoint != null)
 				actualWayPoint.AddCreep ();
 		}
-		Invoke("CreateTier",spawnRateTier);
+		Invoke("CreateTier",1f / spawnRateTier);
+	}
+
+	/// <summary>
+	/// Genera genes en funcion del numero asignado de creeps
+	/// </summary>
+	void GenerateGen(){
+		pool.gene += geneGain;
+		if (geneSpeed > 0)
+			Invoke ("GenerateGen", 1f / (spawnRate * geneSpeed));
+		else
+			invokeGene [1] = false;
 	}
 
 	/// <summary>
@@ -142,6 +181,32 @@ public class Spawn : Unit {
 		//Destroy (wayPoints [0]);
 		wayPoints.RemoveAt (0);
 		Debug.Log("RemoveWayPoint Total:" + wayPoints.Count);
+	}
+
+	/// <summary>
+	/// Cambia la velocidad de generacion de genes
+	/// </summary>
+	/// <param name="percent">Nuevo porcentaje de generacion</param>
+	public void ChangeGeneration(float percent){
+		//Debug.Log ("Cambio: " + percent);
+		geneSpeed = percent;
+		if (!invokeGene[1] && geneSpeed>0) {
+			invokeGene [1] = true;
+			Invoke ("GenerateGen", 1f/  (spawnRate * geneSpeed));
+		} else if (!invokeGene[0] && geneSpeed <1 ) {
+			invokeGene [0] = true;
+			Invoke("Create",1f/ (spawnRate * (1f-geneSpeed)));
+		}
+		/************************
+		 * SOLO PARA LAS PRUEBAS DE LA BARRA DE GENERACION*/
+		float actual = 0.25f;
+		for (int i = 1; i < 5; i++) {
+			if (actual <= percent) {
+				spritesGene [i].color = new Color (0, 1, 0);
+			}else
+				spritesGene [i].color = new Color (1, 1, 1);
+			actual += 0.25f;
+		}
 	}
 
 }

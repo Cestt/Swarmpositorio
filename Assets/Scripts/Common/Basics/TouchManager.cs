@@ -45,13 +45,18 @@ public class TouchManager : MonoBehaviour {
 				Debug.Log ("No Spawn selected");
 			}
 		}else if(Input.GetMouseButtonUp(0)){
-			Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-			pathfinder.StartFindPath(hero.thisTransform.position,pos,hero.SetPath);
+			
+			int collsNum = Physics2D.OverlapCircleNonAlloc (camera.ScreenToWorldPoint (Input.mousePosition), 0.01f, new Collider2D[5], 1 << LayerMask.NameToLayer ("UI"));
+			if (collsNum < 1) {
+				Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
+				pathfinder.StartFindPath (hero.thisTransform.position, pos, hero.SetPath);
+			}
 		}
 	}
 
 
 	public void SelectSpawn(Spawn spawn){
+		Debug.Log ("Change Spawn: " + spawn);
 		Selected = spawn ;
 	}
 

@@ -63,8 +63,7 @@ public class Creep : Unit{
 		state = FSM.States.Idle;
 		StopAllCoroutines();
 	}
-	
-	
+
 	
 	
 	/// <summary>
@@ -74,6 +73,7 @@ public class Creep : Unit{
 
 		StopCoroutine(EnemyDetection());
 
+		Debug.Log (name + "" + arrive);
 		if(state == FSM.States.Idle){
 			StartCoroutine(EnemyDetection());
 			if(path == null){
