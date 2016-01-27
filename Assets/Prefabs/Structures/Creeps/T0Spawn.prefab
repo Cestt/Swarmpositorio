@@ -313,11 +313,7 @@ MonoBehaviour:
   life: 1
   armor: 0
   lifeIni: 0
-<<<<<<< HEAD:Assets/Prefabs/Structures/T0Spawn.prefab
   canAttack: 0
-=======
-  canAttack: 1
->>>>>>> 5ae89a83cd25cd0b5787148fd9ecf2a0b83dbf54:Assets/Prefabs/Structures/Creeps/T0Spawn.prefab
   state: 0
   weaknessType: 0
   typesAttacks: {fileID: 0}
@@ -336,7 +332,6 @@ MonoBehaviour:
   Subtier: 0
   coste: 0
   loops: 0
-<<<<<<< HEAD:Assets/Prefabs/Structures/T0Spawn.prefab
   geneGain: 100
 --- !u!114 &11407658
 MonoBehaviour:
@@ -638,8 +633,6 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-=======
->>>>>>> 5ae89a83cd25cd0b5787148fd9ecf2a0b83dbf54:Assets/Prefabs/Structures/Creeps/T0Spawn.prefab
 --- !u!212 &21271040
 SpriteRenderer:
   m_ObjectHideFlags: 1

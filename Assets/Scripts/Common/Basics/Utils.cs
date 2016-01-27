@@ -9,4 +9,11 @@ public static class Utils {
 		angle += offset;
 		source.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 	}
+
+	public static void LookAt2D(Transform source, Vector3 target, float offset = -90){
+		Vector3 dir = target - source.position;
+		float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+		angle += offset;
+		source.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+	}
 }

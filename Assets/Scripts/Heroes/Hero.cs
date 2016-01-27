@@ -43,6 +43,7 @@ public class Hero : Unit {
 					if(targetIndex < path.Length)
 						currentWayPoint = path[targetIndex];
 				}
+				Utils.LookAt2D(thisTransform,currentWayPoint);
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
 				yield return new WaitForEndOfFrame();
 			}

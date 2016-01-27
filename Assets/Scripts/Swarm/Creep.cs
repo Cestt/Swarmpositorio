@@ -194,6 +194,7 @@ public class Creep : Unit{
 					else if(path !=null)
 						currentWayPoint = path[targetIndex];
 				}
+				Utils.LookAt2D(thisTransform,currentWayPoint);
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
 				yield return null;
 			}

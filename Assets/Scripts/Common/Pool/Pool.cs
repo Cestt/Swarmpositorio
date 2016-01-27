@@ -64,7 +64,7 @@ public class Pool : MonoBehaviour {
 			clone = Instantiate(tempCreep,Vector3.zero,Quaternion.identity) as GameObject;
 			clone.transform.parent = transform;
 			clone.name = "Creep"+creepTempScript.tier+"_"+i;
-			CreepScript tempScript = new CreepScript(clone,creepTempScript);
+			CreepScript tempScript = new CreepScript(clone,clone.GetComponent<Creep>());
 			creepPool[i] = tempScript;
 			geneCostCreep [creepTempScript.tier] = creepTempScript.costGene;
 		}
@@ -82,7 +82,7 @@ public class Pool : MonoBehaviour {
 			if (gene > geneCostCreep [0]) {
 				for (int i = 0; i < tier0Cuantity; i++) {
 					if (!creep0 [i].creep.activeInHierarchy) {
-						gene -= geneCostCreep [0];
+						//gene -= geneCostCreep [0];
 						return creep0 [i];
 					}
 				}
@@ -92,7 +92,7 @@ public class Pool : MonoBehaviour {
 			if (gene > geneCostCreep [1]) {
 				for (int i = 0; i < tier1_1Cuantity; i++) {
 					if (!creep1 [i].creep.activeInHierarchy) {
-						gene -= geneCostCreep [1];
+						//gene -= geneCostCreep [1];
 						return creep1 [i];
 					}
 				}
