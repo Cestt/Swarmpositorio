@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class Node : IHeapItem<Node>{
@@ -18,6 +19,8 @@ public class Node : IHeapItem<Node>{
 	public Node parent;
 	public int grid;
 
+	public List<Creep> creeps;
+
 	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY,int _grid){
 
 		walkable = _walkable;
@@ -25,6 +28,7 @@ public class Node : IHeapItem<Node>{
 		gridX = _gridX;
 		gridY = _gridY;
 		grid = _grid;
+		creeps = new List<Creep>();
 	}
 	public int CompareTo(Node nodeToCompare){
 		int compare = fcost.CompareTo(nodeToCompare.fcost);

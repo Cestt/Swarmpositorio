@@ -8,7 +8,7 @@ using CielaSpike;
 //Deriva de la clase basica Unit;
 //Clase basica de los creeps;
 public class Creep : Unit{
-
+	Grid grid;
 	//Spawn de origen
 	[HideInInspector]
 	public Spawn OriginSpawn;
@@ -36,8 +36,11 @@ public class Creep : Unit{
 	//Punto de ruta al que se dirije
 	public WayPoint wayPoint;
 
-	void Start(){
+	void Awake(){
+		base.Awake ();
+		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 		path = null;
+		Invoke ("CheckGridPosition", 0);
 	}
 
 	/// <summary>
@@ -65,7 +68,11 @@ public class Creep : Unit{
 	}
 
 	
-	
+
+	void CheckGridPosition(){
+		grid.NodeFromWorldPosition (thisTransform.position);
+		Invoke ("CheckGridPosition", Random.Range(0.2f,0.6f));
+	}
 	/// <summary>
 	/// Cambia su estado propio dentro de la FSM
 	/// </summary>
@@ -73,7 +80,7 @@ public class Creep : Unit{
 
 		StopCoroutine(EnemyDetection());
 
-		Debug.Log (name + "" + arrive);
+		//Debug.Log (name + "" + arrive);
 		if(state == FSM.States.Idle){
 			StartCoroutine(EnemyDetection());
 			if(path == null){
