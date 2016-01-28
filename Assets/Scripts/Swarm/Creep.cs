@@ -36,11 +36,12 @@ public class Creep : Unit{
 	//Punto de ruta al que se dirije
 	public WayPoint wayPoint;
 
+	Node node = null;
+
 	void Awake(){
 		base.Awake ();
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 		path = null;
-		Invoke ("CheckGridPosition", 0);
 	}
 
 	/// <summary>
@@ -48,7 +49,7 @@ public class Creep : Unit{
 	/// </summary>
 	void OnEnable () {
 		//Iniciar separacion de los creeps;
-		this.StartCoroutineAsync(CheckSeparation());
+		//this.StartCoroutineAsync(CheckSeparation());
 		//Inicializamos el path.
 		path = null;
 		//Inicializamos al estado principal;
@@ -70,39 +71,48 @@ public class Creep : Unit{
 	
 
 	void CheckGridPosition(){
-		grid.NodeFromWorldPosition (thisTransform.position);
-		Invoke ("CheckGridPosition", Random.Range(0.2f,0.6f));
+		Node tempNode =  grid.NodeFromWorldPosition (thisTransform.position);
+		if(node != null){
+			if(node != tempNode){
+				node.creeps.Remove(this);
+				node = tempNode;
+				node.creeps.Add(this);
+			}
+
+		}else{
+			node = tempNode;
+			node.creeps.Add(this);
+		}
+
 	}
 	/// <summary>
 	/// Cambia su estado propio dentro de la FSM
 	/// </summary>
 	void stateChanger(){
 
-		StopCoroutine(EnemyDetection());
+		//StopCoroutine(EnemyDetection());
 
 		//Debug.Log (name + "" + arrive);
 		if(state == FSM.States.Idle){
-			StartCoroutine(EnemyDetection());
+			//StartCoroutine(EnemyDetection());
 			if(path == null){
 				if (!arrive) {
 					path = null;
-					this.StartCoroutineAsync (RequestPath (), out task);
+					InvokeRepeating("RequestPath",0,Random.Range(0.1f,2f));
 				} else {
 					path = null;
-					this.StartCoroutineAsync (RequestPathWayPoint (), out task);
+					InvokeRepeating("RequestPath",0,Random.Range(0.1f,2f));
 				}
 			}else{
 				state = FSM.States.Move;
 				stateChanger();
 			}
-		}
+		}else
 		if(state == FSM.States.Move){
-			if(task != null)
-				task.Cancel();//Para de pedir un path;
 			if(path != null){
 				if (path.Length > 0) {
 					if (path [path.Length - 1] != thisTransform.position) {
-						StartCoroutine (EnemyDetection ());
+						//StartCoroutine (EnemyDetection ());
 						StartCoroutine (MoveAlongPath ());
 					}
 				}
@@ -111,9 +121,9 @@ public class Creep : Unit{
 				state = FSM.States.Idle;
 				stateChanger();
 			}
-		}
+		}else
 		if(state == FSM.States.Attack){
-			StopCoroutine(EnemyDetection());
+			//StopCoroutine(EnemyDetection());
 			StartCoroutine(Attack());
 		}
 
@@ -122,31 +132,19 @@ public class Creep : Unit{
 	/// <summary>
 	/// Solicita un path de manera recursiva
 	/// </summary>
-	IEnumerator RequestPath(){
+	void RequestPath(){
 		
-		if(path != null){
-			yield return Ninja.JumpToUnity;
-			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
-			state = FSM.States.Move;
-			stateChanger();
+		if(OriginSpawn != null){
+			if(OriginSpawn.path != null){
+				path = OriginSpawn.path;
+				wayPoint = OriginSpawn.actualWayPoint;
+				wayPoint.AddCreep ();	
+				state = FSM.States.Move;
+				CancelInvoke("RequestPath");
+				stateChanger();
+			}
+		} 
 
-		}else{
-			if(OriginSpawn != null){
-				if(OriginSpawn.path != null){
-						path = OriginSpawn.path;
-						wayPoint = OriginSpawn.actualWayPoint;
-						wayPoint.AddCreep ();
-						yield return Ninja.JumpToUnity;
-						yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
-						this.StartCoroutineAsync(RequestPath(),out task);
-					
-				}else{
-					yield return Ninja.JumpToUnity;
-					yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
-					this.StartCoroutineAsync(RequestPath(),out task);
-				}
-			} 
-		}
 	}
 
 	/// <summary>
@@ -154,7 +152,6 @@ public class Creep : Unit{
 	/// </summary>
 	IEnumerator RequestPathWayPoint(){
 		if(path != null){
-			yield return Ninja.JumpToUnity;
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
 			stateChanger();
@@ -167,14 +164,12 @@ public class Creep : Unit{
 					wayPoint.RemoveCreep();
 					wayPoint = nextWP;
 					nextWP.AddCreep ();
-					yield return Ninja.JumpToUnity;
 					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
-					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
+					StartCoroutine(RequestPathWayPoint());
 
 				}else{
-					yield return Ninja.JumpToUnity;
 					yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
-					this.StartCoroutineAsync(RequestPathWayPoint(),out task);
+					StartCoroutine(RequestPathWayPoint());
 				}
 			} 
 		}
@@ -201,13 +196,16 @@ public class Creep : Unit{
 					else if(path !=null)
 						currentWayPoint = path[targetIndex];
 				}
+				yield return new WaitForSeconds(Random.Range(0.1f,0.3f));
 				Utils.LookAt2D(thisTransform,currentWayPoint);
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
-				yield return null;
+				CheckGridPosition();
+
 			}
 		}
 		targetIndex = 0;
 		state = FSM.States.Idle;
+		yield return new WaitForSeconds(Random.Range(0.2f,2.0f));
 		stateChanger();
 	}
 
