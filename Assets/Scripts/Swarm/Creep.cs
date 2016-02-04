@@ -38,6 +38,8 @@ public class Creep : Unit{
 	//Punto de spawn
 	public int spawnPoint;
 
+	public int position;
+
 	Node node = null;
 
 	void Awake(){
