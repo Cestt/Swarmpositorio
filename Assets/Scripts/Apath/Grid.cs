@@ -223,6 +223,43 @@ public class Grid : MonoBehaviour {
 	}
 		
 		
-
+	/// <summary>
+	/// Obtiene todos los creeps dadas una posicion y un rango
+	/// </summary>
+	/// <returns>Listado de los creeps encontrados</returns>
+	/// <param name="pos">Position.</param>
+	/// <param name="range">Range.</param>
+	public Creep[] GetCreepsArea(Vector3 pos, float range){
+		if (grid == null)
+			return null;
+		List<Creep> creeps = new List<Creep> ();
+		int numNodes = (int)Mathf.Ceil (range / nodeSize);
+		Node actualNode = NodeFromWorldPosition (pos);
+		int i = actualNode.gridX - numNodes;
+		if (i < 0)
+			i = 0;
+		int maxI = actualNode.gridX + numNodes;
+		if (maxI >= gridWorldSize.x / nodeSize)
+			maxI = (int)(gridWorldSize.x / nodeSize) - 1;
+		
+		int maxJ = actualNode.gridY + numNodes;
+		if (maxJ >= gridWorldSize.y / nodeSize)
+			maxJ = (int)(gridWorldSize.y / nodeSize) - 1;
+		for (; i <= maxI; i++) {
+			int j = actualNode.gridY - numNodes;
+			if (j < 0)
+				j = 0;
+			for (; j <= maxJ; j++) {
+				foreach (Creep c in grid[i,j].creeps) {
+					creeps.Add (c);
+				}
+			}
+		}
+		if (creeps.Count > 0)
+			return creeps.ToArray ();
+		else
+			return null;
 	}
+
+}
 

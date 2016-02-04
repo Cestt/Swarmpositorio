@@ -12,7 +12,7 @@ public class Projectile : MonoBehaviour {
 	private float distance;
 	private float travel;
 	public int enemyPenetration;
-
+	private Grid grid;
 	/// <summary>
 	/// Metodo para inicializar las variables del proyectil
 	/// </summary>
@@ -34,6 +34,7 @@ public class Projectile : MonoBehaviour {
 		transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 		target = owner.target;
 		travel = 0;
+		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 	}
 	// Update is called once per frame
 	void Update () {
@@ -42,6 +43,18 @@ public class Projectile : MonoBehaviour {
 			Destroy(gameObject);*/
 		transform.position += dir * speed * Time.deltaTime;
 		travel += speed * Time.deltaTime;
+		Creep[] nearCreeps = grid.GetCreepsArea (transform.position, grid.nodeSize);
+		if (nearCreeps != null && nearCreeps.Length > 0) {
+			//Debug.Log ("Creep cerca");
+			for (int i = 0; i < nearCreeps.Length && enemyPenetration > 0; i++) {
+				skill.Attack (nearCreeps [i], owner);
+				enemyPenetration--;
+			}
+			if (enemyPenetration <= 0) {
+				Destroy (gameObject);
+			}
+		}
+
 		if (travel >= distance) {
 			//skill.Attack(owner);
 			Destroy(gameObject);

@@ -12,6 +12,7 @@ public class Spawn : Unit {
 	//Path que obtendran los creeps;
 	//[HideInInspector]
 	public Vector3[] path;
+	public Vector3[][] pathSpawnPoints;
 	//Lista de los prefabs de los creeps;
 	public List<GameObject> creepPrefabs = new List<GameObject>();
 	//Tier Actual a instanciar;
@@ -35,6 +36,10 @@ public class Spawn : Unit {
 	public WayPoint actualWayPoint;
 	//Auxiliar para guardar el punto de ruta ultimo
 	private WayPoint lastWayPoint;
+	//Lista de puntos de spawn
+	public Vector3[] spawnPoints;
+	//Indice del proximo spawn points
+	private int nextSP;
 
 	public int loops = 0;
 	private PathFinding pathfinder;
@@ -77,6 +82,17 @@ public class Spawn : Unit {
 		spritesGene [3] = transform.FindChild ("ProductionBar/Prod_3").GetComponent<SpriteRenderer> ();
 		spritesGene [4] = transform.FindChild ("ProductionBar/Prod_4").GetComponent<SpriteRenderer> ();
 		/*****************************/
+		spawnPoints = new Vector3[8];
+		pathSpawnPoints = new Vector3[8][];
+		spawnPoints [0] = transform.FindChild ("SpawnPoints/SP01").position;
+		spawnPoints [1] = transform.FindChild ("SpawnPoints/SP02").position;
+		spawnPoints [2] = transform.FindChild ("SpawnPoints/SP03").position;
+		spawnPoints [3] = transform.FindChild ("SpawnPoints/SP04").position;
+		spawnPoints [4] = transform.FindChild ("SpawnPoints/SP05").position;
+		spawnPoints [5] = transform.FindChild ("SpawnPoints/SP06").position;
+		spawnPoints [6] = transform.FindChild ("SpawnPoints/SP07").position;
+		spawnPoints [7] = transform.FindChild ("SpawnPoints/SP08").position;
+		nextSP = 0;
 	}
 	void Update(){
 		if(loops >= 5){
@@ -90,13 +106,17 @@ public class Spawn : Unit {
 		
 		CreepScript creep = pool.GetCreep (0);
 		if (creep != null) {
-			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
-		                                             transform.position.y + Random.Range (-0.5f, 0.5f));
+			creep.creep.transform.position = spawnPoints[nextSP];
+
 			creep.creep.SetActive (true);
 
 			creep.creepScript.OriginSpawn = this;
+			creep.creepScript.spawnPoint = nextSP;
 			textNumberCreeps.Add ();
 			numberCreeps++;
+			nextSP++;
+			if (nextSP == 8)
+				nextSP = 0;
 			if (actualWayPoint != null)
 				actualWayPoint.AddCreep ();
 		}
@@ -112,12 +132,15 @@ public class Spawn : Unit {
 	void CreateTier(){
 		CreepScript creep = pool.GetCreep (tier);
 		if (creep != null) {
-			creep.creep.transform.position = new Vector3 (transform.position.x + Random.Range (-0.5f, 0.5f),
-				transform.position.y + Random.Range (-0.5f, 0.5f));
+			creep.creep.transform.position = spawnPoints[nextSP];
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
+			creep.creepScript.spawnPoint = nextSP;
 			textNumberCreeps.Add ();
 			numberCreeps++;
+			nextSP++;
+			if (nextSP == 8)
+				nextSP = 0;
 			if (actualWayPoint != null)
 				actualWayPoint.AddCreep ();
 		}
@@ -153,6 +176,57 @@ public class Spawn : Unit {
 	}
 
 	/// <summary>
+	/// Asigna el path al ultimo punto de ruta
+	/// </summary>
+	/// <param name="_path">Path.</param>
+	public void SetPathSP01(Vector3[] _path){
+		Debug.Log ("New Path SP01");
+		pathSpawnPoints[0] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP02(Vector3[] _path){
+		Debug.Log ("New Path SP02");
+		pathSpawnPoints[1] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP03(Vector3[] _path){
+		Debug.Log ("New Path SP03");
+		pathSpawnPoints[2] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP04(Vector3[] _path){
+		Debug.Log ("New Path SP04");
+		pathSpawnPoints[3] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP05(Vector3[] _path){
+		Debug.Log ("New Path SP5");
+		pathSpawnPoints[4] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP06(Vector3[] _path){
+		Debug.Log ("New Path SP6");
+		pathSpawnPoints[5] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP07(Vector3[] _path){
+		Debug.Log ("New Path SP7");
+		pathSpawnPoints[6] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+
+	public void SetPathSP08(Vector3[] _path){
+		Debug.Log ("New Path SP8");
+		pathSpawnPoints[7] = _path;
+		actualWayPoint = lastWayPoint;
+	}
+	/// <summary>
 	/// Añade un punto de ruta al spawn
 	/// </summary>
 	/// <param name="wayPoint">Punto de ruta clase WayPoint</param>
@@ -167,7 +241,7 @@ public class Spawn : Unit {
 		}
 		if (wayPoints.Count > 1) {
 			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
-			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position);
+			Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position);
 			pathfinder.StartFindPath(wayPoints[wayPoints.Count - 2].position,wayPoint.position,wayPoints[wayPoints.Count - 2].SetPath);
 		}
 

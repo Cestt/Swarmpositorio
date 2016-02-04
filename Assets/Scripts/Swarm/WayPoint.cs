@@ -42,6 +42,10 @@ public class WayPoint{
 	/// </summary>
 	/// <param name="_path">Path.</param>
 	public void SetPath(Vector3[] _path){
+		if (path == null)
+			Debug.Log ("Error");
+		else
+			Debug.Log ("Hola " + path);
 		path = _path;
 	}
 

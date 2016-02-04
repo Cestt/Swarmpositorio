@@ -35,6 +35,8 @@ public class Creep : Unit{
 	bool arrive = false;
 	//Punto de ruta al que se dirije
 	public WayPoint wayPoint;
+	//Punto de spawn
+	public int spawnPoint;
 
 	Node node = null;
 
@@ -54,6 +56,7 @@ public class Creep : Unit{
 		path = null;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
+		CheckGridPosition();
 		life = lifeIni;
 		stateChanger();
 		
@@ -135,8 +138,8 @@ public class Creep : Unit{
 	void RequestPath(){
 		
 		if(OriginSpawn != null){
-			if(OriginSpawn.path != null){
-				path = OriginSpawn.path;
+			if(OriginSpawn.pathSpawnPoints[spawnPoint] != null){
+				path = OriginSpawn.pathSpawnPoints[spawnPoint];
 				wayPoint = OriginSpawn.actualWayPoint;
 				wayPoint.AddCreep ();	
 				state = FSM.States.Move;
@@ -350,6 +353,7 @@ public class Creep : Unit{
 	public override void Dead ()
 	{
 		state = FSM.States.Idle;
+		node.creeps.Remove(this);
 		StopAllCoroutines();
 		OriginSpawn.CreepDead ();
 		OriginSpawn = null;	

@@ -16,10 +16,13 @@ public class Human : Unit {
 	int targetIndex = 0;
 	//Biomateria que da cuando muere
 	public int biomatterGain;
+	//Grid
+	private Grid grid;
 
-	void Start(){
+	void Awake(){
+		base.Awake ();
 		path = null;
-
+		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 	}
 	/// <summary>
 	/// Raises the enable event.
@@ -130,8 +133,9 @@ public class Human : Unit {
 	private bool CheckEnemies(){
 		Collider2D[] colls = new Collider2D[25];//Maximo de colliders que detectara alrededor suya.
 		float points = -1;//Euristica de puntos para evaluar el mejor objetivo.
-		Collider2D bestTarget = null;//Objetivo designado.
-		int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Creep"));
+		Creep bestTarget = null;//Objetivo designado.
+		//cambiar esto por que obtenga todos los creeps
+		/*int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Creep"));
 			if(collsNum > 0){
 				foreach(Collider2D coll in colls){
 					if(coll != null){
@@ -142,6 +146,19 @@ public class Human : Unit {
 					}
 				}
 			target = bestTarget.GetComponent<Unit>();
+			return true;
+		}*/
+		Creep[] nearCreeps = grid.GetCreepsArea (thisTransform.position, detectionRadius);
+		if (nearCreeps != null) {
+			foreach (Creep creep in nearCreeps) {
+				if (creep != null) {
+					if (points < 1 / (thisTransform.position - creep.thisTransform.position).magnitude) {
+						points = 1 / (thisTransform.position - creep.thisTransform.position).magnitude;
+						bestTarget = creep;
+					}
+				}
+			}
+			target = bestTarget;
 			return true;
 		}
 		return false;
