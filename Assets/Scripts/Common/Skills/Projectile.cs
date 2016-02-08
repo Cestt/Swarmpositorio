@@ -43,7 +43,7 @@ public class Projectile : MonoBehaviour {
 			Destroy(gameObject);*/
 		transform.position += dir * speed * Time.deltaTime;
 		travel += speed * Time.deltaTime;
-		Creep[] nearCreeps = grid.GetCreepsArea (transform.position, grid.nodeSize);
+		Creep[] nearCreeps = grid.GetCreepsArea (transform.position, 0.2f);
 		if (nearCreeps != null && nearCreeps.Length > 0) {
 			//Debug.Log ("Creep cerca");
 			for (int i = 0; i < nearCreeps.Length && enemyPenetration > 0; i++) {

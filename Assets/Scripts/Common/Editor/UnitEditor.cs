@@ -51,6 +51,7 @@ public class HumanEditor : UnitEditor {
 		Human humanScript = (Human)target;
 	
 		humanScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",humanScript.detectionRadius);
+		humanScript.detectionCreepsRadius = EditorGUILayout.FloatField("Detection Creeps Radius",humanScript.detectionCreepsRadius);
 		humanScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",humanScript.speedAlongPath);
 		humanScript.biomatterGain = EditorGUILayout.IntField ("Bio Matter Gain", humanScript.biomatterGain);
 		if (GUI.changed) {

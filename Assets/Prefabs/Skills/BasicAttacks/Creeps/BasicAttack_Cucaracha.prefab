@@ -41,19 +41,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coolDown: 1
   damage: 10
-  armorPen: 0
-  range: 66
+  armorPen: 2
+  range: 2
   typeSkill: 0
   typesAttacks: {fileID: 0}
   typeDamage: 0
   projectile: {fileID: 0}
+  enemyPenetration: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: range
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: armorPen
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 132366}

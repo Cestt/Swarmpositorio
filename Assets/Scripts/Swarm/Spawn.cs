@@ -106,7 +106,8 @@ public class Spawn : Unit {
 		
 		CreepScript creep = pool.GetCreep (0);
 		if (creep != null) {
-			creep.creep.transform.position = spawnPoints[nextSP];
+			//creep.creep.transform.position = spawnPoints[nextSP];
+			creep.creep.transform.position = thisTransform.position;
 
 			creep.creep.SetActive (true);
 
@@ -170,7 +171,7 @@ public class Spawn : Unit {
 	/// </summary>
 	/// <param name="_path">Path.</param>
 	public void SetPath(Vector3[] _path){
-		Debug.Log ("New Path");
+		//Debug.Log ("New Path");
 		path = _path;
 		actualWayPoint = lastWayPoint;
 	}
@@ -180,51 +181,44 @@ public class Spawn : Unit {
 	/// </summary>
 	/// <param name="_path">Path.</param>
 	public void SetPathSP01(Vector3[] _path){
-		Debug.Log ("New Path SP01");
+		//Debug.Log ("New Path SP01");
 		pathSpawnPoints[0] = _path;
 		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP02(Vector3[] _path){
-		Debug.Log ("New Path SP02");
+		//Debug.Log ("New Path SP02");
 		pathSpawnPoints[1] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP03(Vector3[] _path){
-		Debug.Log ("New Path SP03");
+		//Debug.Log ("New Path SP03");
 		pathSpawnPoints[2] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP04(Vector3[] _path){
-		Debug.Log ("New Path SP04");
+		//Debug.Log ("New Path SP04");
 		pathSpawnPoints[3] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP05(Vector3[] _path){
-		Debug.Log ("New Path SP5");
+		//Debug.Log ("New Path SP5");
 		pathSpawnPoints[4] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP06(Vector3[] _path){
-		Debug.Log ("New Path SP6");
+		//Debug.Log ("New Path SP6");
 		pathSpawnPoints[5] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP07(Vector3[] _path){
-		Debug.Log ("New Path SP7");
+		//Debug.Log ("New Path SP7");
 		pathSpawnPoints[6] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 
 	public void SetPathSP08(Vector3[] _path){
-		Debug.Log ("New Path SP8");
+		//Debug.Log ("New Path SP8");
 		pathSpawnPoints[7] = _path;
-		actualWayPoint = lastWayPoint;
 	}
 	/// <summary>
 	/// Añade un punto de ruta al spawn
@@ -235,13 +229,13 @@ public class Spawn : Unit {
 
 		//Debug.Log("Mouse Up");
 		wayPoints.Add(wayPoint);
-		if (!shiftPressed) {
+		if (!shiftPressed || actualWayPoint == null) {
 			lastWayPoint = wayPoint;
 			//Debug.Log ("NOSHIFT");
 		}
 		if (wayPoints.Count > 1) {
 			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
-			Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position);
+			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position +" " + wayPoint.position);
 			pathfinder.StartFindPath(wayPoints[wayPoints.Count - 2].position,wayPoint.position,wayPoints[wayPoints.Count - 2].SetPath);
 		}
 

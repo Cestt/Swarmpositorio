@@ -39,10 +39,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6b910f3352df3e4e885a39ae897749b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coolDown: 0.5
+  coolDown: 0.2
   damage: 20
   armorPen: 0
-  range: 100
+  range: 10
   typeSkill: 1
   typesAttacks: {fileID: 0}
   typeDamage: 0
@@ -61,11 +61,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: range
-      value: 100
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: coolDown
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -41,7 +41,7 @@ public class TouchManager : MonoBehaviour {
 					Selected.AddWayPoint (new WayPoint (pos), shiftPressed);
 					if (!shiftPressed) {
 						Debug.Log ("No shift");
-						pathfinder.StartFindPath (Selected.thisTransform.position, pos, Selected.SetPath);
+						//pathfinder.StartFindPath (Selected.thisTransform.position, pos, Selected.SetPath);
 						posSP = pos;
 						spawnPoint = 0;
 						CancelInvoke ();

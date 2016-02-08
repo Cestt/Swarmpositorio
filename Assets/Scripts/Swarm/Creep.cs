@@ -103,10 +103,10 @@ public class Creep : Unit{
 			if(path == null){
 				if (!arrive) {
 					path = null;
-					InvokeRepeating("RequestPath",0,Random.Range(0.1f,2f));
+					InvokeRepeating("RequestPath",0,Random.Range(0.01f,0.1f));
 				} else {
 					path = null;
-					InvokeRepeating("RequestPath",0,Random.Range(0.1f,2f));
+					InvokeRepeating("RequestPathWayPoint",0,Random.Range(0.1f,2f));
 				}
 			}else{
 				state = FSM.States.Move;
@@ -141,7 +141,14 @@ public class Creep : Unit{
 		
 		if(OriginSpawn != null){
 			if(OriginSpawn.pathSpawnPoints[spawnPoint] != null){
-				path = OriginSpawn.pathSpawnPoints[spawnPoint];
+				//Añade el punto de origen como primero del path para que vaya hacia el
+				Vector3[] pathAux = OriginSpawn.pathSpawnPoints [spawnPoint];
+
+				path = new Vector3[pathAux.Length+1];
+				path [0] = OriginSpawn.spawnPoints[spawnPoint];
+				for (int i = 1; i < path.Length; i++)
+					path [i] = pathAux [i - 1];
+				
 				wayPoint = OriginSpawn.actualWayPoint;
 				wayPoint.AddCreep ();	
 				state = FSM.States.Move;
@@ -155,7 +162,22 @@ public class Creep : Unit{
 	/// <summary>
 	/// Solicita el path al punto de ruta en el que esta
 	/// </summary>
-	IEnumerator RequestPathWayPoint(){
+	/// 
+	void RequestPathWayPoint(){
+		if (wayPoint != null) {
+			if (wayPoint.path != null) {
+				path = wayPoint.path;
+				WayPoint nextWP = wayPoint.nextWayPoint;
+				wayPoint.RemoveCreep ();
+				wayPoint = nextWP;
+				nextWP.AddCreep ();
+				state = FSM.States.Move;
+				CancelInvoke("RequestPathWayPoint");
+				stateChanger();
+			}
+		}
+	}
+	/*IEnumerator RequestPathWayPoint(){
 		if(path != null){
 			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
 			state = FSM.States.Move;
@@ -178,7 +200,7 @@ public class Creep : Unit{
 				}
 			} 
 		}
-	}
+	}*/
 	/// <summary>
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
@@ -188,24 +210,22 @@ public class Creep : Unit{
 			//Mantiene el bucle de movimiento.
 			bool loop =  true;
 			while(loop){
-
-				if(thisTransform.position == currentWayPoint){
+				if (thisTransform.position == currentWayPoint) {
 
 					targetIndex++;
-					if(targetIndex >= path.Length){
+					if (targetIndex >= path.Length) {
 						arrive = true;
 						loop = false;
 						path = null;
 
-					}
-					else if(path !=null)
-						currentWayPoint = path[targetIndex];
+					} else if (path != null)
+						currentWayPoint = path [targetIndex];
 				}
-				yield return new WaitForSeconds(Random.Range(0.1f,0.3f));
-				Utils.LookAt2D(thisTransform,currentWayPoint);
-				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
-				CheckGridPosition();
-
+				float time = Random.Range (0.05f, 0.1f);
+				yield return new WaitForSeconds (time);
+				Utils.LookAt2D (thisTransform, currentWayPoint);
+				thisTransform.position = Vector3.MoveTowards (thisTransform.position, currentWayPoint, speedAlongPath * time / 10);
+				CheckGridPosition ();
 			}
 		}
 		targetIndex = 0;
@@ -253,18 +273,27 @@ public class Creep : Unit{
 
 	}
 
+	/// <summary>
+	/// Activa el creep y lo asigna a atacar a la unidad
+	/// </summary>
+	public void EnemyDetected(Unit enemy){
+		//Debug.Log ("NUEVO ENEMIGO");
+		target = enemy;
+		state = FSM.States.Attack;
+		stateChanger();
+	}
 	
 	/// <summary>
 	/// Ataca al target con la habilidad designada.
 	/// </summary>
 	IEnumerator Attack(){
-		
 	 bool loop = true;//Mantiene el bucle.
 		
 		while(loop){
 			if(target != null){
 				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque.
-					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime);
+					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime / 10);
+					CheckGridPosition ();
 					yield return null;
 				}else{
 					skills[0].Use(this);
@@ -356,6 +385,7 @@ public class Creep : Unit{
 	{
 		state = FSM.States.Idle;
 		node.creeps.Remove(this);
+		node = null;
 		StopAllCoroutines();
 		OriginSpawn.CreepDead ();
 		OriginSpawn = null;	

@@ -7,6 +7,8 @@ public class Human : Unit {
 
 	//Radio deteccion del humano;
 	public float detectionRadius;
+	//Radio deteccion creeps;
+	public float detectionCreepsRadius;
 	//Velocidad de movimiento
 	public float speedAlongPath = 50;
 	//Camino generado por el PathFinding
@@ -56,6 +58,7 @@ public class Human : Unit {
 	void stateChanger(){
 
 		StopAllCoroutines ();
+		StartCoroutine (ActiveCreeps ());
 
 		if(state == FSM.States.Idle){
 			StartCoroutine(EnemyDetection());
@@ -73,6 +76,7 @@ public class Human : Unit {
 		}
 		if(state == FSM.States.Attack){
 			StopAllCoroutines ();
+			StartCoroutine (ActiveCreeps ());
 			StartCoroutine(Attack());
 		}
 
@@ -123,6 +127,23 @@ public class Human : Unit {
 				stateChanger ();
 			}
 			yield return new WaitForSeconds(Random.Range(0.1f,0.15f));
+		}
+	}
+
+	/// <summary>
+	/// Comprueba si esta en rango de vision de los creeps para activarlos
+	/// </summary>
+	IEnumerator ActiveCreeps(){
+		while (true) {
+			Creep[] nearCreeps = grid.GetCreepsArea (thisTransform.position, detectionCreepsRadius);
+			if (nearCreeps != null) {
+				foreach (Creep creep in nearCreeps) {
+					if (creep != null && creep.state != FSM.States.Attack) {
+						creep.EnemyDetected (this);
+					}
+				}
+			}
+			yield return new WaitForSeconds (Random.Range (0.1f, 0.5f));
 		}
 	}
 
