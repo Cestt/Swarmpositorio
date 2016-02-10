@@ -35,8 +35,6 @@ public class Creep : Unit{
 	bool arrive = false;
 	//Punto de ruta al que se dirije
 	public WayPoint wayPoint;
-	//Punto de spawn
-	public int spawnPoint;
 
 	public int position;
 
@@ -140,15 +138,8 @@ public class Creep : Unit{
 	void RequestPath(){
 		
 		if(OriginSpawn != null){
-			if(OriginSpawn.pathSpawnPoints[spawnPoint] != null){
-				//Añade el punto de origen como primero del path para que vaya hacia el
-				Vector3[] pathAux = OriginSpawn.pathSpawnPoints [spawnPoint];
-
-				path = new Vector3[pathAux.Length+1];
-				path [0] = OriginSpawn.spawnPoints[spawnPoint];
-				for (int i = 1; i < path.Length; i++)
-					path [i] = pathAux [i - 1];
-				
+			if(OriginSpawn.path != null){
+				path = OriginSpawn.path;
 				wayPoint = OriginSpawn.actualWayPoint;
 				wayPoint.AddCreep ();	
 				state = FSM.States.Move;
@@ -278,6 +269,9 @@ public class Creep : Unit{
 	/// </summary>
 	public void EnemyDetected(Unit enemy){
 		//Debug.Log ("NUEVO ENEMIGO");
+		CancelInvoke();
+		if (state == FSM.States.Move)
+			StopAllCoroutines ();
 		target = enemy;
 		state = FSM.States.Attack;
 		stateChanger();
@@ -293,6 +287,7 @@ public class Creep : Unit{
 			if(target != null){
 				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque.
 					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime / 10);
+					Utils.LookAt2D (thisTransform, target.thisTransform);
 					CheckGridPosition ();
 					yield return null;
 				}else{
