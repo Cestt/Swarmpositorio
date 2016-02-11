@@ -218,9 +218,12 @@ public class Grid : MonoBehaviour {
 
 				if(checkX >= 0 & checkX < (gridWorldSize.x/nodeSize) & checkY >= 0 & checkY < (gridWorldSize.y/nodeSize)){
 						int costNode = actCost + Mathf.Max(Mathf.Abs(x),Mathf.Abs(y));
-						if(grid[checkX,checkY].heatCost[index] == null || grid[checkX,checkY].heatCost[index] > costNode){
+					int contains;
+
+
+					if(grid[checkX,checkY].heatCost.TryGetValue(index,out contains) == false|| grid[checkX,checkY].heatCost[index] > costNode){
 								grid[checkX,checkY].heatCost[index] = costNode;
-						}
+					}
 				}
 			}
 		}

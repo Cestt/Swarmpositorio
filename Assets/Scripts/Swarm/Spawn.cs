@@ -11,7 +11,7 @@ public class Spawn : Unit {
 	public float spawnRateTier;
 	//Path que obtendran los creeps;
 	//[HideInInspector]
-	public Vector3[] path;
+	public Vector3 initPos;
 	public Vector3[][] pathSpawnPoints;
 	//Lista de los prefabs de los creeps;
 	public List<GameObject> creepPrefabs = new List<GameObject>();
@@ -55,7 +55,7 @@ public class Spawn : Unit {
 
 	void Start () {
 		//Inicializamos el path para evitar errores;
-		path = null;
+		initPos = new Vector3(0,0,100000);
 		//Buscamos la pool para solicitar los creeps;
 		pool = GameObject.Find ("Pool").GetComponent<Pool> ();
 		//Iniciamos la solicitud de creeps basicos;
@@ -146,9 +146,9 @@ public class Spawn : Unit {
 	/// Asigna el path al ultimo punto de ruta
 	/// </summary>
 	/// <param name="_path">Path.</param>
-	public void SetPath(Vector3[] _path){
+	public void SetPath(Vector3 _initPos){
 		//Debug.Log ("New Path");
-		path = _path;
+		initPos = _initPos;
 		actualWayPoint = lastWayPoint;
 	}
 		
@@ -168,7 +168,7 @@ public class Spawn : Unit {
 		if (wayPoints.Count > 1) {
 			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
 			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position +" " + wayPoint.position);
-			pathfinder.StartFindPath(wayPoints[wayPoints.Count - 2].position,wayPoint.position,wayPoints[wayPoints.Count - 2].SetPath);
+			//pathfinder.StartFindPath(wayPoints[wayPoints.Count - 2].position,wayPoint.position,wayPoints[wayPoints.Count - 2].SetPath);
 		}
 
 	}

@@ -17,17 +17,17 @@ public class PathFinding : MonoBehaviour {
 		pathManager = GetComponent<PathRequestManager>();
 	}
 
-	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
+	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack){
 		StartCoroutine(FindPath(startPosition,targetPosition,callBack));
 
 	}
 
-	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
+	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack ){
 		running = true;
 		yield return new WaitForEndOfFrame();
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
-		Vector3[] waypoints = new Vector3[0];
+		Vector3 waypoints = new Vector3();
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
@@ -88,7 +88,7 @@ public class PathFinding : MonoBehaviour {
 
 	}
 
-	Vector3[] RetracePath(Node startNode, Node endNode){
+	Vector3 RetracePath(Node startNode, Node endNode){
 
 		List<Node> path = new List<Node>();
 		Node currentNode = endNode;
@@ -102,7 +102,7 @@ public class PathFinding : MonoBehaviour {
 		//Vector3[] wayPoints = simplifyPath(path);
 		Array.Reverse(path.ToArray());
 
-		return path;
+		return path[0].worldPosition;
 	}
 
 	void GenerateHeatMap(List<Node> nodes){
