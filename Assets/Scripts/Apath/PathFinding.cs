@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using CielaSpike;
+
 
 public class PathFinding : MonoBehaviour {
 
@@ -18,23 +18,19 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
-		queueFindPaths.Enqueue(new ApathQueue(startPosition,targetPosition,callBack));
-		if(!running)
-			StartCoroutine(CheckQueue());
+		StartCoroutine(FindPath(startPosition,targetPosition,callBack));
 
 	}
 
 	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
 		running = true;
 		yield return new WaitForEndOfFrame();
-		yield return Ninja.JumpToUnity;
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
 		Vector3[] waypoints = new Vector3[0];
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
-		yield return Ninja.JumpBack;
 		if(startNode != targetNode){
 			if(startNode.walkable & targetNode.walkable){
 				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
@@ -79,14 +75,13 @@ public class PathFinding : MonoBehaviour {
 		}
 
 
-		yield return Ninja.JumpToUnity;
+
 		if(pathSuccess){
 			waypoints = RetracePath(startNode,targetNode);
 		}
 		callBack(waypoints);
 		sw.Stop();
 		running = false;
-		StartCoroutine(CheckQueue());
 
 		print("Found path in "+sw.ElapsedMilliseconds+" ms");
 
@@ -102,11 +97,21 @@ public class PathFinding : MonoBehaviour {
 			path.Add(currentNode);
 			currentNode = currentNode.parent;
 		}
-		Vector3[] wayPoints = simplifyPath(path);
-		Array.Reverse(wayPoints);
 
-		return wayPoints;
+		GenerateHeatMap(path);
+		//Vector3[] wayPoints = simplifyPath(path);
+		Array.Reverse(path.ToArray());
+
+		return path;
 	}
+
+	void GenerateHeatMap(List<Node> nodes){
+		foreach(Node n in nodes){
+			grid.SetNeighboursHeatMap(n);
+		}
+		grid.index++;
+	}
+
 	Vector3[] simplifyPath(List<Node> path){
 		List<Vector3> waypoints = new List<Vector3>();
 		Vector2 directionOld = Vector2.zero;
@@ -130,16 +135,6 @@ public class PathFinding : MonoBehaviour {
 		return 14*disX + 10*(disY - disX);
 	}
 
-	IEnumerator CheckQueue(){
-		if(queueFindPaths.Count > 0){
 
-			if(!running){
-				print("2. Queue length "+queueFindPaths.Count);
-				ApathQueue temp = queueFindPaths.Dequeue();
-				yield return new WaitForSeconds(UnityEngine.Random.Range(0.2f,0.4f));
-				this.StartCoroutineAsync(FindPath(temp.startPosition,temp.endPosition,temp.callback));
-			}
-		}
-	}
 
 }

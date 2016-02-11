@@ -20,6 +20,7 @@ public class Node : IHeapItem<Node>{
 	public int grid;
 
 	public List<Creep> creeps;
+	public Dictionary<int,int> heatCost;
 
 	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY,int _grid){
 
@@ -28,6 +29,7 @@ public class Node : IHeapItem<Node>{
 		gridX = _gridX;
 		gridY = _gridY;
 		grid = _grid;
+		heatCost = new Dictionary<int, int>();
 		creeps = new List<Creep>();
 	}
 	public int CompareTo(Node nodeToCompare){

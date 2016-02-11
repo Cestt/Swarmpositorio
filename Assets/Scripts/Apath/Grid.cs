@@ -32,6 +32,7 @@ public class Grid : MonoBehaviour {
 	private Dictionary<int,Node[]> Grids = new Dictionary<int, Node[]>();
 	//Iteraciones en X e Y de cada sector;	
 	int gridSizeX, gridSizeY;
+	public int index = 0;
 		
 		
 	void Awake(){
@@ -202,6 +203,27 @@ public class Grid : MonoBehaviour {
 			}
 		}
 		return neighbours;
+	}
+
+	public void SetNeighboursHeatMap(Node node){
+		int actCost = node.heatCost[index];
+		for(int x = -3; x <= 3 ; x++){
+			for(int y = -3; y <= 3 ; y++){
+
+				if( x == 0 & y == 0)
+					continue;
+
+				int checkX = node.gridX + x;
+				int checkY = node.gridY + y;
+
+				if(checkX >= 0 & checkX < (gridWorldSize.x/nodeSize) & checkY >= 0 & checkY < (gridWorldSize.y/nodeSize)){
+						int costNode = actCost + Mathf.Max(Mathf.Abs(x),Mathf.Abs(y));
+						if(grid[checkX,checkY].heatCost[index] == null || grid[checkX,checkY].heatCost[index] > costNode){
+								grid[checkX,checkY].heatCost[index] = costNode;
+						}
+				}
+			}
+		}
 	}
 
 
