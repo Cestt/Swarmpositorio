@@ -15,8 +15,12 @@ public class Spawn : Unit, IPointerClickHandler {
 	public float spawnRateTier;
 	//Path que obtendran los creeps;
 	//[HideInInspector]
+	[HideInInspector]
 	public Vector3 initPos;
 	public Vector3[][] pathSpawnPoints;
+
+	public float sendRate = 1;
+	public int sendCuantity = 10;
 
 	//Tier;
 	[HideInInspector]
@@ -57,8 +61,10 @@ public class Spawn : Unit, IPointerClickHandler {
 	//Boolean para saber si se esta ejecutando los invoke de crear tier 0 y generacion
 	private bool[] invokeGene = new bool[2];
 
-	//Lista de los creeps
+	//Lista de los creeps de tier
 	private List<Creep> creepsTier = new List<Creep>();
+
+	private List<Creep> spawnedCreeps = new List<Creep>();
 
 	//Ve si esta con la habilidad del tier activada
 	public bool skillTierActive = false;
@@ -113,7 +119,7 @@ public class Spawn : Unit, IPointerClickHandler {
 			creep.creep.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
 			/****************************/
 			creep.creep.SetActive (true);
-
+			spawnedCreeps.Add(creep.creepScript);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
 			numberCreeps++;
@@ -138,6 +144,7 @@ public class Spawn : Unit, IPointerClickHandler {
 			creep.creep.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
 			/****************************/
 			creep.creep.SetActive (true);
+			spawnedCreeps.Add(creep.creepScript);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
 			if (subType != -1)
@@ -180,7 +187,27 @@ public class Spawn : Unit, IPointerClickHandler {
 	public void SetPath(Vector3 _initPos){
 		//Debug.Log ("New Path");
 		initPos = _initPos;
+		print("Z "+initPos.z);
+		if(spawnedCreeps.Count > 0)
+			InvokeRepeating("SendCreeps",0,sendRate);
 		//actualWayPoint = lastWayPoint;
+	}
+	void SendCreeps(){
+		
+		int count;
+		if(spawnedCreeps.Count == 0)
+			return;
+		if(sendCuantity > spawnedCreeps.Count){
+			count = spawnedCreeps.Count - 1;
+		}else{
+			count = sendCuantity;
+		}
+		for(int i = count; i >= 0;i--){
+			if(spawnedCreeps[i] != null){
+				spawnedCreeps[i].initPos = initPos;
+				spawnedCreeps.RemoveAt(i);
+			}
+		}
 	}
 		
 	/// <summary>

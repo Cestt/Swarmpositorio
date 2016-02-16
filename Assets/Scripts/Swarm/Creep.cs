@@ -126,8 +126,7 @@ public class Creep : Unit{
 	void RequestPath(){
 		
 		if(OriginSpawn != null){
-			if(OriginSpawn.initPos.z != 100000){
-				initPos = OriginSpawn.initPos;
+			if(initPos.z != 100000){
 				//wayPoint = OriginSpawn.actualWayPoint;
 				//wayPoint.AddCreep ();	
 				state = FSM.States.Move;
