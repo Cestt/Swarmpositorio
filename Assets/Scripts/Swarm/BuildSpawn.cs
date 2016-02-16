@@ -48,10 +48,11 @@ public class BuildSpawn : MonoBehaviour {
 	/// <summary>
 	/// Metodo que es llamado cuando se clickea y, en caso de poder, construye el nuevo Spawn
 	/// </summary>
-	public void Build(){
+	public bool Build(){
 		if (canBuild)
-			Debug.Log ("Se construye!!");
+			Instantiate (prefabSpawn, transform.position, prefabSpawn.transform.rotation);
 		else
 			Debug.Log ("No se puede construir :(");
+		return canBuild;
 	}
 }

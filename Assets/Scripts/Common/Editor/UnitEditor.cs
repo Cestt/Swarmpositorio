@@ -67,7 +67,11 @@ public class CreepEditor : UnitEditor {
 		base.OnInspectorGUI ();
 		Creep creepScript = (Creep)target;
 
-		creepScript.tier = EditorGUILayout.IntField("Tier",creepScript.tier);
+		creepScript.tier = EditorGUILayout.IntField(new GUIContent ("Tier"
+			,"Tier al que pertenece el creep."),creepScript.tier);
+		/*creepScript.subTier = EditorGUILayout.IntField (new GUIContent ("SubTier"
+			, "La primera cifra marca creep base y la segunda la evolucion\nEjemplo: 1 = Comadreja, 11=Comadreja A\n2=Runner, 21=Runner A"), creepScript.subTier);
+		*/
 		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
 		creepScript.costGene = EditorGUILayout.IntField("Cost Gene",creepScript.costGene);

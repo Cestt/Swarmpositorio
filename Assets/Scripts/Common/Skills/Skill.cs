@@ -2,11 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Skill :MonoBehaviour{
 
+	/* Tipos de habilidad
+	* Instant - Daño instantaneo. Ejemplo ataque de un creep.
+	* Projectile - Dispara el proyectil que se tenga en el prefab
+	* Boost - Cambia uno o varios stats de la unidad
+	*
+	*/
 	public enum typesSkill{
 		Instant,
-		Projectile
+		Projectile,
+		Boost
 	}
 	public float coolDown = 1; //Tiempo que tarda en recargarse la habilidad
 	public int damage = 1; //Daño que hace la habilidad
@@ -21,26 +29,35 @@ public class Skill :MonoBehaviour{
 	public GameObject projectile; //Proyectil generado si el ataque es de tipo Projectile
 	[HideInInspector]
 	public int enemyPenetration; //Numero de enemigos a los que puede dañar y penetrar la habilidad
-
+	[HideInInspector]
+	//[Tooltip("Tiempo que dura el boost")]
+	public int timeBoost; 
+	public List<Boost> boosts = new List<Boost>(); //Lista de los boosts que activan
 
 	/// <summary>
 	/// Usa la habilidad
 	/// </summary>
-	/// <param name="owner">Owner. Unidad que usa la habilidad</param>
-	public void Use(Unit owner){
+	/// <param name="unit">unit. Unidad objetivo de la habilidad o unidad propietaria. Depende del tipo.</param>
+	public void Use(Unit unit){
 		switch (typeSkill) {
 		case typesSkill.Instant:
-				Attack(owner);
-				break;
+			Attack(unit);
+			break;
 		case typesSkill.Projectile:
-				Vector3 dir = owner.target.thisTransform.position - owner.thisTransform.position;
-				dir = dir.normalized;
-				Projectile newProj = ((GameObject)Instantiate(projectile,owner.thisTransform.position + dir,Quaternion.identity)).GetComponent<Projectile>();
-			newProj.Ini (owner,dir,enemyPenetration, range,this);
-				break;
+			Vector3 dir = unit.target.thisTransform.position - unit.thisTransform.position;
+			dir = dir.normalized;
+			Projectile newProj = ((GameObject)Instantiate(projectile,unit.thisTransform.position + dir,Quaternion.identity)).GetComponent<Projectile>();
+			newProj.Ini (unit,dir,enemyPenetration, range,this);
+			break;
+		case typesSkill.Boost:
+			foreach (Boost boost in boosts)
+				boost.Apply (unit);
+			break;
 		}
 
+
 	}
+
 
 
 	/// <summary>
@@ -52,7 +69,7 @@ public class Skill :MonoBehaviour{
 			/***********Uso de hilos***************
 			//Primero ponemos al objetivo de la unidad a cequear el daño
 			owner.target.StartCheckDamage (owner);
-			 *********************************/
+			*********************************/
 			//El daño lo metemos en cola
 			//ThreadManager.EnQueue (new ParseQueue (owner.target, damage, armorPen, typeDamage, owner));
 			//Daño directo en hilo secundario
@@ -75,6 +92,19 @@ public class Skill :MonoBehaviour{
 			//ThreadManager.EnQueue (new ParseQueue (target, damage, armorPen, typeDamage, owner));
 			//Daño en hilo secundario
 			target.LaunchDamage(damage,armorPen,typeDamage, owner);
+		}
+	}
+
+	/// <summary>
+	/// Remueve el efecto de la habilidad sobre la unidad
+	/// </summary>
+	/// <param name="unit">unit. Unidad afectada</param>
+	public void Remove(Unit unit){
+		switch (typeSkill) {
+		case typesSkill.Boost:
+			foreach (Boost boost in boosts)
+				boost.Remove (unit);
+			break;
 		}
 	}
 }
