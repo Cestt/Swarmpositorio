@@ -7,9 +7,14 @@ public class Hero : Unit {
 	public Vector3[] path;//Path del heroe
 	public float speedAlongPath;//Velocidad del heroe a lo largo del path.
 	public float rotationSpeed = 5f;//Velocidad de rotacion de heroe.
+	Node tempNode;
+	Grid grid;
+	Node actualNode;
 
 	void Awake(){
 		base.Awake();
+		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
+		CheckGridPosition();
 		state = FSM.States.Idle;
 	}
 
@@ -78,6 +83,7 @@ public class Hero : Unit {
 				}
 				Utils.LookAt2D(rotationSpeed, thisTransform, currentWayPoint);
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
+				CheckGridPosition();
 				yield return new WaitForEndOfFrame();
 			}
 			path = null;
@@ -106,8 +112,15 @@ public class Hero : Unit {
 					if(targetIndex < path.Length)
 						currentWayPoint = path[targetIndex];
 				}
+				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) < skills[0].range - 0.5f){
+					StopAllCoroutines();
+					StartCoroutine(Attack());
+				}
 				Utils.LookAt2D(rotationSpeed, thisTransform, currentWayPoint);
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
+				CheckGridPosition();
+
+					
 				yield return new WaitForEndOfFrame();
 			}
 			path = null;
@@ -124,6 +137,7 @@ public class Hero : Unit {
 				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque.
 					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime);
 					Utils.LookAt2D(rotationSpeed, thisTransform, target.thisTransform.position);
+					CheckGridPosition();
 					yield return null;
 				}else{
 					skills[0].Use(this);
@@ -139,4 +153,30 @@ public class Hero : Unit {
 		yield return new WaitForSeconds(0);
 		stateChanger();
 	}
+
+	void CheckGridPosition(){
+		tempNode =  grid.NodeFromWorldPosition (thisTransform.position);
+		if(actualNode != null){
+			if(actualNode != tempNode){
+				actualNode.hero = null;
+				actualNode = tempNode;
+				actualNode.hero = this;
+			}
+
+		}else{
+			actualNode = tempNode;
+			actualNode.hero = this;
+		}
+
+	}
+
+	public override void Dead ()
+	{
+		state = FSM.States.Idle;
+		actualNode.hero = null;
+		actualNode = null;
+		StopAllCoroutines();
+		gameObject.SetActive(false);
+	}
+
 }

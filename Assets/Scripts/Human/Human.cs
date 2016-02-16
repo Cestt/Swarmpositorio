@@ -152,30 +152,16 @@ public class Human : Unit {
 	/// </summary>
 	/// <returns><c>true</c>, if enemies was checked, <c>false</c> otherwise.</returns>
 	private bool CheckEnemies(){
-		Collider2D[] colls = new Collider2D[25];//Maximo de colliders que detectara alrededor suya.
+		
 		float points = -1;//Euristica de puntos para evaluar el mejor objetivo.
-		Creep bestTarget = null;//Objetivo designado.
-		//cambiar esto por que obtenga todos los creeps
-		/*int collsNum =  Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls,1 << LayerMask.NameToLayer("Creep"));
-			if(collsNum > 0){
-				foreach(Collider2D coll in colls){
-					if(coll != null){
-						if(points < 1/(thisTransform.position -coll.gameObject.transform.position).magnitude){
-							points = 1/(thisTransform.position -coll.gameObject.transform.position).magnitude;
-							bestTarget = coll;
-						}
-					}
-				}
-			target = bestTarget.GetComponent<Unit>();
-			return true;
-		}*/
-		Creep[] nearCreeps = grid.GetCreepsArea (thisTransform.position, detectionRadius);
+		Unit bestTarget = null;//Objetivo designado.
+		Unit[] nearCreeps = grid.GetEnemiesArea (thisTransform.position, detectionRadius);
 		if (nearCreeps != null) {
-			foreach (Creep creep in nearCreeps) {
-				if (creep != null) {
-					if (points < 1 / (thisTransform.position - creep.thisTransform.position).magnitude) {
-						points = 1 / (thisTransform.position - creep.thisTransform.position).magnitude;
-						bestTarget = creep;
+			foreach (Unit enemy in nearCreeps) {
+				if (enemy != null) {
+					if (points < 1 / (thisTransform.position - enemy.thisTransform.position).magnitude) {
+						points = 1 / (thisTransform.position - enemy.thisTransform.position).magnitude;
+						bestTarget = enemy;
 					}
 				}
 			}

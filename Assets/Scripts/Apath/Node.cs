@@ -22,7 +22,10 @@ public class Node : IHeapItem<Node>{
 	public int grid;
 
 	public List<Creep> creeps;
+	public Hero hero = null;
+
 	public Dictionary<int,int> heatCost;
+
 
 	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY,int _grid){
 

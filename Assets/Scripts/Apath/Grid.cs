@@ -271,6 +271,44 @@ public class Grid : MonoBehaviour {
 			return null;
 	}
 
+	public Unit[] GetEnemiesArea(Vector3 pos, float range){
+		if (grid == null)
+			return null;
+		List<Unit> Units = new List<Unit> ();
+		int numNodes = (int)Mathf.Ceil (range / nodeSize);
+		Node actualNode = NodeFromWorldPosition (pos);
+		int i = actualNode.gridX - numNodes;
+		if (i < 0)
+			i = 0;
+		int maxI = actualNode.gridX + numNodes;
+		if (maxI >= gridWorldSize.x / nodeSize)
+			maxI = (int)(gridWorldSize.x / nodeSize) - 1;
+
+		int maxJ = actualNode.gridY + numNodes;
+		if (maxJ >= gridWorldSize.y / nodeSize)
+			maxJ = (int)(gridWorldSize.y / nodeSize) - 1;
+		for (; i <= maxI; i++) {
+			int j = actualNode.gridY - numNodes;
+			if (j < 0)
+				j = 0;
+			for (; j <= maxJ; j++) {
+				if(grid[i,j].hero != null){
+					Units.Add((grid[i,j].hero));
+				}
+				foreach (Unit c in grid[i,j].creeps) {
+					
+					if(c.GetType().Name == "Creep"){
+						Units.Add(c);
+					}
+				}
+			}
+		}
+		if (Units.Count > 0)
+			return Units.ToArray ();
+		else
+			return null;
+	}
+
 
 
 	public List<Node> nodesAll = new List<Node>();
