@@ -17,7 +17,7 @@ public class TouchManager : MonoBehaviour {
 	bool isBuilding = false;
 
 	void Start(){
-		//hero = GameObject.Find("Hero").GetComponent<Hero>();
+		hero = GameObject.Find("Hero").GetComponent<Hero>();
 		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
 		camera = Camera.main;
 		int cores=  System.Environment.ProcessorCount;
@@ -43,10 +43,10 @@ public class TouchManager : MonoBehaviour {
 					Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
 					if (Selected.initPos.z == 100000)  {
 						Debug.Log ("MI PRIMER PATH");
-						Selected.AddWayPoint (new WayPoint (pos), false);
+						//Selected.AddWayPoint (new WayPoint (pos), false);
 						Node node = grid.NodeFromWorldPosition(pos);
 						node.heatCost[grid.index] = 0;
-						pathfinder.StartFindPath (Selected.thisTransform.position, pos, Selected.SetPath);
+						pathfinder.StartFindPathHeat (Selected.thisTransform.position, pos, Selected.SetPath);
 						posSP = pos;
 						spawnPoint = 0;
 						CancelInvoke ();
@@ -57,7 +57,7 @@ public class TouchManager : MonoBehaviour {
 							Debug.Log ("No shift");
 							Node node = grid.NodeFromWorldPosition(pos);
 							node.heatCost[grid.index] = 0;
-							pathfinder.StartFindPath (Selected.thisTransform.position, pos, Selected.SetPath);
+							pathfinder.StartFindPathHeat(Selected.thisTransform.position, pos, Selected.SetPath);
 							posSP = pos;
 							spawnPoint = 0;
 							CancelInvoke ();
@@ -94,8 +94,17 @@ public class TouchManager : MonoBehaviour {
 				}
 				int collsNum = Physics2D.OverlapCircleNonAlloc (camera.ScreenToWorldPoint (Input.mousePosition), 0.01f, new Collider2D[5], 1 << LayerMask.NameToLayer ("UI"));
 				if (collsNum < 1) {
+					Collider[] colls = new Collider[5];
 					Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-					//pathfinder.StartFindPath (hero.thisTransform.position, pos, hero.SetPath);
+					collsNum = Physics.OverlapSphereNonAlloc(new Vector3(pos.x,pos.y,0), 0.01f, colls,  1 << LayerMask.NameToLayer("Human"));
+					if(collsNum < 1){
+						pos = camera.ScreenToWorldPoint (Input.mousePosition);
+						pathfinder.StartFindPath(hero.thisTransform.position, pos, hero.SetPath);
+					}else{
+						pathfinder.StartFindPath(hero.thisTransform.position, colls[0].transform.position, hero.SetPathAttack);
+						hero.target = colls[0].GetComponent<Unit>();
+					}
+
 				}
 			}
 		}

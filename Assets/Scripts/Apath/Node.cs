@@ -7,7 +7,9 @@ using System.Collections.Generic;
 public class Node : IHeapItem<Node>{
 
 	public bool walkable;
+	public bool heated = false;
 	public Vector2 worldPosition;
+	public Vector3 dir;
 	public int gCost;
 	public int hCost;
 

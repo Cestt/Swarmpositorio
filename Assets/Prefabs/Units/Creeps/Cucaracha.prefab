@@ -54,12 +54,14 @@ MonoBehaviour:
   - {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8, type: 2}
   OriginSpawn: {fileID: 0}
   detectionRadius: 10
-  speedAlongPath: 15
-  path: []
+  speedAlongPath: 50
+  initPos: {x: 0, y: 0, z: 0}
   tier: 0
   subTier: 0
   NearbyAllies: []
   costGene: 2
+  position: 0
+  index: 0
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -115,6 +117,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

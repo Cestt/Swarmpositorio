@@ -11,18 +11,24 @@ public class PathFinding : MonoBehaviour {
 	PathRequestManager pathManager;
 	Queue<ApathQueue> queueFindPaths = new Queue<ApathQueue>();
 	bool running = false;
+	HeatMapManager heatmanager;
 
 	void Awake(){
+		heatmanager = GetComponent<HeatMapManager>();
 		grid = GetComponentInParent<Grid>();
 		pathManager = GetComponent<PathRequestManager>();
 	}
 
-	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack){
+	public void StartFindPathHeat(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack){
+		print("HeatMap path");
+		StartCoroutine(FindPathHeat(startPosition,targetPosition,callBack));
+	}
+	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
+		print("Standard path");
 		StartCoroutine(FindPath(startPosition,targetPosition,callBack));
-
 	}
 
-	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack ){
+	IEnumerator FindPathHeat(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack ){
 		running = true;
 		yield return new WaitForEndOfFrame();
 		Stopwatch sw = new Stopwatch();
@@ -31,6 +37,73 @@ public class PathFinding : MonoBehaviour {
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
 		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
+		if(startNode != targetNode){
+			
+			if(startNode.walkable & targetNode.walkable){
+				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
+				HashSet<Node> closedSet = new HashSet<Node>();
+
+				openSet.Add(startNode);
+
+				while(openSet.Count >0){
+					Node currentNode = openSet.RemoveFirst();
+
+
+					closedSet.Add(currentNode);
+
+					if(currentNode == targetNode){
+						print("Path succes");
+						pathSuccess = true;
+						break;
+					}
+
+					foreach(Node neighbour in grid.GetNeighbours(currentNode)){
+						if(!neighbour.walkable || closedSet.Contains(neighbour)){
+							continue;
+						}
+
+						int newMovementCostToNeighbour = currentNode.gCost + Getdistance(currentNode,neighbour);
+
+						if(newMovementCostToNeighbour < neighbour.gCost || !openSet.Containts(neighbour)){
+							neighbour.gCost = newMovementCostToNeighbour;
+							neighbour.hCost = Getdistance(neighbour,targetNode);
+							neighbour.parent =currentNode;
+
+							if(!openSet.Containts(neighbour)){
+								openSet.Add(neighbour);
+							}else{
+								openSet.UpdateItem(neighbour);
+							}
+
+						}
+					}
+				}
+			}
+		}
+			
+
+		if(pathSuccess){
+			waypoints = RetracePathHeat(startNode,targetNode);
+			heatmanager.StartIterateDictionary();
+		}
+		callBack(waypoints);
+		sw.Stop();
+		running = false;
+
+		print("Found path in "+sw.ElapsedMilliseconds+" ms");
+
+	}
+
+	IEnumerator FindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack ){
+		running = true;
+		yield return new WaitForEndOfFrame();
+		Stopwatch sw = new Stopwatch();
+		sw.Start();
+		Vector3[] waypoints = new Vector3[0];
+		bool pathSuccess = false;
+		Node startNode = grid.NodeFromWorldPosition(startPosition);
+		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
+
 		if(startNode != targetNode){
 			if(startNode.walkable & targetNode.walkable){
 				Heap<Node> openSet = new Heap<Node>(grid.maxHeapSize);
@@ -82,13 +155,12 @@ public class PathFinding : MonoBehaviour {
 		callBack(waypoints);
 		sw.Stop();
 		running = false;
-
 		print("Found path in "+sw.ElapsedMilliseconds+" ms");
 
 
 	}
 
-	Vector3 RetracePath(Node startNode, Node endNode){
+	Vector3 RetracePathHeat(Node startNode, Node endNode){
 
 		List<Node> path = new List<Node>();
 		Node currentNode = endNode;
@@ -97,18 +169,36 @@ public class PathFinding : MonoBehaviour {
 			path.Add(currentNode);
 			currentNode = currentNode.parent;
 		}
-
 		GenerateHeatMap(path);
 		//Vector3[] wayPoints = simplifyPath(path);
-		Array.Reverse(path.ToArray());
+		//Array.Reverse(path.ToArray());
 
-		return path[0].worldPosition;
+		return path[path.Count-1].worldPosition;
+	}
+
+	Vector3[] RetracePath(Node startNode, Node endNode){
+
+		List<Node> path = new List<Node>();
+		Node currentNode = endNode;
+
+		while(currentNode != startNode){
+			path.Add(currentNode);
+			currentNode = currentNode.parent;
+		}
+		Vector3[] wayPoints = simplifyPath(path);
+		Array.Reverse(wayPoints);
+
+		return wayPoints;
 	}
 
 	void GenerateHeatMap(List<Node> nodes){
+		print("Generate Heat Map");
 		foreach(Node n in nodes){
 			grid.SetNeighboursHeatMap(n);
 		}
+		heatmanager.heatMaps[grid.index] = new List<Node>(grid.heatNodes);
+
+		grid.heatNodes.Clear();
 		grid.index++;
 	}
 

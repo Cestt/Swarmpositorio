@@ -33,11 +33,12 @@ public class Grid : MonoBehaviour {
 	//Iteraciones en X e Y de cada sector;	
 	int gridSizeX, gridSizeY;
 	public int index = 0;
-		
+	public List<Node> heatNodes = new List<Node>();
+
 		
 	void Awake(){
 	// Recrear el grid en tiempo de carga;
-	StartCreateGrid();
+		StartCreateGrid();
 	}
 		
 	//Tamaño maximo del arbol de busqueda del pathfinding;
@@ -108,8 +109,6 @@ public class Grid : MonoBehaviour {
 	}
 	sw.Stop();
 	print("Created grid in: " +sw.ElapsedMilliseconds+" ms");
-	System.GC.Collect();
-	System.GC.WaitForPendingFinalizers();
 	yield return null;
 		
 	}
@@ -222,7 +221,9 @@ public class Grid : MonoBehaviour {
 
 
 					if(grid[checkX,checkY].heatCost.TryGetValue(index,out contains) == false|| grid[checkX,checkY].heatCost[index] > costNode){
-								grid[checkX,checkY].heatCost[index] = costNode;
+						grid[checkX,checkY].heatCost[index] = costNode;
+						heatNodes.Add(grid[checkX,checkY]);
+						grid[checkX,checkY].heated = true;
 					}
 				}
 			}
@@ -230,22 +231,6 @@ public class Grid : MonoBehaviour {
 	}
 
 
-		
-	public List<Node> nodesAll = new List<Node>();
-	void OnDrawGizmos(){
-		
-		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,gridWorldSize.y,1));
-		//Comentado por la enorme cantidad de nodos actual.
-
-		if(nodesAll != null & displayGizmos){
-			
-			foreach(Node n in nodesAll){
-					Gizmos.color = (n.walkable)?Color.white:Color.red;
-					Gizmos.DrawCube(n.worldPosition, Vector2.one * (nodeSize-5f));
-			}
-			print("Node list size: "+nodesAll.Count);
-		}
-	}
 		
 		
 	/// <summary>
@@ -284,6 +269,25 @@ public class Grid : MonoBehaviour {
 			return creeps.ToArray ();
 		else
 			return null;
+	}
+
+
+
+	public List<Node> nodesAll = new List<Node>();
+	void OnDrawGizmos(){
+
+		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,gridWorldSize.y,1));
+		//Comentado por la enorme cantidad de nodos actual.
+
+		if(nodesAll != null & displayGizmos){
+
+			foreach(Node n in nodesAll){
+				Gizmos.color = (n.walkable)?Color.white:Color.red;
+				Gizmos.color = (n.heated)?Color.blue:Color.white;
+				Gizmos.DrawCube(n.worldPosition, Vector2.one * (nodeSize-0.3f));
+			}
+
+		}
 	}
 
 }

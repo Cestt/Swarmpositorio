@@ -149,7 +149,7 @@ public class Spawn : Unit {
 	public void SetPath(Vector3 _initPos){
 		//Debug.Log ("New Path");
 		initPos = _initPos;
-		actualWayPoint = lastWayPoint;
+		//actualWayPoint = lastWayPoint;
 	}
 		
 	/// <summary>

@@ -39,13 +39,16 @@ public class Creep : Unit{
 	public int position;
 
 	public int index;
+	bool loop =  true;
+	static Vector3 lame = new Vector3(0,0,0);
+	Node tempNode;
 
 	Node node = null;
 
 	void Awake(){
 		base.Awake ();
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
-		initPos = new Vector3(0,0,-100000);
+		initPos = new Vector3(0,0,100000);
 	}
 
 	/// <summary>
@@ -55,7 +58,7 @@ public class Creep : Unit{
 		//Iniciar separacion de los creeps;
 		//this.StartCoroutineAsync(CheckSeparation());
 		//Inicializamos el path.
-		initPos = new Vector3(0,0,-100000);;
+		initPos = new Vector3(0,0,100000);;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
 		CheckGridPosition();
@@ -66,7 +69,7 @@ public class Creep : Unit{
 
 	void OnDisable() {	
 		//Re inicializamos el path;
-		initPos = new Vector3(0,0,-100000);
+		initPos = new Vector3(0,0,100000);
 		int numCreep;
 		//Paramos la IA;
 		state = FSM.States.Idle;
@@ -87,13 +90,14 @@ public class Creep : Unit{
 		if(state == FSM.States.Idle){
 			//StartCoroutine(EnemyDetection());
 			if(initPos.z == 100000){
+				initPos = new Vector3(0,0,100000);
+				InvokeRepeating("RequestPath",0,Random.Range(0.1f,0.4f));
 				if (!arrive) {
-					initPos = new Vector3(0,0,-100000);
-					InvokeRepeating("RequestPath",0,Random.Range(0.01f,0.1f));
-				} else {
-					initPos = new Vector3(0,0,-100000);
+					
+				} /*else {
+					initPos = new Vector3(0,0,100000);
 					InvokeRepeating("RequestPathWayPoint",0,Random.Range(0.1f,2f));
-				}
+				}*/
 			}else{
 				state = FSM.States.Move;
 				index = grid.index;
@@ -126,8 +130,8 @@ public class Creep : Unit{
 		if(OriginSpawn != null){
 			if(OriginSpawn.initPos.z != 100000){
 				initPos = OriginSpawn.initPos;
-				wayPoint = OriginSpawn.actualWayPoint;
-				wayPoint.AddCreep ();	
+				//wayPoint = OriginSpawn.actualWayPoint;
+				//wayPoint.AddCreep ();	
 				state = FSM.States.Move;
 				CancelInvoke("RequestPath");
 				stateChanger();
@@ -184,75 +188,37 @@ public class Creep : Unit{
 	IEnumerator MoveAlongPath(){
 		if(initPos != null){
 			Vector3 currentWayPoint = initPos;
+			Vector3 dir;
 			//Mantiene el bucle de movimiento.
-			bool loop =  true;
-			while(loop){
 
-				StartCoroutine(CheckMove());
+			while(loop){
+				tempNode = grid.NodeFromWorldPosition (thisTransform.position);
+
+				if(tempNode.dir != lame){
+					dir = tempNode.dir;
+					Utils.LookAt2D (10f, thisTransform, thisTransform.position + dir);
+					thisTransform.position = Vector3.MoveTowards (thisTransform.position,thisTransform.position + dir, speedAlongPath * Time.deltaTime / 10);
+					if(tempNode.heatCost[index] + tempNode.creeps.Count < 2){
+						loop = false;
+					}
+
+				}else{
+					Utils.LookAt2D (10f, thisTransform, initPos);
+					thisTransform.position = Vector3.MoveTowards (thisTransform.position, currentWayPoint, speedAlongPath * Time.deltaTime / 10);
+
+				}
 				CheckGridPosition ();
-			}
+				yield return new WaitForSeconds(Random.Range(0.1f,0.25f));			}
 		}
-		targetIndex = 0;
 		state = FSM.States.Idle;
 		yield return new WaitForSeconds(Random.Range(0.2f,2.0f));
-		stateChanger();
+		//stateChanger();
 	}
 
-	IEnumerator CheckMove(){
-		Node tempNode = grid.NodeFromWorldPosition (thisTransform.position);
-		float time = Random.Range (0.05f, 0.1f);
-		int contains;
 
-		if(tempNode.heatCost.TryGetValue(index,out contains) == false){
-			yield return new WaitForSeconds (time);
-			int Xcost;
-			int Ycost;
-			Node nodeTemp;
-			int check = tempNode.gridX -1;
-			if(check >= 0 & check < (grid.gridWorldSize.x/grid.nodeSize)){
-				nodeTemp =grid.grid[tempNode.gridX -1,tempNode.gridY];
-				Xcost = (nodeTemp.walkable & nodeTemp.heatCost.TryGetValue(index,out contains) == false) ? nodeTemp.heatCost[index] + nodeTemp.creeps.Count : tempNode.heatCost[index];
-			}else{
-				Xcost = tempNode.heatCost[index];
-			}
-			check = tempNode.gridX +1;
-
-			if(check >= 0 & check < (grid.gridWorldSize.x/grid.nodeSize)){
-				nodeTemp =grid.grid[tempNode.gridX +1,tempNode.gridY];
-				Xcost -= (nodeTemp.walkable & nodeTemp.heatCost.TryGetValue(index,out contains) == false) ? nodeTemp.heatCost[index] + nodeTemp.creeps.Count : tempNode.heatCost[index];
-			}else{
-				Xcost -= tempNode.heatCost[index];
-			}
-			check = tempNode.gridY - 1;
-
-			if(check >= 0 & check < (grid.gridWorldSize.y/grid.nodeSize)){
-				nodeTemp =grid.grid[tempNode.gridX,tempNode.gridY - 1];
-				Ycost =  (nodeTemp.walkable & nodeTemp.heatCost.TryGetValue(index,out contains) == false) ? nodeTemp.heatCost[index] + nodeTemp.creeps.Count : tempNode.heatCost[index];
-			}else{
-				Ycost = tempNode.heatCost[index];
-			}
-			check = tempNode.gridY + 1;
-
-			if(check >= 0 & check < (grid.gridWorldSize.y/grid.nodeSize)){
-				nodeTemp =grid.grid[tempNode.gridX,tempNode.gridY + 1];
-				Ycost -=  (nodeTemp.walkable & nodeTemp.heatCost.TryGetValue(index,out contains) == false) ? nodeTemp.heatCost[index] + nodeTemp.creeps.Count : tempNode.heatCost[index];
-			}else{
-				Ycost -= tempNode.heatCost[index];
-			}
-
-			Vector3 dir = new Vector3(Xcost,Ycost,0);
-
-			thisTransform.position = Vector3.MoveTowards (thisTransform.position,thisTransform.position + dir, speedAlongPath * time / 10);
-
-		}else{
-			yield return new WaitForSeconds (time);
-			Utils.LookAt2D (thisTransform, initPos);
-			thisTransform.position = Vector3.MoveTowards (thisTransform.position, initPos, speedAlongPath * time / 10);
-		}
-	}
 
 	void CheckGridPosition(){
-		Node tempNode =  grid.NodeFromWorldPosition (thisTransform.position);
+		tempNode =  grid.NodeFromWorldPosition (thisTransform.position);
 		if(node != null){
 			if(node != tempNode){
 				node.creeps.Remove(this);
