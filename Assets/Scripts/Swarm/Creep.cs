@@ -23,8 +23,6 @@ public class Creep : Unit{
 	int targetIndex = 0;
 	//Tier
 	public int tier = 0;
-	//Sub tier
-	public int subTier = 0;
 	//Lista de Creeps cercanos
 	public List<EVector2> NearbyAllies = new List<EVector2>();
 	//Task para manejar las coRutinas en los hilos.
@@ -390,7 +388,7 @@ public class Creep : Unit{
 		node.creeps.Remove(this);
 		node = null;
 		StopAllCoroutines();
-		OriginSpawn.CreepDead ();
+		OriginSpawn.CreepDead (this);
 		OriginSpawn = null;	
 		GameObject.Find ("CreepsText/Number").GetComponent<UITest> ().Remove();
 		gameObject.SetActive(false);

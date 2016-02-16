@@ -33,16 +33,16 @@ public class UIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Boton de evolucion
-		if (touchManager.Selected.tier == 3) {
+		if (touchManager.selected.tier == 3) {
 			buttonEvolveSpawnT1.interactable = false;
 			buttonEvolveSpawnT2.interactable = false;
 		} else {
 			buttonEvolveSpawnT1.interactable = true;
 			buttonEvolveSpawnT2.interactable = true;
 		}
-		if (!touchManager.Selected.skillTierActive) {
-			if (touchManager.Selected.tier > 0) {
-				if (touchManager.Selected.subType == -1) {
+		if (!touchManager.selected.skillTierActive) {
+			if (touchManager.selected.tier > 0) {
+				if (touchManager.selected.subType == -1) {
 					buttonEvolveCreepA.interactable = true;
 					buttonEvolveCreepB.interactable = true;
 					buttonSkillSpawn.interactable = false;

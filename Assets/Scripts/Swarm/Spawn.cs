@@ -1,26 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
-public class Spawn : Unit {
+public class Spawn : Unit, IPointerClickHandler {
 
 	//Rate de genes/segundo
 	public int geneConsumption;
 	//Rate de spawn; Creeps/segundo
+	[Tooltip ("Rate Creeps/segundo.")]
 	public float spawnRate;
+	[Tooltip ("Rate Creeps/segundo.")]
 	public float spawnRateTier;
 	//Path que obtendran los creeps;
 	//[HideInInspector]
 	public Vector3 initPos;
 	public Vector3[][] pathSpawnPoints;
-	//Lista de los prefabs de los creeps;
-	public List<GameObject> creepPrefabs = new List<GameObject>();
-	//Tier Actual a instanciar;
+
+	//Tier;
 	[HideInInspector]
-	public int tier = 1;
-	//Numero de creep en el tier actual a instanciar;
+	public int tier = 0;
+	//Subtier en el tier actual a instanciar
 	[HideInInspector]
-	public int Subtier = 0;
+	public int subTier = 0;
+	//Subtipo, solo vale si el creep esta evolucionado
+	[HideInInspector]
+	public int subType = -1;
+	//Creep de tier actual que se saca 
+
+	[HideInInspector]
+	public CreepEvolve actualEvolveCreep;
+
 	//Coste genes creep actual;
 	[HideInInspector]
 	public int coste = 0;
@@ -37,21 +48,26 @@ public class Spawn : Unit {
 	//Auxiliar para guardar el punto de ruta ultimo
 	private WayPoint lastWayPoint;
 
-	public int loops = 0;
 	private PathFinding pathfinder;
 
-	//Gen generado por cada creep de tier 0
+	[Tooltip ("Gen que genera un creep de tier 0")]
 	public int geneGain = 100;
 	//Porcentaje (de 0 a 1) de creeps asignado a la generacion
 	private float geneSpeed;
 	//Boolean para saber si se esta ejecutando los invoke de crear tier 0 y generacion
 	private bool[] invokeGene = new bool[2];
 
+	//Lista de los creeps
+	private List<Creep> creepsTier = new List<Creep>();
+
+	//Ve si esta con la habilidad del tier activada
+	public bool skillTierActive = false;
 	/***************************
 	 * SOLO PARA LAS PRUEBAS DE LA BARRA DE GENERACION*/
 	private SpriteRenderer[] spritesGene = new SpriteRenderer[5];
 	/**************************/
 
+	private TouchManager touchManager;
 
 	void Start () {
 		//Inicializamos el path para evitar errores;
@@ -78,12 +94,11 @@ public class Spawn : Unit {
 		spritesGene [3] = transform.FindChild ("ProductionBar/Prod_3").GetComponent<SpriteRenderer> ();
 		spritesGene [4] = transform.FindChild ("ProductionBar/Prod_4").GetComponent<SpriteRenderer> ();
 		/*****************************/
+		touchManager = GameObject.Find ("GameManager/TouchManager").GetComponent<TouchManager> ();
+		tier = 0;
+		subType = -1;
 	}
-	void Update(){
-		if(loops >= 5){
-			Debug.LogError("Loops "+loops);
-		}
-	}
+
 	/// <summary>
 	/// Solicita creeps basicos a la pool.
 	/// </summary>
@@ -93,7 +108,10 @@ public class Spawn : Unit {
 		if (creep != null) {
 			//creep.creep.transform.position = spawnPoints[nextSP];
 			creep.creep.transform.position = thisTransform.position;
-
+			/*TEMPORAL PARA QUE SE VEAN/*/
+			float angle = Random.Range (0, 360);
+			creep.creep.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
+			/****************************/
 			creep.creep.SetActive (true);
 
 			creep.creepScript.OriginSpawn = this;
@@ -112,12 +130,22 @@ public class Spawn : Unit {
 	/// Solicita creeps del tier actual a la pool;
 	/// </summary>
 	void CreateTier(){
-		CreepScript creep = pool.GetCreep (tier);
+		CreepScript creep = pool.GetCreep (tier,subTier,subType);
 		if (creep != null) {
+			creep.creep.transform.position = thisTransform.position;
+			/*TEMPORAL PARA QUE SE VEAN/*/
+			float angle = Random.Range (0, 360);
+			creep.creep.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
+			/****************************/
 			creep.creep.SetActive (true);
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
+			if (subType != -1)
+				creepsTier.Add (creep.creepScript);
 			numberCreeps++;
+			if (skillTierActive) {
+				actualEvolveCreep.skill.Use (creep.creepScript);
+			}
 			if (actualWayPoint != null)
 				actualWayPoint.AddCreep ();
 		}
@@ -138,8 +166,11 @@ public class Spawn : Unit {
 	/// <summary>
 	/// Es llamado cuando un creep muere
 	/// </summary>
-	public void CreepDead(){
+	public void CreepDead(Creep creep){
 		numberCreeps--;
+		//Si no es tier 0 se elimina de la lista de creeps de tier
+		if (creep.tier > 0)
+			creepsTier.Remove (creep);
 	}
 
 	/// <summary>
@@ -209,4 +240,86 @@ public class Spawn : Unit {
 		}
 	}
 
+
+	/// <summary>
+	/// Evoluciona el spawn al tipo nuevo de creep.
+	/// </summary>
+	/// <param name="typeCreep">Type creep. Tipo del creep nuevo que se va a generar</param>
+	public void EvolveSpawn(int typeCreep){
+		CreepEvolve newCreep;
+		tier++;
+		if (tier == 1)
+			newCreep = pool.tier1Evolve [typeCreep];
+		else if (tier == 2)
+			newCreep = pool.tier2Evolve [typeCreep];
+		else
+			newCreep = pool.tier3Evolve [typeCreep];
+		//cambiamos el tipo del creep
+		subTier = typeCreep; 
+		//el subtipo se deja a -1 = No evolucionado
+		subType = -1;
+		//cambiamos el rate 
+		spawnRateTier = newCreep.spawnRate;
+		//cancelamos la creacion anterior de tier
+		CancelInvoke ("CreateTier");
+		Invoke ("CreateTier", 1f / spawnRateTier);
+		actualEvolveCreep = newCreep;
+		//////////////PARA PRUEBAS
+		GetComponent<SpriteRenderer> ().color = new Color (0, ((float)tier) / 3f, ((float)tier) / 3f);
+	}
+
+	/// <summary>
+	/// Evolves the creep.
+	/// </summary>
+	/// <param name="typeCreep">Type creep.</param>
+	public void EvolveCreep(int typeCreep){
+		CreepEvolve newCreep;
+		if (typeCreep == 0)
+			newCreep = actualEvolveCreep.evolveA;
+		else
+			newCreep = actualEvolveCreep.evolveB;
+		//Limpiamos la lista de creeps evolucionados
+		creepsTier.Clear();
+		//Cambiamos el subtipo o sea la evolucion
+		subType = typeCreep;
+		//cambiamos el rate 
+		spawnRateTier = newCreep.spawnRate;
+		//cancelamos la creacion anterior de tier
+		CancelInvoke ("CreateTier");
+		Invoke ("CreateTier", 1f / spawnRateTier);
+		actualEvolveCreep = newCreep;
+	}
+
+	/// <summary>
+	/// Usa la habilidad de tier del Spawn sobre todos los creeps oportunos
+	/// </summary>
+	public void UseSkill(){
+		if (!skillTierActive) {
+			skillTierActive = true;
+			foreach (Creep creep in creepsTier) {
+				actualEvolveCreep.skill.Use (creep);
+			}
+			Invoke ("RemoveSkill", actualEvolveCreep.skill.timeBoost);
+		}
+	}
+
+	/// <summary>
+	/// Elimina el efecto de la habilidad del spawn sobre los creeps oportunos
+	/// </summary>
+	public void RemoveSkill(){
+		skillTierActive = false;
+		foreach (Creep creep in creepsTier) {
+			actualEvolveCreep.skill.Remove (creep);
+			creep.GetComponent<SpriteRenderer> ().color = actualEvolveCreep.creep.GetComponent<SpriteRenderer> ().color;
+		}
+	}
+
+	/// <summary>
+	/// Raises the pointer click event.
+	/// </summary>
+	/// <param name="eventData">Event data.</param>
+	public virtual void OnPointerClick(PointerEventData eventData)
+	{
+		touchManager.SelectSpawn (this);
+	}
 }

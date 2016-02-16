@@ -5,7 +5,7 @@ using System.Threading;
 public class TouchManager : MonoBehaviour {
 
 	Hero hero;
-	Spawn Selected = null;
+	public Spawn selected = null;
 	PathFinding pathfinder;
 	Camera camera;
 	Grid grid;
@@ -22,7 +22,7 @@ public class TouchManager : MonoBehaviour {
 		camera = Camera.main;
 		int cores=  System.Environment.ProcessorCount;
 		ThreadPool.SetMaxThreads(cores,cores*2);
-		Selected = GameObject.Find ("T0Spawn").GetComponent<Spawn> ();
+		selected = GameObject.Find ("T0Spawn").GetComponent<Spawn> ();
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 		buildSpawn = transform.FindChild ("BuildSpawn").gameObject;
 	}
@@ -32,32 +32,35 @@ public class TouchManager : MonoBehaviour {
 			Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
 			buildSpawn.transform.position = new Vector3(pos.x,pos.y);
 			if (Input.GetMouseButtonUp (0)) {
-				buildSpawn.GetComponent<BuildSpawn> ().Build ();
+				if (buildSpawn.GetComponent<BuildSpawn> ().Build ()) {
+					buildSpawn.SetActive (false);
+					isBuilding = false;
+				}
 			} else if (Input.GetMouseButtonUp (1)) {
 				buildSpawn.SetActive (false);
 				isBuilding = false;
 			}
 		} else {
 			if (Input.GetMouseButtonUp (1)) {
-				if (Selected != null) {
+				if (selected != null) {
 					Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-					if (Selected.initPos.z == 100000)  {
+					if (selected.initPos.z == 100000)  {
 						Debug.Log ("MI PRIMER PATH");
 						//Selected.AddWayPoint (new WayPoint (pos), false);
 						Node node = grid.NodeFromWorldPosition(pos);
 						node.heatCost[grid.index] = 0;
-						pathfinder.StartFindPathHeat (Selected.thisTransform.position, pos, Selected.SetPath);
+						pathfinder.StartFindPathHeat (selected.thisTransform.position, pos, selected.SetPath);
 						posSP = pos;
 						spawnPoint = 0;
 						CancelInvoke ();
-					} else if (grid.NodeFromWorldPosition (pos).worldPosition != grid.NodeFromWorldPosition (Selected.wayPoints [Selected.wayPoints.Count - 1].position).worldPosition) { 
+					} else if (grid.NodeFromWorldPosition (pos).worldPosition != grid.NodeFromWorldPosition (selected.wayPoints [selected.wayPoints.Count - 1].position).worldPosition) { 
 						bool shiftPressed = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
-						Selected.AddWayPoint (new WayPoint (pos), shiftPressed);
+						selected.AddWayPoint (new WayPoint (pos), shiftPressed);
 						if (!shiftPressed) {
 							Debug.Log ("No shift");
 							Node node = grid.NodeFromWorldPosition(pos);
 							node.heatCost[grid.index] = 0;
-							pathfinder.StartFindPathHeat(Selected.thisTransform.position, pos, Selected.SetPath);
+							pathfinder.StartFindPathHeat(selected.thisTransform.position, pos, selected.SetPath);
 							posSP = pos;
 							spawnPoint = 0;
 							CancelInvoke ();
@@ -80,7 +83,7 @@ public class TouchManager : MonoBehaviour {
 						if (creep != null) {
 							creep.creep.transform.position = new Vector3(pos.x,pos.y);
 							creep.creep.SetActive (true);
-							creep.creepScript.OriginSpawn = Selected;
+							creep.creepScript.OriginSpawn = selected;
 							count++;
 							if (count == 19) {
 								count = 0;
@@ -110,14 +113,43 @@ public class TouchManager : MonoBehaviour {
 		}
 	}
 
-
+	/// <summary>
+	/// Se ha pulsado un nuevo spawn y se cambia el spawn seleccionado.
+	/// </summary>
+	/// <param name="spawn">Spawn. Spawn que es seleccionado</param>
 	public void SelectSpawn(Spawn spawn){
 		Debug.Log ("Change Spawn: " + spawn);
-		Selected = spawn ;
+		selected = spawn ;
 	}
 
+	/// <summary>
+	/// Se ha puslado el boton para activar el modo construccion de Spawn.
+	/// </summary>
 	public void StartBuildSpawn(){
 		buildSpawn.SetActive (true);
 		isBuilding = true;
+	}
+
+	/// <summary>
+	/// Se ha pulsado el boton para evolucionar el spawn, generando un nuevo tipo de creep.
+	/// </summary>
+	/// <param name="type">Type. Tipo de creep seleccionado</param>
+	public void EvolveSpawn(int type){
+		selected.EvolveSpawn (type);
+	}
+
+	/// <summary>
+	/// Se ha pulsado el boton para evolucionar el creep del spawn a un nuevo tipo.
+	/// </summary>
+	/// <param name="type">Type. Tipo al que evoluciona el creep</param>
+	public void EvolveCreep(int type){
+		selected.EvolveCreep (type);
+	}
+
+	/// <summary>
+	/// Se ha pulsado el boton para usar la habilidad del Spawn
+	/// </summary>
+	public void UseSpawnSkill(){
+		selected.UseSkill ();
 	}
 }

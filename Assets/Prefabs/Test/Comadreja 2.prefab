@@ -54,12 +54,13 @@ MonoBehaviour:
   - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
   OriginSpawn: {fileID: 0}
   detectionRadius: 10.24
-  speedAlongPath: 1
-  path: []
+  speedAlongPath: 20
+  initPos: {x: 0, y: 0, z: 0}
   tier: 1
   NearbyAllies: []
   costGene: 100
   position: 0
+  index: 0
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1
