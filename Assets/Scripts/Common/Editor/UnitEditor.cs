@@ -74,7 +74,7 @@ public class CreepEditor : UnitEditor {
 		*/
 		creepScript.detectionRadius = EditorGUILayout.FloatField("Detection Radius",creepScript.detectionRadius);
 		creepScript.speedAlongPath = EditorGUILayout.FloatField("Speed Along Path",creepScript.speedAlongPath);
-		creepScript.costGene = EditorGUILayout.IntField("Cost Gene",creepScript.costGene);
+		creepScript.costGene = EditorGUILayout.IntField(new GUIContent("Cost Gene","Coste en genes para producir el creep"),creepScript.costGene);
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);
 		}

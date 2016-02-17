@@ -58,7 +58,7 @@ MonoBehaviour:
   initPos: {x: 0, y: 0, z: 0}
   tier: 1
   NearbyAllies: []
-  costGene: 100
+  costGene: 150
   position: 0
   index: 0
 --- !u!212 &21234492

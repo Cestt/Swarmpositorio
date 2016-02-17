@@ -28,9 +28,11 @@ public class TouchManager : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+		/*CONSTRUIR NUEVO SPAWN*/
 		if (isBuilding) {
 			Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
 			buildSpawn.transform.position = new Vector3(pos.x,pos.y);
+
 			if (Input.GetMouseButtonUp (0)) {
 				if (buildSpawn.GetComponent<BuildSpawn> ().Build ()) {
 					buildSpawn.SetActive (false);
@@ -152,4 +154,12 @@ public class TouchManager : MonoBehaviour {
 	public void UseSpawnSkill(){
 		selected.UseSkill ();
 	}
+
+	/// <summary>
+	/// Añade una pool de biomateria en el spawn actual
+	/// </summary>
+	public void AddBioPool(){
+		selected.AddBioPool();
+	}
+
 }
