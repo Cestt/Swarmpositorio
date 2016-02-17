@@ -54,6 +54,7 @@ public class Spawn : Unit, IPointerClickHandler {
 
 	private PathFinding pathfinder;
 
+	/***GENES CONFIGURACION***/
 	[Tooltip ("Gen que genera un creep de tier 0")]
 	public int geneGain = 100;
 	//Porcentaje (de 0 a 1) de creeps asignado a la generacion
@@ -61,6 +62,16 @@ public class Spawn : Unit, IPointerClickHandler {
 	//Boolean para saber si se esta ejecutando los invoke de crear tier 0 y generacion
 	private bool[] invokeGene = new bool[2];
 
+	/***BIOMATERIA CONFIGURACION***/
+	//Lleva el numero de piscinas creadas
+	[HideInInspector]
+	public int numBioPools;
+
+	[Tooltip ("Genes que cuesta crear las piscinas. Debe tener el mismo tamaño que el array de producción que se encuentra a continuacion")]
+	public int[] costBioPoolGene;
+	[Tooltip ("Produccion de biomateria de las piscinas. Se debe poner de forma acumulativa y se mide en Biomateria/segundo." +
+		"\nEjemplo: Si tenemos tres piscinas y cada una genera 2 de biomateria por segundo el array es [2,4,6] de tal forma que con tres piscinas se generan 6 por segundo")]
+	public int[] biomatterProduction ; //Medido den X/segundo
 	//Lista de los creeps de tier
 	private List<Creep> creepsTier = new List<Creep>();
 
@@ -103,6 +114,7 @@ public class Spawn : Unit, IPointerClickHandler {
 		touchManager = GameObject.Find ("GameManager/TouchManager").GetComponent<TouchManager> ();
 		tier = 0;
 		subType = -1;
+		numBioPools = 0;
 	}
 
 	/// <summary>
@@ -163,7 +175,7 @@ public class Spawn : Unit, IPointerClickHandler {
 	/// Genera genes en funcion del numero asignado de creeps
 	/// </summary>
 	void GenerateGen(){
-		pool.gene += geneGain;
+		EconomyManager.gene += geneGain;
 		if (geneSpeed > 0)
 			Invoke ("GenerateGen", 1f / (spawnRate * geneSpeed));
 		else
@@ -286,6 +298,8 @@ public class Spawn : Unit, IPointerClickHandler {
 		//el subtipo se deja a -1 = No evolucionado
 		subType = -1;
 		//cambiamos el rate 
+		EconomyManager.gene -= EconomyManager.GetCreepEvolveCostGene(tier,subTier,subType);
+		EconomyManager.biomatter -= EconomyManager.GetCreepEvolveCostBio (tier, subTier, subType);
 		spawnRateTier = newCreep.spawnRate;
 		//cancelamos la creacion anterior de tier
 		CancelInvoke ("CreateTier");
@@ -309,6 +323,8 @@ public class Spawn : Unit, IPointerClickHandler {
 		creepsTier.Clear();
 		//Cambiamos el subtipo o sea la evolucion
 		subType = typeCreep;
+		EconomyManager.gene -= EconomyManager.GetCreepEvolveCostGene(tier,subTier,subType);
+		EconomyManager.biomatter -= EconomyManager.GetCreepEvolveCostBio (tier, subTier, subType);
 		//cambiamos el rate 
 		spawnRateTier = newCreep.spawnRate;
 		//cancelamos la creacion anterior de tier
@@ -340,7 +356,22 @@ public class Spawn : Unit, IPointerClickHandler {
 			creep.GetComponent<SpriteRenderer> ().color = actualEvolveCreep.creep.GetComponent<SpriteRenderer> ().color;
 		}
 	}
+	public void GenerateBiomatter (){
+		EconomyManager.biomatter ++;
+		Invoke("GenerateBiomatter",1f/(float)biomatterProduction[numBioPools-1]);
+	}
 
+
+	public void AddBioPool(){
+		if (numBioPools >= costBioPoolGene.Length || numBioPools >= biomatterProduction.Length ||
+		    EconomyManager.gene < costBioPoolGene [numBioPools])
+			return;
+		EconomyManager.gene -= costBioPoolGene[numBioPools];
+		if (numBioPools == 0)
+			Invoke("GenerateBiomatter",1f/(float)biomatterProduction[numBioPools]);
+		numBioPools++;
+	}
+	
 	/// <summary>
 	/// Raises the pointer click event.
 	/// </summary>

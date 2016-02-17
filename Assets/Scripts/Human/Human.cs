@@ -201,7 +201,7 @@ public class Human : Unit {
 
 	public override void Dead ()
 	{
-		GameObject.Find ("Pool").GetComponent<Pool> ().biomatter += biomatterGain;
+		EconomyManager.biomatter += biomatterGain;
 		Destroy (thisGameObject);
 	}
 
