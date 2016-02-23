@@ -17,7 +17,7 @@ public class Spawn : Unit, IPointerClickHandler {
 	//[HideInInspector]
 	[HideInInspector]
 	public Vector3 initPos;
-	public Vector3[][] pathSpawnPoints;
+	public Node[] path = null;
 
 	public float sendRate = 1;
 	public int sendCuantity = 10;
@@ -45,12 +45,6 @@ public class Spawn : Unit, IPointerClickHandler {
 	private int numberCreeps;
 	//Texto con el numero de creeps
 	private UITest textNumberCreeps;
-	//Lista de los punto de ruta del criadero
-	public List<WayPoint> wayPoints;
-	//Dice a que punto de ruta marca el spawn de inicio
-	public WayPoint actualWayPoint;
-	//Auxiliar para guardar el punto de ruta ultimo
-	private WayPoint lastWayPoint;
 
 	private PathFinding pathfinder;
 
@@ -74,6 +68,7 @@ public class Spawn : Unit, IPointerClickHandler {
 	/**************************/
 
 	private TouchManager touchManager;
+	public int index;
 
 	void Start () {
 		//Inicializamos el path para evitar errores;
@@ -88,7 +83,6 @@ public class Spawn : Unit, IPointerClickHandler {
 		//Invoke("CreateTier",spawnRateTier);
 		//Texto para ver el numero de creeps;
 		textNumberCreeps = GameObject.Find ("CreepsText/Number").GetComponent<UITest> ();
-		wayPoints = new List<WayPoint> ();
 		numberCreeps = 0;
 		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
 		geneSpeed = 0;
@@ -123,8 +117,6 @@ public class Spawn : Unit, IPointerClickHandler {
 			creep.creepScript.OriginSpawn = this;
 			textNumberCreeps.Add ();
 			numberCreeps++;
-			if (actualWayPoint != null)
-				actualWayPoint.AddCreep ();
 		}
 		if (geneSpeed < 1)
 			Invoke ("Create", 1f / (spawnRate * (1f - geneSpeed)));
@@ -153,8 +145,6 @@ public class Spawn : Unit, IPointerClickHandler {
 			if (skillTierActive) {
 				actualEvolveCreep.skill.Use (creep.creepScript);
 			}
-			if (actualWayPoint != null)
-				actualWayPoint.AddCreep ();
 		}
 		Invoke("CreateTier",1f / spawnRateTier);
 	}
@@ -184,10 +174,16 @@ public class Spawn : Unit, IPointerClickHandler {
 	/// Asigna el path al ultimo punto de ruta
 	/// </summary>
 	/// <param name="_path">Path.</param>
-	public void SetPath(Vector3 _initPos){
-		//Debug.Log ("New Path");
+	public void SetPath(Vector3 _initPos,Node[] _path){
+		if(path == null){
+			path = _path;
+		}else{
+			Node[] temp = new Node[path.Length + _path.Length];
+			path.CopyTo(temp,0);
+			_path.CopyTo(temp,path.Length);
+			path = temp;
+		}
 		initPos = _initPos;
-		print("Z "+initPos.z);
 		if(spawnedCreeps.Count > 0)
 			InvokeRepeating("SendCreeps",0,sendRate);
 		//actualWayPoint = lastWayPoint;
@@ -204,42 +200,13 @@ public class Spawn : Unit, IPointerClickHandler {
 		}
 		for(int i = count; i >= 0;i--){
 			if(spawnedCreeps[i] != null){
+				spawnedCreeps[i].index = index;
 				spawnedCreeps[i].initPos = initPos;
 				spawnedCreeps.RemoveAt(i);
 			}
 		}
 	}
 		
-	/// <summary>
-	/// Añade un punto de ruta al spawn
-	/// </summary>
-	/// <param name="wayPoint">Punto de ruta clase WayPoint</param>
-	public void AddWayPoint(WayPoint wayPoint, bool shiftPressed){
-		wayPoint.Ini(this);
-
-		//Debug.Log("Mouse Up");
-		wayPoints.Add(wayPoint);
-		if (!shiftPressed || actualWayPoint == null) {
-			lastWayPoint = wayPoint;
-			//Debug.Log ("NOSHIFT");
-		}
-		if (wayPoints.Count > 1) {
-			wayPoints[wayPoints.Count - 2].nextWayPoint = wayPoint;
-			//Debug.Log("Pos "+ wayPoints[wayPoints.Count - 2].position +" " + wayPoint.position);
-			//pathfinder.StartFindPath(wayPoints[wayPoints.Count - 2].position,wayPoint.position,wayPoints[wayPoints.Count - 2].SetPath);
-		}
-
-	}
-		
-
-	/// <summary>
-	/// Elimina el primer punto de ruta.
-	/// </summary>
-	public void RemoveWayPoint(){
-		//Destroy (wayPoints [0]);
-		wayPoints.RemoveAt (0);
-		Debug.Log("RemoveWayPoint Total:" + wayPoints.Count);
-	}
 
 	/// <summary>
 	/// Cambia la velocidad de generacion de genes

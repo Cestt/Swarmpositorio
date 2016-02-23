@@ -57,11 +57,21 @@ MonoBehaviour:
   speedAlongPath: 50
   initPos: {x: 0, y: 0, z: 0}
   tier: 0
-  subTier: 0
   NearbyAllies: []
   costGene: 2
   position: 0
   index: 0
+  node:
+    walkable: 0
+    heated: 0
+    worldPosition: {x: 0, y: 0}
+    gCost: 0
+    hCost: 0
+    gridX: 0
+    gridY: 0
+    grid: 0
+    creeps: []
+    hero: {fileID: 0}
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -122,6 +132,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

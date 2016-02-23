@@ -3,7 +3,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using Battlehub.Dispatcher;
-using CielaSpike;
+using  System.Threading;
+using System.Security.Permissions;
 
 //Deriva de la clase basica Unit;
 //Clase basica de los creeps;
@@ -25,14 +26,11 @@ public class Creep : Unit{
 	public int tier = 0;
 	//Lista de Creeps cercanos
 	public List<EVector2> NearbyAllies = new List<EVector2>();
-	//Task para manejar las coRutinas en los hilos.
-	Task task;
 	//Coste de genes del creep
 	public int costGene;
 	//Dice si ha llegado al destino
 	bool arrive = false;
-	//Punto de ruta al que se dirije
-	public WayPoint wayPoint;
+
 
 	public int position;
 
@@ -41,11 +39,13 @@ public class Creep : Unit{
 	static Vector3 lame = new Vector3(0,0,0);
 	Node tempNode;
 
-	Node node = null;
-
+	public Node node = null;
+	Node prevNode = null;
+	NodeUpdater nUpdater;
 	void Awake(){
 		base.Awake ();
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
+		nUpdater = GameObject.Find("GameManager/PathFinder").GetComponent<NodeUpdater>();
 		initPos = new Vector3(0,0,100000);
 	}
 
@@ -59,7 +59,6 @@ public class Creep : Unit{
 		initPos = new Vector3(0,0,100000);;
 		//Inicializamos al estado principal;
 		state = FSM.States.Idle;
-		CheckGridPosition();
 		life = lifeIni;
 		stateChanger();
 		
@@ -98,7 +97,6 @@ public class Creep : Unit{
 				}*/
 			}else{
 				state = FSM.States.Move;
-				index = grid.index;
 				stateChanger();
 			}
 		}else
@@ -137,48 +135,8 @@ public class Creep : Unit{
 
 	}
 
-	/// <summary>
-	/// Solicita el path al punto de ruta en el que esta
-	/// </summary>
-	/// 
-	void RequestPathWayPoint(){
-		if (wayPoint != null) {
-			if (wayPoint.path != null) {
-				//initPos = wayPoint.path;
-				WayPoint nextWP = wayPoint.nextWayPoint;
-				wayPoint.RemoveCreep ();
-				wayPoint = nextWP;
-				nextWP.AddCreep ();
-				state = FSM.States.Move;
-				CancelInvoke("RequestPathWayPoint");
-				stateChanger();
-			}
-		}
-	}
-	/*IEnumerator RequestPathWayPoint(){
-		if(path != null){
-			yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
-			state = FSM.States.Move;
-			stateChanger();
 
-		}else{
-			if(wayPoint != null){
-				if(wayPoint.path != null){
-					path = wayPoint.path;
-					WayPoint nextWP = wayPoint.nextWayPoint;
-					wayPoint.RemoveCreep();
-					wayPoint = nextWP;
-					nextWP.AddCreep ();
-					yield return new WaitForSeconds(Random.Range(0.2f,0.6f));
-					StartCoroutine(RequestPathWayPoint());
 
-				}else{
-					yield return new WaitForSeconds(Random.Range(0.4f,0.8f));
-					StartCoroutine(RequestPathWayPoint());
-				}
-			} 
-		}
-	}*/
 	/// <summary>
 	/// Mueve el creep a lo largo de path.
 	/// </summary>
@@ -186,25 +144,31 @@ public class Creep : Unit{
 		if(initPos != null){
 			Vector3 currentWayPoint = initPos;
 			Vector3 dir;
+			nUpdater.creeps.Add(this);
 			//Mantiene el bucle de movimiento.
 
 			while(loop){
 				tempNode = grid.NodeFromWorldPosition (thisTransform.position);
 
-				if(tempNode.dir != lame){
-					dir = tempNode.dir;
+				if(tempNode.dir.ContainsKey(index)){
+					dir = tempNode.dir[index];
 					Utils.LookAt2D (10f, thisTransform, thisTransform.position + dir);
 					thisTransform.position = Vector3.MoveTowards (thisTransform.position,thisTransform.position + dir, speedAlongPath * Time.deltaTime / 10);
+					prevNode = tempNode;
 					if(tempNode.heatCost[index] + tempNode.creeps.Count < 2){
 						loop = false;
+						nUpdater.creeps.Remove(this);
 					}
 
-				}else{
-					Utils.LookAt2D (10f, thisTransform, initPos);
-					thisTransform.position = Vector3.MoveTowards (thisTransform.position, currentWayPoint, speedAlongPath * Time.deltaTime / 10);
+				}else if(prevNode != null){
+					Utils.LookAt2D (thisTransform, initPos);
+					thisTransform.position = Vector3.MoveTowards (thisTransform.position, prevNode.worldPosition, speedAlongPath * Time.deltaTime / 10);
 
+				}else{
+					Utils.LookAt2D (thisTransform, initPos);
+					thisTransform.position = Vector3.MoveTowards (thisTransform.position, currentWayPoint, speedAlongPath * Time.deltaTime / 10);
 				}
-				CheckGridPosition ();
+
 				yield return new WaitForSeconds(Random.Range(0.1f,0.25f));			}
 		}
 		state = FSM.States.Idle;
@@ -214,20 +178,18 @@ public class Creep : Unit{
 
 
 
-	void CheckGridPosition(){
-		tempNode =  grid.NodeFromWorldPosition (thisTransform.position);
+	void CheckGridPosition(Node _node){
 		if(node != null){
-			if(node != tempNode){
+			if(node != _node){
 				node.creeps.Remove(this);
-				node = tempNode;
+				node = _node;
 				node.creeps.Add(this);
 			}
 
 		}else{
-			node = tempNode;
+			node = _node;
 			node.creeps.Add(this);
 		}
-
 	}
 
 	/// <summary>
@@ -293,7 +255,6 @@ public class Creep : Unit{
 				if(Vector3.Distance(thisTransform.position,target.thisTransform.position) > skills[0].range - 0.5f){//Mantiene la distancia de ataque.
 					thisTransform.position = Vector3.MoveTowards(thisTransform.position,target.thisTransform.position,speedAlongPath * Time.deltaTime / 10);
 					Utils.LookAt2D (thisTransform, target.thisTransform);
-					CheckGridPosition ();
 					yield return null;
 				}else{
 					skills[0].Use(this);
@@ -314,7 +275,7 @@ public class Creep : Unit{
 
 	IEnumerator CheckSeparation(){
 		while(true){
-			yield return Ninja.JumpToUnity;
+			//yield return Ninja.JumpToUnity;
 			Collider2D[] colls = new Collider2D[11];
 			int numColls = Physics2D.OverlapCircleNonAlloc(thisTransform.position,detectionRadius,colls);
 			if(colls.Length > 10){
@@ -325,8 +286,8 @@ public class Creep : Unit{
 				}
 
 					EVector2 tempEvector2 = new EVector2(thisTransform.position.x,thisTransform.position.y);
-					this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
-					yield return Ninja.JumpBack;
+					//this.StartCoroutineAsync(SeparationCalc(NearbyAllies,SeparationResult,tempEvector2));
+					//yield return Ninja.JumpBack;
 			}
 				System.Random rnd = new System.Random();
 				int temp = rnd.Next(30,60);
@@ -368,7 +329,7 @@ public class Creep : Unit{
 		else
 		{
 		  	averageDirection = averageDirection / j;
-			yield return Ninja.JumpToUnity;
+			//yield return Ninja.JumpToUnity;
 			SeparationCallback (averageDirection);
 		
 			

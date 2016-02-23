@@ -9,7 +9,6 @@ public class Node : IHeapItem<Node>{
 	public bool walkable;
 	public bool heated = false;
 	public Vector2 worldPosition;
-	public Vector3 dir;
 	public int gCost;
 	public int hCost;
 
@@ -25,6 +24,7 @@ public class Node : IHeapItem<Node>{
 	public Hero hero = null;
 
 	public Dictionary<int,int> heatCost;
+	public Dictionary<int,Vector3> dir;
 
 
 	public Node(bool _walkable, Vector2 _worldPosition, int _gridX, int _gridY,int _grid){
@@ -35,6 +35,7 @@ public class Node : IHeapItem<Node>{
 		gridY = _gridY;
 		grid = _grid;
 		heatCost = new Dictionary<int, int>();
+		dir = new Dictionary<int, Vector3>();
 		creeps = new List<Creep>();
 	}
 	public int CompareTo(Node nodeToCompare){

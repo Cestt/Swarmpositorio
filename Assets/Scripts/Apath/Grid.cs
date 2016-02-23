@@ -32,6 +32,7 @@ public class Grid : MonoBehaviour {
 	private Dictionary<int,Node[]> Grids = new Dictionary<int, Node[]>();
 	//Iteraciones en X e Y de cada sector;	
 	int gridSizeX, gridSizeY;
+	[HideInInspector]
 	public int index = 0;
 	public List<Node> heatNodes = new List<Node>();
 
@@ -204,24 +205,27 @@ public class Grid : MonoBehaviour {
 		return neighbours;
 	}
 
-	public void SetNeighboursHeatMap(Node node){
-		int actCost = node.heatCost[index];
+	public void SetNeighboursHeatMap(Node node,int _index){
+		int contains;
+		int costNode;
+		int checkX;
+		int checkY;
+		int actCost = node.heatCost[_index];
 		for(int x = -3; x <= 3 ; x++){
 			for(int y = -3; y <= 3 ; y++){
 
 				if( x == 0 & y == 0)
 					continue;
-
-				int checkX = node.gridX + x;
-				int checkY = node.gridY + y;
+				checkX = node.gridX + x;
+				checkY = node.gridY + y;
 
 				if(checkX >= 0 & checkX < (gridWorldSize.x/nodeSize) & checkY >= 0 & checkY < (gridWorldSize.y/nodeSize)){
-						int costNode = actCost + Mathf.Max(Mathf.Abs(x),Mathf.Abs(y));
-					int contains;
+						costNode = actCost + Mathf.Max(Mathf.Abs(x),Mathf.Abs(y));
+
 
 
 					if(grid[checkX,checkY].heatCost.TryGetValue(index,out contains) == false|| grid[checkX,checkY].heatCost[index] > costNode){
-						grid[checkX,checkY].heatCost[index] = costNode;
+						grid[checkX,checkY].heatCost[_index] = costNode;
 						heatNodes.Add(grid[checkX,checkY]);
 						grid[checkX,checkY].heated = true;
 					}

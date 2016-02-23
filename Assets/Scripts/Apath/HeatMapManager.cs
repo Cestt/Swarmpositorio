@@ -13,37 +13,41 @@ public class HeatMapManager : MonoBehaviour {
 	Node nodeTemp;
 	int check;
 	bool updating = false;
-	// Use this for initialization
+	public List<HeatMapUpdater> heatmapsList = new List<HeatMapUpdater>();
+
 	void Start () {
 		grid = GetComponent<Grid>();
-		InvokeRepeating("StartIterateDictionary",0f,0.01f);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 
-	public  void StartIterateDictionary(){
-		StartCoroutine(IterateDictionary());
+	public  void StartIterateDictionary(int index){
+		heatmapsList.Add(new HeatMapUpdater(index,heatMaps[index].ToArray(),grid));
+	}
+
+	public void StopIterateDictionary(){
+		CancelInvoke();
+		StopAllCoroutines();
 	}
 
 	IEnumerator IterateDictionary(){
-		foreach(KeyValuePair<int,List<Node>> entry in heatMaps){
-			if(!updating){
-				updating = true;
-				this.StartCoroutineAsync(UpdateHeatMap(entry.Key,entry.Value.ToArray()));
-			}
+		while(true){
+			foreach(KeyValuePair<int,List<Node>> entry in heatMaps){
+				if(!updating){
+					updating = true;
+					this.StartCoroutineAsync(UpdateHeatMap(entry.Key,entry.Value.ToArray()));
+					while(updating){
+						yield return new WaitForSeconds(0.1f);
+					}
 
+				}
+			}
 			yield return null;
 		}
+	
 	}
 	IEnumerator UpdateHeatMap(int index,Node[] nodes){
-		
 		foreach(Node node in nodes){
 			tempNode = node;
-
-			if(tempNode.heatCost.TryGetValue(index,out contains) != false){
+			if(tempNode.heatCost.ContainsKey(index)){
 				
 
 				check = tempNode.gridX -1;
@@ -78,7 +82,7 @@ public class HeatMapManager : MonoBehaviour {
 					Ycost -= tempNode.heatCost[index];
 				}
 				yield return Ninja.JumpToUnity;
-				node.dir = new Vector3(Xcost,Ycost,0);
+				node.dir[index] = new Vector3(Xcost,Ycost,0);
 
 
 			}else{
@@ -86,7 +90,6 @@ public class HeatMapManager : MonoBehaviour {
 			}
 		}
 		updating = false;
-		yield return null;
 
 	}
 }

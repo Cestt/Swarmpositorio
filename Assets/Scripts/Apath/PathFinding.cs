@@ -19,24 +19,21 @@ public class PathFinding : MonoBehaviour {
 		pathManager = GetComponent<PathRequestManager>();
 	}
 
-	public void StartFindPathHeat(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack){
-		print("HeatMap path");
-		StartCoroutine(FindPathHeat(startPosition,targetPosition,callBack));
+	public void StartFindPathHeat(Vector3 startPosition, Node targetNode,Node[] _path ,Action<Vector3,Node[]> callBack,int index){
+		StartCoroutine(FindPathHeat(startPosition,targetNode,_path,callBack,index));
 	}
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
-		print("Standard path");
 		StartCoroutine(FindPath(startPosition,targetPosition,callBack));
 	}
 
-	IEnumerator FindPathHeat(Vector3 startPosition, Vector3 targetPosition,Action<Vector3> callBack ){
+	IEnumerator FindPathHeat(Vector3 startPosition, Node targetNode,Node[] _path ,Action<Vector3,Node[]> callBack ,int index){
 		running = true;
+		heatmanager.StopIterateDictionary();
 		yield return new WaitForEndOfFrame();
 		Stopwatch sw = new Stopwatch();
 		sw.Start();
-		Vector3 waypoints = new Vector3();
 		bool pathSuccess = false;
 		Node startNode = grid.NodeFromWorldPosition(startPosition);
-		Node targetNode = grid.NodeFromWorldPosition(targetPosition);
 		if(startNode != targetNode){
 			
 			if(startNode.walkable & targetNode.walkable){
@@ -83,10 +80,12 @@ public class PathFinding : MonoBehaviour {
 			
 
 		if(pathSuccess){
-			waypoints = RetracePathHeat(startNode,targetNode);
-			heatmanager.StartIterateDictionary();
+			Node[] waypoints = RetracePathHeat(startNode,targetNode,_path);
+			GenerateHeatMap(waypoints,index);
+			heatmanager.StartIterateDictionary(index);
+			callBack(waypoints[waypoints.Length-1].worldPosition,waypoints);
 		}
-		callBack(waypoints);
+
 		sw.Stop();
 		running = false;
 
@@ -160,20 +159,29 @@ public class PathFinding : MonoBehaviour {
 
 	}
 
-	Vector3 RetracePathHeat(Node startNode, Node endNode){
-
+	Node[] RetracePathHeat(Node startNode, Node endNode,Node[] _path){
+		if(_path != null)
+			print("AWDWADA "+grid.index);
 		List<Node> path = new List<Node>();
 		Node currentNode = endNode;
-
 		while(currentNode != startNode){
 			path.Add(currentNode);
 			currentNode = currentNode.parent;
 		}
-		GenerateHeatMap(path);
+		if(_path != null){
+			Node[] temp = new Node[path.Count + _path.Length];
+			_path.CopyTo(temp,0);
+			path.CopyTo(temp,_path.Length);
+			return temp;
+		}else{
+			
+			return path.ToArray();
+		}
+
 		//Vector3[] wayPoints = simplifyPath(path);
 		//Array.Reverse(path.ToArray());
 
-		return path[path.Count-1].worldPosition;
+
 	}
 
 	Vector3[] RetracePath(Node startNode, Node endNode){
@@ -191,15 +199,12 @@ public class PathFinding : MonoBehaviour {
 		return wayPoints;
 	}
 
-	void GenerateHeatMap(List<Node> nodes){
-		print("Generate Heat Map");
-		foreach(Node n in nodes){
-			grid.SetNeighboursHeatMap(n);
+	void GenerateHeatMap(Node[] nodes,int index){
+		for(int i = 0; i < nodes.Length - 1;i++){
+			grid.SetNeighboursHeatMap(nodes[i],index);
 		}
 		heatmanager.heatMaps[grid.index] = new List<Node>(grid.heatNodes);
-
 		grid.heatNodes.Clear();
-		grid.index++;
 	}
 
 	Vector3[] simplifyPath(List<Node> path){
