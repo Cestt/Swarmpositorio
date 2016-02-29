@@ -35,6 +35,7 @@ public class Grid : MonoBehaviour {
 	[HideInInspector]
 	public int index = 0;
 	public List<Node> heatNodes = new List<Node>();
+	public bool con;
 
 		
 	void Awake(){
@@ -211,6 +212,9 @@ public class Grid : MonoBehaviour {
 		int checkX;
 		int checkY;
 		int actCost = node.heatCost[_index];
+		if(node.heatCost[_index] == 0){
+			heatNodes.Add(node);
+		}
 		for(int x = -3; x <= 3 ; x++){
 			for(int y = -3; y <= 3 ; y++){
 
@@ -224,11 +228,13 @@ public class Grid : MonoBehaviour {
 
 
 
-					if(grid[checkX,checkY].heatCost.TryGetValue(index,out contains) == false|| grid[checkX,checkY].heatCost[index] > costNode){
+					if(grid[checkX,checkY].heatCost.TryGetValue(_index,out contains) == false|| grid[checkX,checkY].heatCost[_index] > costNode 
+															|| grid[checkX,checkY].heatCost[_index] == -1){
 						grid[checkX,checkY].heatCost[_index] = costNode;
 						heatNodes.Add(grid[checkX,checkY]);
 						grid[checkX,checkY].heated = true;
 					}
+
 				}
 			}
 		}

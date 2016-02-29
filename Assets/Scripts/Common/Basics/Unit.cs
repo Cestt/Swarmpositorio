@@ -11,6 +11,9 @@ public class Unit : MonoBehaviour {
 	public int armor; //Armadura de la unidad
 	[HideInInspector]
 	public int lifeIni;
+	public float speed = 1;
+	[HideInInspector]
+	public Vector3 squadVector = new Vector3(0,0,10000);
 
 	public bool canAttack = true; //Si puede atacar la unidad
 	[HideInInspector]
@@ -23,7 +26,7 @@ public class Unit : MonoBehaviour {
 	[HideInInspector]
 	public Transform thisTransform; //Transform propio.
 	[HideInInspector]
-	public GameObject thisGameObject; //Transform propio.
+	public GameObject thisGameObject; //GameObject propio.
 
 	[HideInInspector]
 	public Unit target; //Unidad objetivo al que apunta

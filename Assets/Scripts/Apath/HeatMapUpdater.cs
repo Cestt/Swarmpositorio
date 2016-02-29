@@ -12,7 +12,7 @@ public class HeatMapUpdater {
 	Node nodeTemp;
 	int check;
 	bool updating = false;
-	int index;
+	public int index;
 	Node[] nodes;
 	Thread a;
 
@@ -24,6 +24,15 @@ public class HeatMapUpdater {
 		a.Start();
 	}
 
+	public void Abort(){
+		
+		foreach(Node n in nodes){
+			n.heatCost[index] = -1;
+			n.heated = false;
+		}
+		a.Abort();
+		Debug.Log("End");
+	}
 
 	void UpdateHeatMap(){
 		float euristica;

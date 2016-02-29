@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 
 public class PathFinding : MonoBehaviour {
-
+	int _index;
 	Grid grid;
 	PathRequestManager pathManager;
 	Queue<ApathQueue> queueFindPaths = new Queue<ApathQueue>();
@@ -20,6 +20,7 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	public void StartFindPathHeat(Vector3 startPosition, Node targetNode,Node[] _path ,Action<Vector3,Node[]> callBack,int index){
+		_index = index;
 		StartCoroutine(FindPathHeat(startPosition,targetNode,_path,callBack,index));
 	}
 	public void StartFindPath(Vector3 startPosition, Vector3 targetPosition,Action<Vector3[]> callBack){
@@ -160,18 +161,20 @@ public class PathFinding : MonoBehaviour {
 	}
 
 	Node[] RetracePathHeat(Node startNode, Node endNode,Node[] _path){
-		if(_path != null)
-			print("AWDWADA "+grid.index);
 		List<Node> path = new List<Node>();
 		Node currentNode = endNode;
+
 		while(currentNode != startNode){
 			path.Add(currentNode);
 			currentNode = currentNode.parent;
 		}
 		if(_path != null){
+			print("Coste "+path[0].heatCost[_index]);
+			_path[0].heatCost[_index] = -1;
 			Node[] temp = new Node[path.Count + _path.Length];
-			_path.CopyTo(temp,0);
-			path.CopyTo(temp,_path.Length);
+			path.CopyTo(temp,0);
+			_path.CopyTo(temp,path.Count);
+			print("Length "+temp.Length+path.Count+_path.Length);
 			return temp;
 		}else{
 			
@@ -203,7 +206,7 @@ public class PathFinding : MonoBehaviour {
 		for(int i = 0; i < nodes.Length - 1;i++){
 			grid.SetNeighboursHeatMap(nodes[i],index);
 		}
-		heatmanager.heatMaps[grid.index] = new List<Node>(grid.heatNodes);
+		heatmanager.heatMaps[index] = new List<Node>(grid.heatNodes);
 		grid.heatNodes.Clear();
 	}
 

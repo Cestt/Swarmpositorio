@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Threading;
+using System.Linq;
 
 public class TouchManager : MonoBehaviour {
 
@@ -48,11 +49,17 @@ public class TouchManager : MonoBehaviour {
 					if (!shiftPressed) {
 						Node node = grid.NodeFromWorldPosition(pos);
 						node.heatCost[grid.index] = 0;
-						pathfinder.StartFindPathHeat(selected.thisTransform.position, node, selected.path, selected.SetPath,grid.index);
+						HeatMapUpdater tempUpdater = heatmanager.heatmapsList.First(x => x.index == grid.index);
+						tempUpdater.Abort();
+						heatmanager.heatmapsList.Remove(tempUpdater);
+						grid.con = true;
+						pathfinder.StartFindPathHeat(selected.path[0].worldPosition, node, selected.path, selected.SetPath,grid.index);
 						grid.index++;
+
 						selected.index = grid.index;
 						node.heatCost.Add(grid.index,0);
 						selected.path = null;
+						grid.con = false;
 						pathfinder.StartFindPathHeat(selected.thisTransform.position, node, selected.path, selected.SetPath,grid.index);
 						posSP = pos;
 						spawnPoint = 0;
