@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
   - 114: {fileID: 11458616}
-  - 61: {fileID: 6176556}
   m_Layer: 9
   m_Name: Kamikaze
   m_TagString: Untagged
@@ -30,20 +29,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!61 &6176556
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162330}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 0.6, y: 1.26}
 --- !u!114 &11458616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -70,12 +55,12 @@ MonoBehaviour:
   OriginSpawn: {fileID: 0}
   detectionRadius: 1024
   speedAlongPath: 3
-  path: []
+  initPos: {x: 0, y: 0, z: 0}
   tier: 1
-  subTier: 0
   NearbyAllies: []
   costGene: 200
-  numchecks: 0
+  position: 0
+  index: 0
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1

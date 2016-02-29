@@ -20,8 +20,8 @@ public class UITest : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		geneMesh.text = "" + pool.gene;
-		bioMesh.text = "" + pool.biomatter;
+		geneMesh.text = "" + EconomyManager.gene;
+		bioMesh.text = "" + EconomyManager.biomatter;
 	}
 
 	public void Add(){

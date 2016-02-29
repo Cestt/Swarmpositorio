@@ -30,6 +30,7 @@ public class TouchManager : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
+<<<<<<< HEAD
 		
 		if (Input.GetMouseButtonUp (1)) {
 			if (selected != null) {
@@ -47,6 +48,29 @@ public class TouchManager : MonoBehaviour {
 
 					bool shiftPressed = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
 					if (!shiftPressed) {
+=======
+		/*CONSTRUIR NUEVO SPAWN*/
+		if (isBuilding) {
+			Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
+			buildSpawn.transform.position = new Vector3(pos.x,pos.y);
+
+			if (Input.GetMouseButtonUp (0)) {
+				if (buildSpawn.GetComponent<BuildSpawn> ().Build ()) {
+					buildSpawn.SetActive (false);
+					isBuilding = false;
+				}
+			} else if (Input.GetMouseButtonUp (1)) {
+				buildSpawn.SetActive (false);
+				isBuilding = false;
+			}
+		} else {
+			if (Input.GetMouseButtonUp (1)) {
+				if (selected != null) {
+					Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
+					if (selected.initPos.z == 100000)  {
+						Debug.Log ("MI PRIMER PATH");
+						//Selected.AddWayPoint (new WayPoint (pos), false);
+>>>>>>> origin/master
 						Node node = grid.NodeFromWorldPosition(pos);
 						node.heatCost[grid.index] = 0;
 						HeatMapUpdater tempUpdater = heatmanager.heatmapsList.First(x => x.index == grid.index);
@@ -152,4 +176,12 @@ public class TouchManager : MonoBehaviour {
 	public void UseSpawnSkill(){
 		selected.UseSkill ();
 	}
+
+	/// <summary>
+	/// Añade una pool de biomateria en el spawn actual
+	/// </summary>
+	public void AddBioPool(){
+		selected.AddBioPool();
+	}
+
 }

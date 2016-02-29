@@ -4,23 +4,17 @@ using System.Collections.Generic;
 
 public class Pool : MonoBehaviour {
 
-	//Gen total
+	/*//Gen total
 	[Tooltip ("Numero de genes. Valor inicial")]
 	public int gene;
 	//Biomateria total
 	[Tooltip ("Numero de biomateria. Valor inicial")]
-	public int biomatter;
+	public int biomatter;*/
 
 
 	//Capacidad pool tier 0
 	[Tooltip ("Numero limite de tier 0")]
 	public int tier0Cuantity = 5000;
-
-
-	//Capacidad pool tier 1
-	[Tooltip ("Numero limite de tier 1_1")]
-	public int tier1_1Cuantity = 500;
-
 
 	//Lista prefabs de Creeps;
 	[Tooltip ("Prefabs del creep de tier 0")]
@@ -52,8 +46,11 @@ public class Pool : MonoBehaviour {
 	public CreepScript[] creepT3_2A;
 	public CreepScript[] creepT3_2B;
 
+	[Tooltip ("Array tamaño 2 donde van las dos configuraciones de los creep de tier 1")]
 	public CreepEvolve[] tier1Evolve = new CreepEvolve[2];
+	[Tooltip ("Array tamaño 2 donde van las dos configuraciones de los creep de tier 2")]
 	public CreepEvolve[] tier2Evolve = new CreepEvolve[2];
+	[Tooltip ("Array tamaño 2 donde van las dos configuraciones de los creep de tier 2")]
 	public CreepEvolve[] tier3Evolve = new CreepEvolve[2];
 	void Awake(){
 		CreatePool();
@@ -230,11 +227,11 @@ public class Pool : MonoBehaviour {
 	/// <param name="evolve">Configuracion del creep</param>
 	/// <param name="creepArray">Array donde busca creep</param>
 	private CreepScript GetFreeCreep(CreepEvolve evolve, CreepScript[] creepArray){
-		if (gene < evolve.costGen)
+		if (EconomyManager.gene < evolve.creep.costGene)
 			return null;
 		for (int i = 0; i < evolve.numPool; i++) {
 			if (!creepArray [i].creep.activeInHierarchy) {
-				gene -= evolve.costGen;
+				EconomyManager.gene -= evolve.creep.costGene;
 				return creepArray [i];
 			}
 		}

@@ -49,8 +49,11 @@ public class BuildSpawn : MonoBehaviour {
 	/// Metodo que es llamado cuando se clickea y, en caso de poder, construye el nuevo Spawn
 	/// </summary>
 	public bool Build(){
-		if (canBuild)
+		if (canBuild && EconomyManager.gene >= EconomyManager.newSpawnCostGene && EconomyManager.biomatter >= EconomyManager.newSpawnCostBio) {
 			Instantiate (prefabSpawn, transform.position, prefabSpawn.transform.rotation);
+			EconomyManager.gene -= EconomyManager.newSpawnCostGene;
+			EconomyManager.biomatter -= EconomyManager.newSpawnCostBio;
+		}
 		else
 			Debug.Log ("No se puede construir :(");
 		return canBuild;

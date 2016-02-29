@@ -11,7 +11,7 @@ GameObject:
   - 212: {fileID: 21271040}
   - 114: {fileID: 11407344}
   - 61: {fileID: 6188644}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: T0Spawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -366,15 +366,19 @@ MonoBehaviour:
   geneConsumption: 0
   spawnRate: 1
   spawnRateTier: 2
-  path: []
-  creepPrefabs:
-  - {fileID: 162330, guid: f6463a1477e43144c8735cbfb867bc90, type: 2}
-  - {fileID: 162330, guid: eceeafd83f081444094e83e7921e5951, type: 2}
+  initPos: {x: 0, y: 0, z: 0}
+  sendRate: 1
+  sendCuantity: 10
   tier: 1
-  Subtier: 0
+  subTier: 0
+  subType: -1
+  actualEvolveCreep: {fileID: 0}
   coste: 0
-  loops: 0
   geneGain: 100
+  numBioPools: 0
+  costBioPoolGene: c8000000
+  biomatterProduction: 01000000
+  skillTierActive: 0
 --- !u!114 &11431830
 MonoBehaviour:
   m_ObjectHideFlags: 1

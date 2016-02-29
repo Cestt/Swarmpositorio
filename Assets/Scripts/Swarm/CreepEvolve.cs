@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+	
 public class CreepEvolve : MonoBehaviour {
 
 	//Creep al que se va a evolucionar
@@ -13,8 +13,10 @@ public class CreepEvolve : MonoBehaviour {
 
 	public float spawnRate;
 	public int numPool;
-	public int costGen;
-	public int costBio;
+	[Tooltip ("Genes que cuesta comprar la mejora")]
+	public int costBuyGen;
+	[Tooltip ("Biomateria que cuesta comprar la mejora")]
+	public int costBuyBio;
 	public Sprite imageButtonCreepA;
 	public Sprite imageButtonCreepB;
 	public Sprite imageButtonSkill;
