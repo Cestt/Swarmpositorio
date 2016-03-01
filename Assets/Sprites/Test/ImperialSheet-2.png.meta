@@ -21,9 +21,9 @@ TextureImporter:
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: .25
+    heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 1
+  isReadable: 0
   grayScaleToAlpha: 0
   generateCubemap: 0
   cubemapConvolution: 0
@@ -46,11 +46,11 @@ TextureImporter:
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
-  spritePivot: {x: .5, y: .5}
+  spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 1
   alphaIsTransparency: 1
-  textureType: 5
+  textureType: 8
   buildTargetSettings: []
   spriteSheet:
     sprites:
@@ -62,8 +62,9 @@ TextureImporter:
         width: 23
         height: 29
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: ImperialSheet-2_1
       rect:
         serializedVersion: 2
@@ -72,8 +73,9 @@ TextureImporter:
         width: 3
         height: 8
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
     - name: ImperialSheet-2_2
       rect:
         serializedVersion: 2
@@ -82,8 +84,13 @@ TextureImporter:
         width: 67
         height: 74
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -33.5, y: 37}
+        - {x: -33.5, y: -37}
+        - {x: 33.5, y: -37}
+        - {x: 33.5, y: 37}
     - name: ImperialSheet-2_3
       rect:
         serializedVersion: 2
@@ -92,8 +99,14 @@ TextureImporter:
         width: 82
         height: 94
       alignment: 0
-      pivot: {x: .5, y: .5}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -41, y: 47}
+        - {x: -41, y: -47}
+        - {x: 41, y: -47}
+        - {x: 41, y: 47}
+    outline: []
   spritePackingTag: 
   userData: 
   assetBundleName: 

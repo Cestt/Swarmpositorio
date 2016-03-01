@@ -10,12 +10,14 @@ public class Hero : Unit {
 	Node tempNode;
 	Grid grid;
 	Node actualNode;
+	bool conquered;
 
 	void Awake(){
 		base.Awake();
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 		CheckGridPosition();
 		state = FSM.States.Idle;
+		conquered = false;
 	}
 
 
@@ -44,7 +46,11 @@ public class Hero : Unit {
 
 	void stateChanger(){
 		StopAllCoroutines();
-
+		if (conquered) {
+			powerPoint.RemoveUnit ();
+			DeletePowerPoint ();
+			conquered = false;
+		}
 		if(state == FSM.States.Idle){
 			
 		}else
@@ -84,6 +90,11 @@ public class Hero : Unit {
 				Utils.LookAt2D(rotationSpeed, thisTransform, currentWayPoint);
 				thisTransform.position = Vector3.MoveTowards(thisTransform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
 				CheckGridPosition();
+				if (powerPoint != null && Vector3.Distance (powerPoint.gameObject.transform.position, thisTransform.position) < 1) {
+					powerPoint.SetUnit (this, 1);
+					loop = false;
+					conquered = true;
+				}
 				yield return new WaitForEndOfFrame();
 			}
 			path = null;
@@ -179,4 +190,14 @@ public class Hero : Unit {
 		gameObject.SetActive(false);
 	}
 
+	public void UseSkill(int numSkill, Vector3 targetPos){
+		skills [0].Use (this, targetPos);
+	}
+
+	public override void MoveToPosition (Vector3 targetPos, float deltaTime)
+	{
+		Utils.LookAt2D(rotationSpeed, thisTransform, targetPos);
+		thisTransform.position = Vector3.MoveTowards(thisTransform.position,targetPos,speedAlongPath * deltaTime * 2);
+		CheckGridPosition();
+	}
 }

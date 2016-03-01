@@ -9,7 +9,8 @@ public static class FSM {
 		Move,
 		Chase,
 		Attack,
-		Dead
+		Dead,
+		Charge
 	};
 
 }

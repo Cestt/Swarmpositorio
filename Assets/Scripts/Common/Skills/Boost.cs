@@ -9,17 +9,16 @@ public class Boost {
 	}
 	[Tooltip("Atributo afectado")]
 	public statList stat;
-	[Tooltip("Float multiplicador. EJ: 0.5=Mitad 2=Doble")]
+	[Tooltip("Float porcentual en base 1. EJ: 0.5=50% de boost, -0.2 = -20%")]
 	public float boostPercent;
 	//Valor previo del atributo
-	private int previousValue;
 
 	public void Apply(Unit unit){
 
 		switch (stat){
 		case statList.Armor:
-			previousValue = unit.armor;
-			unit.armor = (int)(unit.armor * boostPercent);
+			unit.armor = (int)((unit.armor/unit.armorBase + boostPercent)*unit.armorBase);
+			unit.numBoosts++;
 			unit.gameObject.GetComponent<SpriteRenderer> ().color = new Color (0, 1, 1);
 			break;
 		}
@@ -28,8 +27,9 @@ public class Boost {
 	public void Remove(Unit unit){
 		switch (stat){
 		case statList.Armor:
-			unit.armor = previousValue;
-			//unit.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1);
+			unit.armor = (int)((unit.armor/unit.armorBase - boostPercent)*unit.armorBase);
+			unit.numBoosts--;
+			unit.gameObject.GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1);
 			break;
 		}
 	}

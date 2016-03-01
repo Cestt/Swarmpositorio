@@ -1,1 +1,2 @@
 C:\Users\usuario\Desktop\MANUEL\Git\Swarmpositorio\Swarmpositorio\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+C:\EvolveGames\Swarmpositorio\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
