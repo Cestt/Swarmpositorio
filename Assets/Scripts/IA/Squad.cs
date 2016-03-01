@@ -37,17 +37,7 @@ public class Squad : MonoBehaviour {
 			for(int i = 0; i < Agents.Count;i++){
 				if(Agents[i] != null){
 					if(Agents[i] != leader){
-						//StartCoroutine(ComputeAlignement(Agents[i]));
-						//StartCoroutine(ComputeCohesion(Agents[i]));
-						//StartCoroutine(ComputeSeparation(Agents[i]));
-						//StartCoroutine(ComputeFollow(Agents[i].thisTransform.position));
-						/*result =  new Vector3(alignment.x * alignmentForce + cohesion.x * cohesionForce + separation.x * separationForce,
-							alignment.y * alignmentForce + cohesion.y * cohesionForce + separation.y *separationForce,0);
-						result = result.normalized * 5;*/
-						//result = leader.thisTransform.position - Agents[i].thisTransform.position;
-						//result += separation * separationForce;
 						if(Agents[i].startPos.z == 1000){
-							Debug.Log("AAAAAAAAAAAAAAAA");
 							Agents[i].startPos = new Vector3(Random.Range(-max,max),
 								Random.Range(-maxSeparation/2,maxSeparation/2),0);
 						}else{

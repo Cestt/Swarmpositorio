@@ -13,6 +13,7 @@ public class TouchManager : MonoBehaviour {
 	HeatMapManager heatmanager;
 	private int spawnPoint;
 	Vector3 posSP;
+	Vector3 pos;
 	//Objeto de construccion de spawn
 	GameObject buildSpawn;
 	//Booleano para saber si esta construyendo
@@ -30,47 +31,15 @@ public class TouchManager : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-<<<<<<< HEAD
 		
-		if (Input.GetMouseButtonUp (1)) {
-			if (selected != null) {
-				
-				Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-				if (selected.initPos.z == 100000){
-					Node node = grid.NodeFromWorldPosition(pos);
-					node.heatCost[grid.index] = 0;
-					selected.index = grid.index;
-					pathfinder.StartFindPathHeat (selected.thisTransform.position, node, null ,selected.SetPath,grid.index);
-					posSP = pos;
-					spawnPoint = 0;
-				} else if (grid.NodeFromWorldPosition (pos) != 
-					grid.NodeFromWorldPosition (selected.path[selected.path.Length - 1].worldPosition)) { 
-
-					bool shiftPressed = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
-					if (!shiftPressed) {
-=======
-		/*CONSTRUIR NUEVO SPAWN*/
-		if (isBuilding) {
-			Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-			buildSpawn.transform.position = new Vector3(pos.x,pos.y);
-
-			if (Input.GetMouseButtonUp (0)) {
-				if (buildSpawn.GetComponent<BuildSpawn> ().Build ()) {
-					buildSpawn.SetActive (false);
-					isBuilding = false;
-				}
-			} else if (Input.GetMouseButtonUp (1)) {
-				buildSpawn.SetActive (false);
-				isBuilding = false;
-			}
-		} else {
+	
 			if (Input.GetMouseButtonUp (1)) {
 				if (selected != null) {
-					Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
+					pos = camera.ScreenToWorldPoint (Input.mousePosition);
 					if (selected.initPos.z == 100000)  {
 						Debug.Log ("MI PRIMER PATH");
 						//Selected.AddWayPoint (new WayPoint (pos), false);
->>>>>>> origin/master
+
 						Node node = grid.NodeFromWorldPosition(pos);
 						node.heatCost[grid.index] = 0;
 						HeatMapUpdater tempUpdater = heatmanager.heatmapsList.First(x => x.index == grid.index);
@@ -93,14 +62,13 @@ public class TouchManager : MonoBehaviour {
 				} else {
 					Debug.Log ("Mismo nodo");
 				}
-			}
-
-		} else if (Input.GetMouseButtonUp (0) & !isBuilding) {
+			} else 
+				if (Input.GetMouseButtonUp (0) & !isBuilding) {
 			bool shiftPressed = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
 			int collsNum = Physics2D.OverlapCircleNonAlloc (camera.ScreenToWorldPoint (Input.mousePosition), 0.01f, new Collider2D[5], 1 << LayerMask.NameToLayer ("UI"));
 			if (collsNum < 1) {
 				Collider[] colls = new Collider[5];
-				Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
+				pos = camera.ScreenToWorldPoint (Input.mousePosition);
 				collsNum = Physics.OverlapSphereNonAlloc(new Vector3(pos.x,pos.y,0), 0.01f, colls,  1 << LayerMask.NameToLayer("Human"));
 				if(collsNum < 1){
 					pos = camera.ScreenToWorldPoint (Input.mousePosition);
@@ -108,11 +76,14 @@ public class TouchManager : MonoBehaviour {
 				}else{
 					pathfinder.StartFindPath(hero.thisTransform.position, colls[0].transform.position, hero.SetPathAttack);
 					hero.target = colls[0].GetComponent<Unit>();
+				
 				}
 
+			
 			}
+		 
 		}
-	
+
 	}
 
 
