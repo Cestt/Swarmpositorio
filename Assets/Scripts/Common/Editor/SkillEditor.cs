@@ -30,7 +30,7 @@ public class SkillEditor : Editor {
 		if (skillScript.typeSkill == Skill.typesSkill.Projectile) {
 			skillScript.projectile = (GameObject)EditorGUILayout.ObjectField ("Projectile", skillScript.projectile, typeof(GameObject));
 			skillScript.enemyPenetration = EditorGUILayout.IntField ("EnemyPenetration", skillScript.enemyPenetration);
-		} else if (skillScript.typeSkill == Skill.typesSkill.Boost || skillScript.typeSkill == Skill.typesSkill.BoostSpawn) {
+		} else if (skillScript.typeSkill == Skill.typesSkill.Boost) {
 			skillScript.timeBoost = EditorGUILayout.FloatField (new GUIContent ("Time Boost", "Tiempo que dura el boost"), skillScript.timeBoost);
 			serializedObject.Update ();
 			EditorGUILayout.PropertyField (serializedObject.FindProperty ("boosts"), true);

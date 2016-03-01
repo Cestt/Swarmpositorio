@@ -16,7 +16,7 @@ public class BoostManager : MonoBehaviour {
 	/// <param name="units">Unidades afectadas por el boost</param>
 	/// <param name="type">Tipo de boost que se va a generar</param>
 	public BoostItem AddBoost(Boost[] boosts,float timeBoost ,List<Unit> units, Skill.typesSkill type){
-		if (type == Skill.typesSkill.Boost || type == Skill.typesSkill.BoostSpawn){
+		if (type == Skill.typesSkill.Boost){
 			//Debug.Log ("Nuevo boost: tiempo: " + timeBoost);
 			BoostItem boostItem =  new BoostItem(boosts,timeBoost, units, this);
 			boostsEnabled.Add(boostItem);

@@ -43,7 +43,7 @@ MonoBehaviour:
   damage: 1
   armorPen: 0
   range: 0.5
-  typeSkill: 4
+  typeSkill: 3
   typesAttacks: {fileID: 0}
   typeDamage: 0
   projectile: {fileID: 0}

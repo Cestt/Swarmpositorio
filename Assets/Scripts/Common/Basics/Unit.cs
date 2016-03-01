@@ -10,6 +10,8 @@ public class Unit : MonoBehaviour {
 	public int life = 1; //Vida de la unidad
 	public int armor; //Armadura de la unidad
 	[HideInInspector]
+	public int armorBase; //Armadura base
+	[HideInInspector]
 	public int lifeIni;
 	public float speed = 1;
 	[HideInInspector]
@@ -33,13 +35,19 @@ public class Unit : MonoBehaviour {
 	//[HideInInspector]
 	public List<Skill> skills = new List<Skill>(); //Lista de habilidades. La 0 es la habilidad basica
 
+	[HideInInspector]
+	public int numBoosts;
 	private bool endDamage;
+	[HideInInspector]
+	public PowerPoint powerPoint; //Punto que esta conquistando
 
 	public void Awake(){
 		typesAttacks = GameObject.Find ("GameManager/TypesAttacks").GetComponent<TypesAttacks> ();
 		thisTransform = transform;
 		thisGameObject = gameObject;
 		lifeIni = life;
+		numBoosts = 0;
+		armorBase = armor;
 	}
 
 
@@ -101,4 +109,14 @@ public class Unit : MonoBehaviour {
 	/// Metodo que se llama cuando la unidad muere.
 	/// </summary>
 	public virtual void Dead (){}
+
+	public virtual void MoveToPosition (Vector3 targetPos, float deltaTime){}
+
+	public void ConquestPowerPoint(PowerPoint _powerPoint){
+		powerPoint = _powerPoint;
+	}
+
+	public void DeletePowerPoint(){
+		powerPoint = null;
+	}
 }

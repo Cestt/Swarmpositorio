@@ -15,7 +15,6 @@ public class Skill :MonoBehaviour{
 		Instant,
 		Projectile,
 		Boost,
-		BoostSpawn,
 		Charge
 	}
 	public float coolDown = 1; //Tiempo que tarda en recargarse la habilidad
@@ -72,9 +71,6 @@ public class Skill :MonoBehaviour{
 		switch (typeSkill) {
 		case typesSkill.Boost:
 			SkillManager.boostManager.AddBoost(boosts,timeBoost,units,typeSkill);
-			break;
-		case typesSkill.BoostSpawn:
-			GameObject.Find ("GameManager/TouchManager").GetComponent<TouchManager> ().selected.boostSkillActive = SkillManager.boostManager.AddBoost (boosts, timeBoost, units, typeSkill);
 			break;
 		}
 	}

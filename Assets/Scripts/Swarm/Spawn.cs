@@ -71,8 +71,6 @@ public class Spawn : Unit, IPointerClickHandler {
 
 	private List<Creep> spawnedCreeps = new List<Creep>();
 
-	//Ve si esta con la habilidad del tier activada
-	public bool skillTierActive = false;
 	/***************************
 	 * SOLO PARA LAS PRUEBAS DE LA BARRA DE GENERACION*/
 	private SpriteRenderer[] spritesGene = new SpriteRenderer[5];
@@ -154,9 +152,6 @@ public class Spawn : Unit, IPointerClickHandler {
 			if (subType != -1)
 				creepsTier.Add (creep.creepScript);
 			numberCreeps++;
-			if (skillTierActive) {
-				actualEvolveCreep.skill.Use (creep.creepScript);
-			}
 		}
 		Invoke("CreateTier",1f / spawnRateTier);
 	}
@@ -226,7 +221,18 @@ public class Spawn : Unit, IPointerClickHandler {
 	/// <param name="percent">Nuevo porcentaje de generacion</param>
 	public void ChangeGeneration(float percent){
 		//Debug.Log ("Cambio: " + percent);
-		geneSpeed = percent;
+		if (geneSpeed == 0) {
+			CancelInvoke ("Create");
+			invokeGene [0] = false;
+			geneSpeed = 1;
+			spritesGene [2].color = new Color (0, 1, 0);
+		} else {
+			CancelInvoke ("GenerateGen");
+			invokeGene [1] = false;
+			geneSpeed = 0;
+			spritesGene [2].color = new Color (1, 1, 1);
+		}
+		//geneSpeed = percent;
 		if (!invokeGene[1] && geneSpeed>0) {
 			invokeGene [1] = true;
 			Invoke ("GenerateGen", 1f/  (spawnRate * geneSpeed));
@@ -234,8 +240,9 @@ public class Spawn : Unit, IPointerClickHandler {
 			invokeGene [0] = true;
 			Invoke("Create",1f/ (spawnRate * (1f-geneSpeed)));
 		}
-		/************************
-		 * SOLO PARA LAS PRUEBAS DE LA BARRA DE GENERACION*/
+
+
+		/*
 		float actual = 0.25f;
 		for (int i = 1; i < 5; i++) {
 			if (actual <= percent) {
@@ -243,7 +250,8 @@ public class Spawn : Unit, IPointerClickHandler {
 			}else
 				spritesGene [i].color = new Color (1, 1, 1);
 			actual += 0.25f;
-		}
+
+		}*/
 	}
 
 
@@ -300,29 +308,7 @@ public class Spawn : Unit, IPointerClickHandler {
 		actualEvolveCreep = newCreep;
 	}
 
-	/// <summary>
-	/// Usa la habilidad de tier del Spawn sobre todos los creeps oportunos
-	/// </summary>
-	public void UseSkill(){
-		if (!skillTierActive) {
-			skillTierActive = true;
-			foreach (Creep creep in creepsTier) {
-				actualEvolveCreep.skill.Use (creep);
-			}
-			Invoke ("RemoveSkill", actualEvolveCreep.skill.timeBoost);
-		}
-	}
 
-	/// <summary>
-	/// Elimina el efecto de la habilidad del spawn sobre los creeps oportunos
-	/// </summary>
-	public void RemoveSkill(){
-		skillTierActive = false;
-		foreach (Creep creep in creepsTier) {
-			actualEvolveCreep.skill.Remove (creep);
-			creep.GetComponent<SpriteRenderer> ().color = actualEvolveCreep.creep.GetComponent<SpriteRenderer> ().color;
-		}
-	}
 	public void GenerateBiomatter (){
 		EconomyManager.biomatter ++;
 		Invoke("GenerateBiomatter",1f/(float)biomatterProduction[numBioPools-1]);
