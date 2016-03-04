@@ -28,13 +28,23 @@ public class SkillEditor : Editor {
 		skillScript.typeDamage = EditorGUILayout.Popup ("Damage Type",skillScript.typeDamage ,listOfTypes.ToArray());
 		//Si es proyectil proyecta todo lo demas
 		if (skillScript.typeSkill == Skill.typesSkill.Projectile) {
-			skillScript.projectile = (GameObject)EditorGUILayout.ObjectField("Projectile",skillScript.projectile,typeof(GameObject));
+			skillScript.projectile = (GameObject)EditorGUILayout.ObjectField ("Projectile", skillScript.projectile, typeof(GameObject));
 			skillScript.enemyPenetration = EditorGUILayout.IntField ("EnemyPenetration", skillScript.enemyPenetration);
-		}else if (skillScript.typeSkill == Skill.typesSkill.Boost) {
-			skillScript.timeBoost = EditorGUILayout.IntField (new GUIContent("Time Boost","Tiempo que dura el boost"), skillScript.timeBoost);
-			serializedObject.Update();
-			EditorGUILayout.PropertyField(serializedObject.FindProperty("boosts"), true);
-			serializedObject.ApplyModifiedProperties();
+		} else if (skillScript.typeSkill == Skill.typesSkill.Boost) {
+			skillScript.timeBoost = EditorGUILayout.FloatField (new GUIContent ("Time Boost", "Tiempo que dura el boost"), skillScript.timeBoost);
+			serializedObject.Update ();
+			EditorGUILayout.PropertyField (serializedObject.FindProperty ("boosts"), true);
+			serializedObject.ApplyModifiedProperties ();
+		} else if (skillScript.typeSkill == Skill.typesSkill.Charge) {
+			serializedObject.Update ();
+			EditorGUILayout.PropertyField (serializedObject.FindProperty ("charge"), true);
+			serializedObject.ApplyModifiedProperties ();
+		}
+		skillScript.haveExtraSkill = EditorGUILayout.Toggle ("ExtraSkill?", skillScript.haveExtraSkill);
+		if (skillScript.haveExtraSkill) {
+			serializedObject.Update ();
+			EditorGUILayout.PropertyField (serializedObject.FindProperty ("extraSkill"), true);
+			serializedObject.ApplyModifiedProperties ();
 		}
 		if (GUI.changed) {
 			EditorUtility.SetDirty(target);

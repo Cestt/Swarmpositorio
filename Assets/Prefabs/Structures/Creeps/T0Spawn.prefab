@@ -51,7 +51,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &173864
 GameObject:
   m_ObjectHideFlags: 1
@@ -69,7 +69,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &174470
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +103,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &186448
 GameObject:
   m_ObjectHideFlags: 1
@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &402362
 Transform:
   m_ObjectHideFlags: 1
@@ -239,7 +239,7 @@ Transform:
   m_GameObject: {fileID: 186448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.069999956, y: 1, z: 1}
+  m_LocalScale: {x: 0.3, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 415194}
   m_RootOrder: 2
@@ -354,6 +354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
   lifeIni: 0
   canAttack: 0
   state: 0
@@ -363,9 +364,11 @@ MonoBehaviour:
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
   skills: []
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   geneConsumption: 0
   spawnRate: 1
-  spawnRateTier: 2
+  spawnRateTier: 0.01
   initPos: {x: 0, y: 0, z: 0}
   sendRate: 1
   sendCuantity: 10

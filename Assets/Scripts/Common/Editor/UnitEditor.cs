@@ -81,3 +81,46 @@ public class CreepEditor : UnitEditor {
 	}
 }
 
+/*[CustomEditor(typeof(Building))]
+public class BuildingEditor : UnitEditor {
+	public override void OnInspectorGUI ()
+	{
+		base.OnInspectorGUI ();
+		Building buildScript = (Building)target;
+		buildScript.detectionCreepsRadius = EditorGUILayout.FloatField("Detection Creeps Radius",buildScript.detectionCreepsRadius);
+
+	}
+}*/
+
+[CustomEditor(typeof(HeadQuarters))]
+public class HeadQuartersEditor : UnitEditor {
+	public override void OnInspectorGUI ()
+	{
+		base.OnInspectorGUI ();
+		//DrawDefaultInspector ();
+		HeadQuarters hqScript = (HeadQuarters)target;
+		hqScript.detectionCreepsRadius = EditorGUILayout.FloatField("Detection Creeps Radius",hqScript.detectionCreepsRadius);
+		hqScript.spawnTime = EditorGUILayout.FloatField(new GUIContent ("Spawn Time", "Medido en Soldados/segundos"),hqScript.spawnTime);
+		hqScript.reqGeneration = EditorGUILayout.IntField (new GUIContent ("Req. Generation", "Medido en Req/segundos"), hqScript.reqGeneration);
+		hqScript.prefabSoldier = (GameObject)EditorGUILayout.ObjectField ("Prefab Soldier", hqScript.prefabSoldier, typeof(GameObject));
+		hqScript.bunkerCostReq = EditorGUILayout.IntField ("BunkerCostReq", hqScript.bunkerCostReq);
+		hqScript.prefabBunker = (GameObject)EditorGUILayout.ObjectField ("Prefab Bunker", hqScript.prefabBunker, typeof(GameObject));
+		if (GUI.changed) {
+			EditorUtility.SetDirty(target);
+		}
+	}
+}
+
+[CustomEditor(typeof(Bunker))]
+public class BunkerEditor : UnitEditor {
+	public override void OnInspectorGUI ()
+	{
+		base.OnInspectorGUI ();
+		//DrawDefaultInspector ();
+		Bunker bunkerScript = (Bunker)target;
+		bunkerScript.detectionCreepsRadius = EditorGUILayout.FloatField("Detection Creeps Radius",bunkerScript.detectionCreepsRadius);
+		if (GUI.changed) {
+			EditorUtility.SetDirty(target);
+		}
+	}
+}

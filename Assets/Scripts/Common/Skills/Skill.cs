@@ -14,7 +14,8 @@ public class Skill :MonoBehaviour{
 	public enum typesSkill{
 		Instant,
 		Projectile,
-		Boost
+		Boost,
+		Charge
 	}
 	public float coolDown = 1; //Tiempo que tarda en recargarse la habilidad
 	public int damage = 1; //Daño que hace la habilidad
@@ -31,9 +32,12 @@ public class Skill :MonoBehaviour{
 	public int enemyPenetration; //Numero de enemigos a los que puede dañar y penetrar la habilidad
 	[HideInInspector]
 	//[Tooltip("Tiempo que dura el boost")]
-	public int timeBoost; 
-	public List<Boost> boosts = new List<Boost>(); //Lista de los boosts que activan
-
+	public float timeBoost; 
+	public Boost[] boosts; //Lista de los boosts que activan
+	//Carga
+	public Charge charge;
+	public bool haveExtraSkill = false;
+	public Skill extraSkill;
 	/// <summary>
 	/// Usa la habilidad
 	/// </summary>
@@ -50,16 +54,40 @@ public class Skill :MonoBehaviour{
 			newProj.Ini (unit,dir,enemyPenetration, range,this);
 			break;
 		case typesSkill.Boost:
-			foreach (Boost boost in boosts)
-				boost.Apply (unit);
+			List<Unit> units = new List<Unit> ();
+			units.Add (unit);
+			SkillManager.boostManager.AddBoost(boosts,timeBoost,units,typeSkill);
 			break;
 		}
 
 
 	}
 
+	/// <summary>
+	/// Usa la habilidad sobre una lista de unidades. Solo algunas habilidades se usan asi
+	/// </summary>
+	/// <param name="units">Lista de unidades objetivo</param>
+	public void Use(List<Unit> units){
+		switch (typeSkill) {
+		case typesSkill.Boost:
+			SkillManager.boostManager.AddBoost(boosts,timeBoost,units,typeSkill);
+			break;
+		}
+	}
 
 
+	/// <summary>
+	/// Usa la habilidad sobre una unidad y hacia un punto
+	/// </summary>
+	/// <param name="unit">Unidad obetivo</param>
+	/// <param name="targetPos">Punto hacia donde se apunta la habilidad</param>
+	public void Use(Unit unit, Vector3 targetPos){
+		switch (typeSkill) {
+		case typesSkill.Charge:
+			SkillManager.skillManager.AddCharge (unit, targetPos, charge.attack);
+			break;
+		}
+	}
 	/// <summary>
 	/// Ataca al objetivo del propietario.
 	/// </summary>
