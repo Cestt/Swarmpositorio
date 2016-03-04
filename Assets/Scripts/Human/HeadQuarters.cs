@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class HeadQuarters : Building {
 
 	//Prefabs para la creacion de unidades y estructuras
-	public GameObject prefabSoldier;
+	public List<GameObject> prefabsSquads;
 
 	public GameObject prefabBunker;
 
@@ -24,7 +24,7 @@ public class HeadQuarters : Building {
 	private List<Bunker> bunkers;
 
 	public void Start(){
-		Invoke ("CreateSoldier", 0);
+		Invoke ("CreateSquad", 0);
 		requeriments = 0;
 		Invoke ("GenerateRequeriments", 1f / (float)reqGeneration);
 		bunkers = new List<Bunker> ();
@@ -85,9 +85,9 @@ public class HeadQuarters : Building {
 	/// <summary>
 	/// Crea un soldado
 	/// </summary>
-	private void CreateSoldier(){
+	private void CreateSquad(){
 		float angle = Random.Range (0, 360);
-		Instantiate (prefabSoldier, transform.position + new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 5, Mathf.Sin (angle * Mathf.Deg2Rad) * 5, 0),Quaternion.identity);
-		Invoke ("CreateSoldier", (float)1f/spawnTime);
+		Instantiate (prefabsSquads[Random.Range(0,prefabsSquads.Count)], transform.position + new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 5, Mathf.Sin (angle * Mathf.Deg2Rad) * 5, 0),Quaternion.identity);
+		Invoke ("CreateSquad", (float)1f/spawnTime);
 	}
 }

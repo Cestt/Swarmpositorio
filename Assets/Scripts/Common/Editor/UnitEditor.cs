@@ -102,7 +102,10 @@ public class HeadQuartersEditor : UnitEditor {
 		hqScript.detectionCreepsRadius = EditorGUILayout.FloatField("Detection Creeps Radius",hqScript.detectionCreepsRadius);
 		hqScript.spawnTime = EditorGUILayout.FloatField(new GUIContent ("Spawn Time", "Medido en Soldados/segundos"),hqScript.spawnTime);
 		hqScript.reqGeneration = EditorGUILayout.IntField (new GUIContent ("Req. Generation", "Medido en Req/segundos"), hqScript.reqGeneration);
-		hqScript.prefabSoldier = (GameObject)EditorGUILayout.ObjectField ("Prefab Soldier", hqScript.prefabSoldier, typeof(GameObject));
+
+		serializedObject.Update();
+		EditorGUILayout.PropertyField(serializedObject.FindProperty("prefabsSquads"), true);
+		serializedObject.ApplyModifiedProperties();
 		hqScript.bunkerCostReq = EditorGUILayout.IntField ("BunkerCostReq", hqScript.bunkerCostReq);
 		hqScript.prefabBunker = (GameObject)EditorGUILayout.ObjectField ("Prefab Bunker", hqScript.prefabBunker, typeof(GameObject));
 		if (GUI.changed) {
