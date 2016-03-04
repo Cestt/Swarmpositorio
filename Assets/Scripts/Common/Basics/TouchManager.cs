@@ -5,16 +5,11 @@ using System.Linq;
 
 public class TouchManager : MonoBehaviour {
 
-<<<<<<< HEAD
+
 
 	public object  selected = null;
 	public Spawn hq;
-	public Squad selectedSquad;
-=======
 	Hero hero;
-	public Spawn selected = null;
-	public Spawn hq;
->>>>>>> origin/master
 	PathFinding pathfinder;
 	Camera camera;
 	Grid grid;
@@ -32,20 +27,15 @@ public class TouchManager : MonoBehaviour {
 		pathfinder = GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
 		heatmanager = GameObject.Find("GameManager/PathFinder").GetComponent<HeatMapManager>();
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
-<<<<<<< HEAD
 		hq = GameObject.Find ("T0Spawn").GetComponent<Spawn> ();
-=======
 		selected = GameObject.Find ("T0Spawn").GetComponent<Spawn> ();
 		hq = selected;
-		selected.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 0.3f);
->>>>>>> origin/master
 		buildSpawn = transform.FindChild ("BuildSpawn").gameObject;
 		camera = Camera.main;
 
 	}
 
 	void FixedUpdate() {
-<<<<<<< HEAD
 
 
 		if (Input.GetMouseButtonUp (0) & !isBuilding) {
@@ -131,61 +121,7 @@ public class TouchManager : MonoBehaviour {
 					Debug.Log ("Nada Seleccionado");
 				}
 
-=======
-		if (Input.GetMouseButtonUp (1)) {
-			if (selected != null) {
-				pos = camera.ScreenToWorldPoint (Input.mousePosition);
-				if (selected.initPos.z == 100000)  {
-					Debug.Log ("MI PRIMER PATH");
-					//Selected.AddWayPoint (new WayPoint (pos), false);
 
-					Node node = grid.NodeFromWorldPosition(pos);
-					node.heatCost[grid.index] = 0;
-					HeatMapUpdater tempUpdater = heatmanager.heatmapsList.First(x => x.index == grid.index);
-					tempUpdater.Abort();
-					heatmanager.heatmapsList.Remove(tempUpdater);
-					grid.con = true;
-					pathfinder.StartFindPathHeat(selected.path[0].worldPosition, node, selected.path, selected.SetPath,grid.index);
-					grid.index++;
-
-					selected.index = grid.index;
-					node.heatCost.Add(grid.index,0);
-					selected.path = null;
-					grid.con = false;
-					pathfinder.StartFindPathHeat(selected.thisTransform.position, node, selected.path, selected.SetPath,grid.index);
-					posSP = pos;
-					spawnPoint = 0;
-				}else{
-					
-				}
-			} else {
-				Debug.Log ("Mismo nodo");
-			}
-		} 
-		else if (Input.GetMouseButtonUp (0) & !isBuilding && hero.state != FSM.States.Charge) {
-			
-			if (Input.GetKey (KeyCode.Q)) {
-				Debug.Log ("CHARGE");
-				Vector3 pos = camera.ScreenToWorldPoint (Input.mousePosition);
-				hero.UseSkill (0, new Vector3(pos.x,pos.y,0));
-				return;
-			}
-			bool shiftPressed = Input.GetKey (KeyCode.LeftShift) || Input.GetKey (KeyCode.RightShift);
-			int collsNum = Physics2D.OverlapCircleNonAlloc (camera.ScreenToWorldPoint (Input.mousePosition), 0.01f, new Collider2D[5], 1 << LayerMask.NameToLayer ("UI"));
-			if (collsNum < 1) {
-				Collider[] colls = new Collider[5];
-				pos = camera.ScreenToWorldPoint (Input.mousePosition);
-				collsNum = Physics.OverlapSphereNonAlloc(new Vector3(pos.x,pos.y,0), 0.01f, colls,  1 << LayerMask.NameToLayer("Human"));
-				if(collsNum < 1){
-					pos = camera.ScreenToWorldPoint (Input.mousePosition);
-					pathfinder.StartFindPath(hero.thisTransform.position, pos, hero.SetPath);
-				}else{
-					pathfinder.StartFindPath(hero.thisTransform.position, colls[0].transform.position, hero.SetPathAttack);
-					hero.target = colls[0].GetComponent<Unit>();
-				
-			}
-			
->>>>>>> origin/master
 			}
 	}
 
