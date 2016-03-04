@@ -132,5 +132,11 @@ public class Squad : MonoBehaviour {
 		}
 
 	}
+
+	public void StartAttack(){
+		foreach(UnitSquad agent in Agents){
+			agent.StartAttack();
+		}
+	}
 		
 }

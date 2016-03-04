@@ -29,7 +29,6 @@ public class TouchManager : MonoBehaviour {
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
 		hq = GameObject.Find ("T0Spawn").GetComponent<Spawn> ();
 		selected = GameObject.Find ("T0Spawn").GetComponent<Spawn> ();
-		hq = selected;
 		buildSpawn = transform.FindChild ("BuildSpawn").gameObject;
 		camera = Camera.main;
 
@@ -40,12 +39,13 @@ public class TouchManager : MonoBehaviour {
 
 		if (Input.GetMouseButtonUp (0) & !isBuilding) {
 			pos = camera.ScreenToWorldPoint (Input.mousePosition);
-			Collider[] colls = new Collider[5];
+			Collider2D[] colls = new Collider2D[5];
 			//Comprobacion tocar UI
 			int collsNum = Physics2D.OverlapCircleNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("UI"));
 			if(collsNum < 1){
 				//Comprobacion tocar Spawn
-				collsNum = Physics.OverlapSphereNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("Spawn"));
+				Collider[] colls2 = new Collider[5];
+				collsNum = Physics.OverlapSphereNonAlloc (pos, 0.01f, colls2, 1 << LayerMask.NameToLayer ("Spawn"));
 				if(collsNum < 1){
 					//Comprobacion tocar Squad
 					collsNum = Physics2D.OverlapCircleNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("Squad"));
