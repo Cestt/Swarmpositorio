@@ -8,7 +8,9 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 427330}
+  - 114: {fileID: 11463970}
   - 212: {fileID: 21264090}
+  - 65: {fileID: 6519480}
   m_Layer: 0
   m_Name: Bunker
   m_TagString: Untagged
@@ -23,11 +25,53 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 195218}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 58.722324, y: 51.42232, z: 0.84375}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!65 &6519480
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195218}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 6.87, y: 7.37, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &11463970
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 195218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93cf8e1281db5f84aa58663ca1a7fde2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  life: 40000
+  armor: 600
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
+  lifeIni: 0
+  speed: 1
+  squadVector: {x: 0, y: 0, z: 10000}
+  canAttack: 0
+  state: 0
+  weaknessType: 0
+  typesAttacks: {fileID: 0}
+  thisTransform: {fileID: 0}
+  thisGameObject: {fileID: 0}
+  target: {fileID: 0}
+  skills: []
+  numBoosts: 0
+  powerPoint: {fileID: 0}
+  detectionCreepsRadius: 30
 --- !u!212 &21264090
 SpriteRenderer:
   m_ObjectHideFlags: 1

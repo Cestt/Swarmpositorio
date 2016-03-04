@@ -10,13 +10,14 @@ GameObject:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
   - 114: {fileID: 11458954}
+  - 65: {fileID: 6587582}
   m_Layer: 9
   m_Name: Roach
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &459830
 Transform:
   m_ObjectHideFlags: 1
@@ -29,6 +30,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!65 &6587582
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162330}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.67, y: 0.99, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11458954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40,11 +53,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000c606e9f3d5cd40bc5b947a432960e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 1
+  life: 100
   armor: 0
   armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
-  speed: 1
+  speed: 5
   squadVector: {x: 0, y: 0, z: 10000}
   canAttack: 1
   state: 0
@@ -53,12 +68,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8, type: 2}
   numBoosts: 0
   powerPoint: {fileID: 0}
   squad: {fileID: 0}
+  leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
+  tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -97,8 +117,12 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: skills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalPosition.x
@@ -129,6 +153,19 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 56d155cafb5ecfe408d64c238137a352,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: skills.Array.data[0]
+      value: 
+      objectReference: {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8,
+        type: 2}
+    - target: {fileID: 0}
+      propertyPath: life
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: speed
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 162330}

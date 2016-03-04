@@ -40,14 +40,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coolDown: 1
-  damage: 10
+  damage: 28
   armorPen: 0
-  range: 128
+  range: 0.94
   typeSkill: 0
   typesAttacks: {fileID: 0}
   typeDamage: 0
   projectile: {fileID: 0}
   enemyPenetration: 0
+  timeBoost: 0
+  boosts: []
+  charge:
+    end: 0
+    attack: {fileID: 0}
+    targetPos: {x: 0, y: 0, z: 0}
+    rangeCharge: 0
+  haveExtraSkill: 0
+  extraSkill: {fileID: 0}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

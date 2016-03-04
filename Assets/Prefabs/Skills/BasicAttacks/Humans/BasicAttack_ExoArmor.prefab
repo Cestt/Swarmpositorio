@@ -40,10 +40,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coolDown: 1
-  damage: 50
-  armorPen: 10
-  range: 10
-  typeSkill: 1
+  damage: 500
+  armorPen: 100
+  range: 1.85
+  typeSkill: 0
   typesAttacks: {fileID: 0}
   typeDamage: 0
   projectile: {fileID: 149370, guid: d4fb70adf7fc54e438e80587fae94a7c, type: 2}

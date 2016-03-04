@@ -9,11 +9,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 470850}
   - 212: {fileID: 21242260}
-  - 114: {fileID: 11464022}
-  - 65: {fileID: 6565786}
-  - 65: {fileID: 6588498}
   - 114: {fileID: 11452702}
-  m_Layer: 8
+  - 65: {fileID: 6557098}
+  m_Layer: 10
   m_Name: ExoArmor
   m_TagString: Human
   m_Icon: {fileID: 0}
@@ -32,19 +30,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!65 &6565786
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 123302}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.81, y: 1.85, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &6588498
+--- !u!65 &6557098
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -67,39 +53,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000c606e9f3d5cd40bc5b947a432960e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 1
-  armor: 0
+  life: 3200
+  armor: 500
   armorBase: 0
-  lifeIni: 0
-  speed: 1
-  squadVector: {x: 0, y: 0, z: 10000}
-  canAttack: 1
-  state: 0
-  weaknessType: 0
-  typesAttacks: {fileID: 0}
-  thisTransform: {fileID: 0}
-  thisGameObject: {fileID: 0}
-  target: {fileID: 0}
-  skills: []
-  numBoosts: 0
-  powerPoint: {fileID: 0}
-  squad: {fileID: 0}
-  goTo: {x: 0, y: 0, z: 10000}
-  startPos: {x: 0, y: 0, z: 1000}
---- !u!114 &11464022
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 123302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72664a4e7c468ef46ab8dd398e473307, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 100
-  armor: 1
-  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 1
   squadVector: {x: 0, y: 0, z: 10000}
@@ -111,14 +69,16 @@ MonoBehaviour:
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
   skills:
-  - {fileID: 11409314, guid: b027af3d8bd3b8e4c9615517055690ba, type: 2}
+  - {fileID: 0}
   numBoosts: 0
   powerPoint: {fileID: 0}
-  detectionRadius: 10
-  detectionCreepsRadius: 10
-  speedAlongPath: 2
-  path: []
-  biomatterGain: 1
+  squad: {fileID: 0}
+  leader: 0
+  goTo: {x: 0, y: 0, z: 10000}
+  startPos: {x: 0, y: 0, z: 1000}
+  tipoUnidad: 0
+  detectionRadius: 30
+  detectionCreepsRadius: 30
 --- !u!212 &21242260
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -157,6 +117,10 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: skills.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -174,6 +138,26 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: e313449c5f78fb2449429cf9965c3aca,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: life
+      value: 3200
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: armor
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: detectionRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: detectionCreepsRadius
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 123302}

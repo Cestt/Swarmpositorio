@@ -40,9 +40,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coolDown: 1
-  damage: 90
-  armorPen: 30
-  range: 128
+  damage: 160
+  armorPen: 300
+  range: 2.435
   typeSkill: 0
   typesAttacks: {fileID: 0}
   typeDamage: 0

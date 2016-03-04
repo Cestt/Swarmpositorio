@@ -26,7 +26,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 402362}
-  - 61: {fileID: 6143896}
+  - 65: {fileID: 6551950}
   m_Layer: 11
   m_Name: SpawnLayer
   m_TagString: Untagged
@@ -224,7 +224,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 143900}
   m_LocalRotation: {x: 0, y: 0, z: 0.9451753, w: 0.32656348}
-  m_LocalPosition: {x: -5.19, y: -4.9, z: 0}
+  m_LocalPosition: {x: -70.41, y: -69.53, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 415194}
@@ -271,20 +271,6 @@ BoxCollider2D:
   m_Offset: {x: -0.05, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.20000003}
---- !u!61 &6143896
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 148464}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 2.81, y: 2.72}
 --- !u!61 &6163804
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -341,6 +327,18 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Size: {x: 0.4, y: 0.20000003}
+--- !u!65 &6551950
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 148464}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7, y: 7, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11407344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,10 +350,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebd86bbce1c1f14abb181c7ecf76161, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  life: 1
-  armor: 0
+  life: 100000
+  armor: 1000
   armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
+  speed: 1
+  squadVector: {x: 0, y: 0, z: 10000}
   canAttack: 0
   state: 0
   weaknessType: 0
@@ -367,9 +369,10 @@ MonoBehaviour:
   numBoosts: 0
   powerPoint: {fileID: 0}
   geneConsumption: 0
-  spawnRate: 1
+  spawnRate: 4
   spawnRateTier: 0.01
   initPos: {x: 0, y: 0, z: 0}
+  path: []
   sendRate: 1
   sendCuantity: 10
   tier: 1
@@ -377,11 +380,11 @@ MonoBehaviour:
   subType: -1
   actualEvolveCreep: {fileID: 0}
   coste: 0
-  geneGain: 100
+  geneGain: 4
   numBioPools: 0
   costBioPoolGene: c8000000
   biomatterProduction: 01000000
-  skillTierActive: 0
+  index: 0
 --- !u!114 &11431830
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -678,7 +681,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 510380539
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 70c3e750ab473d449b2d6cb79455bd7d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b2e07b0e67648f7449c2e1de630fb1b3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -760,6 +763,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: spawnRateTier
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: life
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: armor
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
