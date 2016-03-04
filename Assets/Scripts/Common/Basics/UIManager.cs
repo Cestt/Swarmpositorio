@@ -41,48 +41,52 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//Boton nuevo spawn
-		if (EconomyManager.gene < EconomyManager.newSpawnCostGene || EconomyManager.biomatter < EconomyManager.newSpawnCostBio) {
-			buttonNewSpawn.interactable = false;
-		} else {
-			buttonNewSpawn.interactable = true;
-		}
-		//Botones de evolucion
-		if (touchManager.selected.tier == 3) {
-			buttonEvolveSpawnT1.interactable = false;
-			buttonEvolveSpawnT2.interactable = false;
-		} else {
-			buttonEvolveSpawnT1.interactable = CheckCostButtonTier(touchManager.selected.tier+1,0,-1);
-			buttonEvolveSpawnT2.interactable = CheckCostButtonTier(touchManager.selected.tier+1,1,-1);
-		}
-		if (!touchManager.selected.skillTierActive) {
-			if (touchManager.selected.tier > 0) {
-				if (touchManager.selected.subType == -1) {
-					buttonEvolveCreepA.interactable = CheckCostButtonTier(touchManager.selected.tier,touchManager.selected.subTier,0);
-					buttonEvolveCreepB.interactable = CheckCostButtonTier(touchManager.selected.tier,touchManager.selected.subTier,1);;
-					buttonSkillSpawn.interactable = false;
+		if(touchManager.selected.Equals(typeof(Spawn))){
+			Spawn selected = (Spawn) touchManager.selected;
+			//Boton nuevo spawn
+			if (EconomyManager.gene < EconomyManager.newSpawnCostGene || EconomyManager.biomatter < EconomyManager.newSpawnCostBio) {
+				buttonNewSpawn.interactable = false;
+			} else {
+				buttonNewSpawn.interactable = true;
+			}
+			//Botones de evolucion
+			if (selected.tier == 3) {
+				buttonEvolveSpawnT1.interactable = false;
+				buttonEvolveSpawnT2.interactable = false;
+			} else {
+				buttonEvolveSpawnT1.interactable = CheckCostButtonTier(selected.tier+1,0,-1);
+				buttonEvolveSpawnT2.interactable = CheckCostButtonTier(selected.tier+1,1,-1);
+			}
+			if (!selected.skillTierActive) {
+				if (selected.tier > 0) {
+					if (selected.subType == -1) {
+						buttonEvolveCreepA.interactable = CheckCostButtonTier(selected.tier,selected.subTier,0);
+						buttonEvolveCreepB.interactable = CheckCostButtonTier(selected.tier,selected.subTier,1);;
+						buttonSkillSpawn.interactable = false;
+					} else {
+						buttonEvolveCreepA.interactable = false;
+						buttonEvolveCreepB.interactable = false;
+						buttonSkillSpawn.interactable = true;
+					}
 				} else {
 					buttonEvolveCreepA.interactable = false;
 					buttonEvolveCreepB.interactable = false;
-					buttonSkillSpawn.interactable = true;
+					buttonSkillSpawn.interactable = false;
 				}
 			} else {
+				buttonEvolveSpawnT1.interactable = false;
 				buttonEvolveCreepA.interactable = false;
 				buttonEvolveCreepB.interactable = false;
 				buttonSkillSpawn.interactable = false;
 			}
-		} else {
-			buttonEvolveSpawnT1.interactable = false;
-			buttonEvolveCreepA.interactable = false;
-			buttonEvolveCreepB.interactable = false;
-			buttonSkillSpawn.interactable = false;
+			//Boton de piscina de biomateria
+			if (selected.numBioPools < selected.costBioPoolGene.Length && 
+				EconomyManager.gene >= selected.costBioPoolGene[selected.numBioPools])
+				buttonAddBioPool.interactable = true;
+			else
+				buttonAddBioPool.interactable = false;
 		}
-		//Boton de piscina de biomateria
-		if (touchManager.selected.numBioPools < touchManager.selected.costBioPoolGene.Length && 
-			EconomyManager.gene >= touchManager.selected.costBioPoolGene[touchManager.selected.numBioPools])
-			buttonAddBioPool.interactable = true;
-		else
-			buttonAddBioPool.interactable = false;
+
 		
 	}
 

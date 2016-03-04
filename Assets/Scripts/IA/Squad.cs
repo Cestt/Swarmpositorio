@@ -3,28 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Squad : MonoBehaviour {
+	
+	public enum squadType{
+		Swarm,
+		Humanos
+	}
 
-	public List<CreepSquad> Agents = new List<CreepSquad>();
-	public Unit leader = null;
-	public int maxSeparation;
-	Vector3 alignment;
-	Vector3 cohesion;
-	Vector3 separation;
-	Vector3 follow;
+	public squadType tipoEscuadra; 
+	public Transform agentsSquad;
+	public float speedAlongPath;
+	public int maxLeaderOffset;
+	public float maxRandomMovement;
+	public int maxRowElements = 6;
 	[HideInInspector]
-	public Vector3 result;
-	Vector3 cero = new Vector3(0,0,0);
-	public float max;
+	public Vector3[] path;
+	[HideInInspector]
+	public List<UnitSquad> Agents = new List<UnitSquad>();
+
 
 	void Awake(){
-		foreach(Unit a in Agents){
-			if(a != leader)
-				a.GetComponent<CreepSquad>().squad = this;
+		Agents.Clear();
+		foreach(Transform agent in agentsSquad){
+			if(agent.name != "Leader"){
+				Agents.Add(agent.GetComponent<UnitSquad>());
+				agent.GetComponent<UnitSquad>().tipoUnidad = tipoEscuadra;
+			}
+				
+		}
+
+		int i = 0;
+		int j = 0;
+		print(Agents.Count);
+		foreach(UnitSquad a in Agents){
+			
+			a.GetComponent<UnitSquad>().squad = this;
+
+			if(tipoEscuadra == squadType.Swarm){
+				if(a.startPos.z == 1000){
+					a.startPos = new Vector3(Random.Range(-maxRandomMovement,maxRandomMovement),
+						Random.Range(-maxLeaderOffset/2,maxLeaderOffset/2),0);
+				}
+			}
+
+			else if(tipoEscuadra == squadType.Humanos){
+				a.startPos = new Vector3((-maxLeaderOffset + (((maxLeaderOffset*2)/maxRowElements) * j)),(-maxLeaderOffset/4) * i,0);
+				j++;
+				if(j == maxRowElements){
+					i++;
+					j = 0;
+				}
+			}
 		}
 	}
 
 	void Start(){
-		leader = this.GetComponent<Unit>();
 		StartCoroutine(Compute());
 	}
 
@@ -34,109 +66,71 @@ public class Squad : MonoBehaviour {
 
 	IEnumerator Compute(){
 		while(true){
-			for(int i = 0; i < Agents.Count;i++){
-				if(Agents[i] != null){
-					if(Agents[i] != leader){
-						if(Agents[i].startPos.z == 1000){
-							Agents[i].startPos = new Vector3(Random.Range(-max,max),
-								Random.Range(-maxSeparation/2,maxSeparation/2),0);
-						}else{
-							Vector3 a = new Vector3((Agents[i].startPos.x +leader.thisTransform.position.x + Random.Range(-max,max)) - Agents[i].transform.position.x,
-								(Agents[i].startPos.y + leader.thisTransform.position.y + Random.Range(-max,max)) - Agents[i].transform.position.y,0);
-							Agents[i].goTo= a.normalized;
-						}
+			if(tipoEscuadra == squadType.Swarm){
+				for(int i = 0; i < Agents.Count;i++){
+					if(Agents[i] != null){
+						Vector3 a = new Vector3((Agents[i].startPos.x +transform.position.x + Random.Range(-maxRandomMovement,maxRandomMovement)) - Agents[i].transform.position.x,
+							(Agents[i].startPos.y + transform.position.y + Random.Range(-maxRandomMovement,maxRandomMovement)) - Agents[i].transform.position.y,0);
+						Agents[i].goTo= a.normalized;
+					}
+				}
 
-						
+				yield return new WaitForSeconds(1f);
+			}else if (tipoEscuadra == squadType.Humanos){
+				for(int i = 0; i < Agents.Count;i++){
+					if(Agents[i] != null){
+							if(transform.position.y > 0){
+								Agents[i].goTo = (transform.position + Agents[i].startPos);
+							}else if(transform.position.y < 0){
+								Agents[i].goTo = (transform.position - Agents[i].startPos);
+							}else if(transform.position.y < 0){
+								Agents[i].goTo =(transform.position - Agents[i].startPos);
+							}
 					}
 				}
 			}
+			yield return null;
 
-			yield return new WaitForSeconds(1f);
 		}
 
 	}
-
-	IEnumerator ComputeFollow(Vector3 pos){
-		Vector3 temp = leader.thisTransform.position - pos; 
-		follow = temp.normalized;
-		yield return null;
+	public void SetPath(Vector3[] callBackData){
+		StopAllCoroutines();
+		StartCoroutine(Compute());
+		path = callBackData;
+		StartCoroutine(MoveAlongPath());
 	}
 
-	IEnumerator ComputeAlignement(Unit thisAgent){
-		int neighbours = 0;
-		Vector3 oVector3 = Vector3.zero;
-		Vector3 junk = new Vector3(thisAgent.speed,thisAgent.speed,0);
-		for(int i = 0; i < Agents.Count - 1;i++){
-			if(Agents[i] != null){
-				if(thisAgent != Agents[i]){
-					if(Agents[i] != leader){
-						if(Vector3.Distance(oVector3,Agents[i].thisTransform.position) < maxSeparation){
-							oVector3 += junk;
-							neighbours++;
-						}
+	/// <summary>
+	/// Mueve el heroe a lo largo de path.
+	/// </summary>
+	IEnumerator MoveAlongPath(){
+		//Punto de la ruta en la que se encuentra
+		int targetIndex = 0;
+		if(path != null){
+			Vector3 currentWayPoint = path[0];
+			//Mantiene el bucle de movimiento.
+			bool loop =  true;
+			while(loop){
+
+				if(transform.position == currentWayPoint){
+
+					targetIndex++;
+					if(targetIndex >= path.Length){
+						loop = false;
+
 					}
+					//Comprueba si sigue en el path.
+					if(targetIndex < path.Length)
+						currentWayPoint = path[targetIndex];
 				}
+				transform.position = Vector3.MoveTowards(transform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
+				yield return new WaitForEndOfFrame();
 			}
+			path = null;
+
 		}
-		if(neighbours == 0){
-			alignment = Vector3.zero;
-			yield return null;
-		}else{
-			oVector3 /= neighbours;
-			alignment = oVector3.normalized;
-			yield return null;
-		}
+
+	}
 		
-	}
-
-	IEnumerator ComputeCohesion(Unit thisAgent){
-		int neighbours = 0;
-		Vector3 oVector3 = Vector3.zero;
-		for(int i = 0; i < Agents.Count - 1;i++){
-			if(Agents[i] != null){
-				if(thisAgent != Agents[i]){
-					if(Vector3.Distance(oVector3,Agents[i].thisTransform.position) < maxSeparation){
-						oVector3 += Agents[i].thisTransform.position;
-						neighbours++;
-					}
-				}
-			}
-		}
-		if(neighbours == 0){
-			cohesion = Vector3.zero;
-			yield return null;
-		}else{
-			oVector3 /= neighbours;
-			oVector3 -=  thisAgent.thisTransform.position;
-			cohesion = oVector3.normalized;
-			yield return null;
-		}
-
-	}
-	IEnumerator ComputeSeparation(Unit thisAgent){
-		int neighbours = 0;
-		Vector3 oVector3 = Vector3.zero;
-		for(int i = 0; i < Agents.Count - 1;i++){
-			if(Agents[i] != null){
-				if(thisAgent != Agents[i]){
-					if(Agents[i] != leader){
-						if(Vector3.Distance(oVector3,Agents[i].thisTransform.position) < maxSeparation){
-							oVector3 += (Agents[i].thisTransform.position - thisAgent.thisTransform.position)* -1;
-							neighbours++;
-						}
-					}
-
-				}
-			}
-		}
-		if(neighbours == 0){
-			separation = Vector3.zero;
-			yield return null;
-		}else{
-			oVector3 /= neighbours;
-			//separation = oVector3.normalized *Random.Range(0f,separationForce);
-			yield return null;
-		}
-
-	}
 }

@@ -50,7 +50,6 @@ public class PathFinding : MonoBehaviour {
 					closedSet.Add(currentNode);
 
 					if(currentNode == targetNode){
-						print("Path succes");
 						pathSuccess = true;
 						break;
 					}
@@ -169,12 +168,10 @@ public class PathFinding : MonoBehaviour {
 			currentNode = currentNode.parent;
 		}
 		if(_path != null){
-			print("Coste "+path[0].heatCost[_index]);
 			_path[0].heatCost[_index] = -1;
 			Node[] temp = new Node[path.Count + _path.Length];
 			path.CopyTo(temp,0);
 			_path.CopyTo(temp,path.Count);
-			print("Length "+temp.Length+path.Count+_path.Length);
 			return temp;
 		}else{
 			

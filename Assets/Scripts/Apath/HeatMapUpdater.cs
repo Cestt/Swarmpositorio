@@ -31,7 +31,6 @@ public class HeatMapUpdater {
 			n.heated = false;
 		}
 		a.Abort();
-		Debug.Log("End");
 	}
 
 	void UpdateHeatMap(){
