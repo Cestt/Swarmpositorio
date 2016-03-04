@@ -150,11 +150,12 @@ public class TouchManager : MonoBehaviour {
 	/// Se ha pulsado un nuevo spawn y se cambia el spawn seleccionado.
 	/// </summary>
 	/// <param name="spawn">Spawn. Spawn que es seleccionado</param>
-	public void SelectSpawn(Spawn spawn){
-		selected.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0.3f);
+	public void SelectSpawn(Spawn _spawn){
+		Spawn spawn = (Spawn) selected;
+		spawn.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0.3f);
 		Debug.Log ("Change Spawn: " + spawn);
-		selected = spawn ;
-		selected.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 0.3f);
+		selected = _spawn ;
+		spawn.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 0.3f);
 	}
 
 	/// <summary>
@@ -188,30 +189,28 @@ public class TouchManager : MonoBehaviour {
 	/// <summary>
 	/// Añade una pool de biomateria en el spawn actual
 	/// </summary>
-<<<<<<< HEAD
 	public void UseSpawnSkill(){
 		Spawn spawn = (Spawn) selected;
 		spawn.UseSkill ();
-=======
+
+	}
 	public void AddBioPool(){
-		selected.AddBioPool();
->>>>>>> origin/master
+		Spawn spawn = (Spawn) selected;
+		spawn.AddBioPool();
 	}
 
 	/// <summary>
 	/// Asigna una unidad para que conquiste un power point
 	/// </summary>
-<<<<<<< HEAD
+
 	public void AddBioPool(){
 		Spawn spawn = (Spawn) selected;
 		spawn.AddBioPool();
 	}
-	public void UnitToPowerPoint(PowerPoint powerPoint){
-		Hero hero = (Hero) selected;
-=======
+	
 	/// <param name="powerPoint">Power point.</param>
 	public void UnitToPowerPoint(PowerPoint powerPoint){
->>>>>>> origin/master
+		Hero hero = (Hero) selected;
 		hero.ConquestPowerPoint (powerPoint);
 	}
 
@@ -220,7 +219,6 @@ public class TouchManager : MonoBehaviour {
 	/// </summary>
 	/// <param name="type">Tipo de la unidad</param>
 	public void CreateUnit(int type){
-<<<<<<< HEAD
 		hq.CreateCreep (type);
 	}
 
@@ -231,8 +229,5 @@ public class TouchManager : MonoBehaviour {
 	public void EvolveSquad(int type){
 		Squad squad = (Squad) selected;
 		squad.Evolve (type);
-=======
-
->>>>>>> origin/master
 	}
 }
