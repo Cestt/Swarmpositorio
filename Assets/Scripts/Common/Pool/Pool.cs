@@ -19,6 +19,8 @@ public class Pool : MonoBehaviour {
 	//Lista prefabs de Creeps;
 	[Tooltip ("Prefabs del creep de tier 0")]
 	public GameObject prefabCreepT0;
+
+	public GameObject prefabSquadComadreja;
 	//Lista de coste en genes de los creeps
 	private int[] geneCostCreep;
 	//Lista prefabs de Humanos;
@@ -27,7 +29,9 @@ public class Pool : MonoBehaviour {
 	//Pool Creep 0;
 	[HideInInspector]
 	public CreepScript[] creep0;
-	public CreepScript[] creepT1_1;
+
+	public Squad[] squadComadreja;
+	/*public CreepScript[] creepT1_1;
 	public CreepScript[] creepT1_1A;
 	public CreepScript[] creepT1_1B;
 	public CreepScript[] creepT1_2;
@@ -52,6 +56,9 @@ public class Pool : MonoBehaviour {
 	public CreepEvolve[] tier2Evolve = new CreepEvolve[2];
 	[Tooltip ("Array tamaño 2 donde van las dos configuraciones de los creep de tier 2")]
 	public CreepEvolve[] tier3Evolve = new CreepEvolve[2];
+
+	*/
+
 	void Awake(){
 		CreatePool();
 	}
@@ -63,8 +70,14 @@ public class Pool : MonoBehaviour {
 		//Tier 0
 		creep0 = new CreepScript[tier0Cuantity];
 		FillPoolCreep (prefabCreepT0, prefabCreepT0.GetComponent<Creep> (), tier0Cuantity, creep0);
-
-		/**TIER 1**/
+		if (prefabSquadComadreja != null) {
+			squadComadreja = new Squad[10];
+			for (int i = 0; i < 10; i++) {
+				squadComadreja [i] = ((GameObject)Instantiate (prefabSquadComadreja)).GetComponent<Squad> ();
+				squadComadreja [i].transform.parent = transform;
+			}
+		}
+		/**TIER 1**
 		//Tipo 1
 		creepT1_1 = CreatePoolCreep(tier1Evolve[0]);
 		if (tier1Evolve [0] != null) {
@@ -77,7 +90,7 @@ public class Pool : MonoBehaviour {
 			creepT1_2A = CreatePoolCreep (tier1Evolve [1].evolveA);
 			creepT1_2B = CreatePoolCreep (tier1Evolve [1].evolveB);
 		}
-		/**TIER 2**/
+		/**TIER 2**
 		//Tipo 1
 		creepT2_1 = CreatePoolCreep(tier2Evolve[0]);
 		if (tier2Evolve [0] != null) {
@@ -90,7 +103,7 @@ public class Pool : MonoBehaviour {
 			creepT2_2A = CreatePoolCreep (tier2Evolve [1].evolveA);
 			creepT2_2B = CreatePoolCreep (tier2Evolve [1].evolveB);
 		}
-		/**TIER 3**/
+		/**TIER 3**
 		//Tipo 1
 		creepT3_1 = CreatePoolCreep(tier3Evolve[0]);
 		if (tier3Evolve [0] != null) {
@@ -103,6 +116,7 @@ public class Pool : MonoBehaviour {
 			creepT3_2A = CreatePoolCreep (tier3Evolve [1].evolveA);
 			creepT3_2B = CreatePoolCreep (tier3Evolve [1].evolveB);
 		}
+		*/
 	}
 
 	/// <summary>
@@ -135,6 +149,19 @@ public class Pool : MonoBehaviour {
 		}
 	}
 
+	public Squad GetCreepSquad(int type){
+		switch (type) {
+		case 0:
+			for (int i = 0; i < 10; i++) {
+				if (!squadComadreja [i].gameObject.activeInHierarchy) {
+					EconomyManager.gene -= squadComadreja [i].geneCost;
+					return squadComadreja [i];
+				}
+			}
+			break;
+		}
+		return null;
+	}
 
 	/// <summary>
 	/// Devuelve un creep que este disponible en la pool
@@ -153,7 +180,7 @@ public class Pool : MonoBehaviour {
 				}
 			//}
 			break;
-			/*Para los tier se sigue la siguiente regla
+		/*Para los tier se sigue la siguiente regla
 		SubTier tipo creep:
 			0 - Tipo 1
 			1 - Tipo 2
@@ -161,7 +188,7 @@ public class Pool : MonoBehaviour {
 		   -1 - Ninguna Evolucion
 		    0 - Evolucion A
 		    1 - Evolucion B
-		*/
+		****
 		case 1:
 			if (subType == -1) {
 				if (subTier == 0)
@@ -215,7 +242,7 @@ public class Pool : MonoBehaviour {
 				else
 					return GetFreeCreep(tier1Evolve [subTier].evolveB,creepT3_2B); 
 			}
-			break;
+			break;*/
 		}
 		return null;
 	}

@@ -10,8 +10,8 @@ GameObject:
   - 4: {fileID: 497318}
   - 114: {fileID: 11487246}
   - 212: {fileID: 21202654}
-  - 61: {fileID: 6159328}
-  - 50: {fileID: 5070762}
+  - 54: {fileID: 5435742}
+  - 65: {fileID: 6533748}
   m_Layer: 10
   m_Name: MarineBullet
   m_TagString: Untagged
@@ -31,37 +31,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!50 &5070762
-Rigidbody2D:
-  serializedVersion: 2
+--- !u!54 &5435742
+Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149370}
-  m_UseAutoMass: 0
+  serializedVersion: 2
   m_Mass: 1
-  m_LinearDrag: 0
+  m_Drag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 0
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_Constraints: 0
   m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!61 &6159328
-BoxCollider2D:
+--- !u!65 &6533748
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149370}
-  m_Enabled: 0
-  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4, y: 9}
+  m_Size: {x: 0.04, y: 0.08, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11487246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -140,6 +136,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_LocalScale.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_UseGravity
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

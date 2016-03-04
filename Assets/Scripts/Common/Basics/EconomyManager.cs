@@ -30,7 +30,7 @@ public class EconomyManager : MonoBehaviour {
 	/// <param name="subTier">Sub tier.</param>
 	/// <param name="subType">Sub type.</param>
 	public static int GetCreepEvolveCostGene(int tier, int subTier, int subType){
-		switch (tier) {
+		/*switch (tier) {
 			case 1:
 				if (subType == -1) {
 					return pool.tier1Evolve [subTier].costBuyGen;
@@ -58,7 +58,7 @@ public class EconomyManager : MonoBehaviour {
 					return pool.tier3Evolve [subTier].evolveB.costBuyGen;
 				}
 				break;
-		}
+		}*/
 		return -1;
 	}
 
@@ -70,7 +70,7 @@ public class EconomyManager : MonoBehaviour {
 	/// <param name="subTier">Sub tier.</param>
 	/// <param name="subType">Sub type.</param>
 	public static int GetCreepEvolveCostBio(int tier, int subTier, int subType){
-		switch (tier) {
+		/*switch (tier) {
 		case 1:
 			if (subType == -1) {
 				return pool.tier1Evolve [subTier].costBuyBio;
@@ -98,7 +98,7 @@ public class EconomyManager : MonoBehaviour {
 				return pool.tier3Evolve [subTier].evolveB.costBuyBio;
 			}
 			break;
-		}
+		}*/
 		return -1;
 	}
 }
