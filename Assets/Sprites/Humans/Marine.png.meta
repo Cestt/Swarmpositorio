@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: a86ade5a7ffbd3442adbffc72b72c904
-timeCreated: 1452013680
+guid: 0c3d084672c9f90429cdc077669001a8
+timeCreated: 1457105726
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
@@ -30,7 +30,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: 16
+    aniso: -1
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -51,7 +51,7 @@ TextureImporter:
   spriteSheet:
     sprites: []
     outline: []
-  spritePackingTag: TestAtlas
+  spritePackingTag: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
-  - 114: {fileID: 11458616}
   m_Layer: 9
   m_Name: DartLauncher
   m_TagString: Untagged
@@ -29,38 +28,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &11458616
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162330}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce900cb709ea93f499aeaeb9a5d41672, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  life: 30
-  armor: 5
-  lifeIni: 0
-  canAttack: 1
-  state: 0
-  weaknessType: 0
-  typesAttacks: {fileID: 0}
-  thisTransform: {fileID: 0}
-  thisGameObject: {fileID: 0}
-  target: {fileID: 0}
-  skills:
-  - {fileID: 11409314, guid: e44ff49163f76fc4abc7534f1d8d491b, type: 2}
-  OriginSpawn: {fileID: 0}
-  detectionRadius: 1024
-  speedAlongPath: 3
-  initPos: {x: 0, y: 0, z: 0}
-  tier: 2
-  NearbyAllies: []
-  costGene: 400
-  position: 0
-  index: 0
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -87,7 +54,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 510380539
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 63987d0b99449d94e9bb866160d54f29, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +68,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a,
+      objectReference: {fileID: 21300000, guid: 63987d0b99449d94e9bb866160d54f29,
         type: 3}
     - target: {fileID: 0}
       propertyPath: skills.Array.data[0]

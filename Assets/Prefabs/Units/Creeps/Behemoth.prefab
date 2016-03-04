@@ -42,7 +42,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 90
   armor: 35
+  armorBase: 0
   lifeIni: 0
+  speed: 1
+  squadVector: {x: 0, y: 0, z: 10000}
   canAttack: 1
   state: 0
   weaknessType: 0
@@ -52,6 +55,8 @@ MonoBehaviour:
   target: {fileID: 0}
   skills:
   - {fileID: 11409314, guid: a9326f8a5d40551479d7752ac8f0ebe7, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   OriginSpawn: {fileID: 0}
   detectionRadius: 1024
   speedAlongPath: 2
@@ -61,6 +66,17 @@ MonoBehaviour:
   costGene: 900
   position: 0
   index: 0
+  node:
+    walkable: 0
+    heated: 0
+    worldPosition: {x: 0, y: 0}
+    gCost: 0
+    hCost: 0
+    gridX: 0
+    gridY: 0
+    grid: 0
+    creeps: []
+    hero: {fileID: 0}
 --- !u!212 &21234492
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -87,7 +103,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 510380539
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1d6e47820dd890742908946b02551756, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +117,7 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b4149ef66638a1542beb1e7e48f7502a,
+      objectReference: {fileID: 21300000, guid: 1d6e47820dd890742908946b02551756,
         type: 3}
     - target: {fileID: 0}
       propertyPath: skills.Array.data[0]
