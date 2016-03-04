@@ -262,7 +262,7 @@ public class Spawn : Unit, IPointerClickHandler {
 	public void EvolveSpawn(int typeCreep){
 		CreepEvolve newCreep;
 		tier++;
-		if (tier == 1)
+		/*if (tier == 1)
 			newCreep = pool.tier1Evolve [typeCreep];
 		else if (tier == 2)
 			newCreep = pool.tier2Evolve [typeCreep];
@@ -281,7 +281,7 @@ public class Spawn : Unit, IPointerClickHandler {
 		Invoke ("CreateTier", 1f / spawnRateTier);
 		actualEvolveCreep = newCreep;
 		//////////////PARA PRUEBAS
-		GetComponent<SpriteRenderer> ().color = new Color (0, ((float)tier) / 3f, ((float)tier) / 3f);
+		GetComponent<SpriteRenderer> ().color = new Color (0, ((float)tier) / 3f, ((float)tier) / 3f);*/
 	}
 
 	/// <summary>
@@ -314,6 +314,15 @@ public class Spawn : Unit, IPointerClickHandler {
 		Invoke("GenerateBiomatter",1f/(float)biomatterProduction[numBioPools-1]);
 	}
 
+	public void CreateCreep(int type){
+		Squad sq = pool.GetCreepSquad (type);
+		if (sq != null) {
+			sq.gameObject.SetActive (true);
+			float angle = Random.Range (0, 360);
+			sq.transform.position = thisTransform.position;
+			sq.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
+		}
+	}
 
 	public void AddBioPool(){
 		if (numBioPools >= costBioPoolGene.Length || numBioPools >= biomatterProduction.Length ||
@@ -332,5 +341,12 @@ public class Spawn : Unit, IPointerClickHandler {
 	public virtual void OnPointerClick(PointerEventData eventData)
 	{
 		touchManager.SelectSpawn (this);
+	}
+
+	public override void Dead(){
+		if (name == "T0Spawn") {
+			Application.Quit ();
+		} else
+			Destroy (thisGameObject);
 	}
 }

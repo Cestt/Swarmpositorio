@@ -11,6 +11,9 @@ public class Unit : MonoBehaviour {
 	public int armor; //Armadura de la unidad
 	[HideInInspector]
 	public int armorBase; //Armadura base
+	public int damageBoost = 1;
+	[HideInInspector]
+	public int damageBoostBase;
 	[HideInInspector]
 	public int lifeIni;
 	public float speed = 1;
@@ -48,6 +51,7 @@ public class Unit : MonoBehaviour {
 		lifeIni = life;
 		numBoosts = 0;
 		armorBase = armor;
+		damageBoostBase = damageBoost;
 	}
 
 

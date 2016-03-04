@@ -101,7 +101,7 @@ public class Skill :MonoBehaviour{
 			//El daño lo metemos en cola
 			//ThreadManager.EnQueue (new ParseQueue (owner.target, damage, armorPen, typeDamage, owner));
 			//Daño directo en hilo secundario
-			owner.target.LaunchDamage(damage,armorPen,typeDamage, owner);
+			owner.target.LaunchDamage(damage*owner.damageBoost,armorPen,typeDamage, owner);
 		}
 	}
 
@@ -119,7 +119,7 @@ public class Skill :MonoBehaviour{
 			//El daño lo metemos en cola
 			//ThreadManager.EnQueue (new ParseQueue (target, damage, armorPen, typeDamage, owner));
 			//Daño en hilo secundario
-			target.LaunchDamage(damage,armorPen,typeDamage, owner);
+			target.LaunchDamage(damage*owner.damageBoost,armorPen,typeDamage, owner);
 		}
 	}
 

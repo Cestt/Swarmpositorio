@@ -168,6 +168,11 @@ public class Human : Unit {
 			target = bestTarget;
 			return true;
 		}
+		Collider[] spawns = Physics.OverlapSphere (thisTransform.position, detectionRadius, 1 << LayerMask.NameToLayer ("Spawn"));
+		if (spawns.Length > 0) {
+			target = spawns [0].transform.parent.GetComponent<Spawn> ();
+			return true;
+		}
 		return false;
 	}
 	/// <summary>

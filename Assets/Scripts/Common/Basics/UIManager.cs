@@ -10,6 +10,9 @@ public class UIManager : MonoBehaviour {
 	Button buttonNewSpawn;
 
 	Button buttonCreateCreep1;
+	Button buttonSkillSquad;
+	Button buttonEvolveSquad1;
+	Button buttonEvolveSquad2;
 	/*
 	//Boton para evolucionar el Spawn por el primer Creep
 	Button buttonEvolveSpawnT1; 
@@ -29,6 +32,9 @@ public class UIManager : MonoBehaviour {
 	void Awake () {
 		buttonNewSpawn = transform.FindChild ("ButtonNewSpawn").GetComponent<Button> ();
 		buttonCreateCreep1 = transform.FindChild ("ButtonCreateCreep1").GetComponent<Button> ();
+		buttonSkillSquad = transform.FindChild ("ButtonSkillSquad").GetComponent<Button> ();
+		buttonEvolveSquad1 = transform.FindChild ("ButtonEvolveSquad1").GetComponent<Button> ();
+		buttonEvolveSquad2 = transform.FindChild ("ButtonEvolveSquad2").GetComponent<Button> ();
 		/*buttonEvolveSpawnT1 = transform.FindChild ("ButtonEvolveSpawnT1").GetComponent<Button> ();
 		buttonEvolveSpawnT2 = transform.FindChild ("ButtonEvolveSpawnT2").GetComponent<Button> ();
 		buttonEvolveCreepA = transform.FindChild ("ButtonEvolveCreepA").GetComponent<Button> ();
@@ -45,40 +51,45 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-<<<<<<< HEAD
-		if(touchManager.selected.Equals(typeof(Spawn))){
-			Spawn selected = (Spawn) touchManager.selected;
-			//Boton nuevo spawn
-			if (EconomyManager.gene < EconomyManager.newSpawnCostGene || EconomyManager.biomatter < EconomyManager.newSpawnCostBio) {
-				buttonNewSpawn.interactable = false;
-			} else {
-				buttonNewSpawn.interactable = true;
-			}
-			//Botones de evolucion
-			if (selected.tier == 3) {
-				buttonEvolveSpawnT1.interactable = false;
-				buttonEvolveSpawnT2.interactable = false;
-			} else {
-				buttonEvolveSpawnT1.interactable = CheckCostButtonTier(selected.tier+1,0,-1);
-				buttonEvolveSpawnT2.interactable = CheckCostButtonTier(selected.tier+1,1,-1);
-			}
-			if (!selected.skillTierActive) {
-				if (selected.tier > 0) {
-					if (selected.subType == -1) {
-						buttonEvolveCreepA.interactable = CheckCostButtonTier(selected.tier,selected.subTier,0);
-						buttonEvolveCreepB.interactable = CheckCostButtonTier(selected.tier,selected.subTier,1);;
-						buttonSkillSpawn.interactable = false;
-					} else {
-						buttonEvolveCreepA.interactable = false;
-						buttonEvolveCreepB.interactable = false;
-						buttonSkillSpawn.interactable = true;
-					}
-=======
 		//Boton nuevo spawn
 		if (EconomyManager.gene < EconomyManager.newSpawnCostGene || EconomyManager.biomatter < EconomyManager.newSpawnCostBio) {
 			buttonNewSpawn.interactable = false;
 		} else {
 			buttonNewSpawn.interactable = true;
+		}
+		if (EconomyManager.gene < pool.squadComadreja[0].geneCost)
+			buttonCreateCreep1.interactable = false;
+		else {
+			buttonCreateCreep1.interactable = true;
+		}
+		if (touchManager.selectedSquad == null) {
+			buttonSkillSquad.gameObject.SetActive (false);
+			buttonEvolveSquad1.gameObject.SetActive (false);
+			buttonEvolveSquad2.gameObject.SetActive (false);
+		} else {
+			buttonSkillSquad.gameObject.SetActive (true);
+			//Si puede evolucionar el squad
+			if (touchManager.selectedSquad.evolves.Count > 0) {
+				buttonEvolveSquad1.gameObject.SetActive (true);
+				if (EconomyManager.gene < touchManager.selectedSquad.evolves [0].geneCost ||
+					EconomyManager.biomatter < touchManager.selectedSquad.evolves [0].bioCost ||
+					touchManager.selectedSquad.Agents.Count < touchManager.selectedSquad.evolves [0].unitCost)
+					buttonEvolveSquad1.interactable = false;
+				else
+					buttonEvolveSquad1.interactable = true;
+				
+				if (touchManager.selectedSquad.evolves.Count > 1) {
+					buttonEvolveSquad2.gameObject.SetActive (true);
+
+
+					if (EconomyManager.gene < touchManager.selectedSquad.evolves [1].geneCost ||
+					   EconomyManager.biomatter < touchManager.selectedSquad.evolves [1].bioCost ||
+					   touchManager.selectedSquad.Agents.Count < touchManager.selectedSquad.evolves [1].unitCost)
+						buttonEvolveSquad2.interactable = false;
+					else
+						buttonEvolveSquad2.interactable = true;
+				}
+			}
 		}
 		/*
 		//Botones de evolucion
@@ -95,29 +106,22 @@ public class UIManager : MonoBehaviour {
 					buttonEvolveCreepA.interactable = CheckCostButtonTier(touchManager.selected.tier,touchManager.selected.subTier,0);
 					buttonEvolveCreepB.interactable = CheckCostButtonTier(touchManager.selected.tier,touchManager.selected.subTier,1);;
 					buttonSkillSpawn.interactable = false;
->>>>>>> origin/master
 				} else {
 					buttonEvolveCreepA.interactable = false;
 					buttonEvolveCreepB.interactable = false;
-					buttonSkillSpawn.interactable = false;
+					buttonSkillSpawn.interactable = true;
 				}
 			} else {
-				buttonEvolveSpawnT1.interactable = false;
 				buttonEvolveCreepA.interactable = false;
 				buttonEvolveCreepB.interactable = false;
 				buttonSkillSpawn.interactable = false;
 			}
-			//Boton de piscina de biomateria
-			if (selected.numBioPools < selected.costBioPoolGene.Length && 
-				EconomyManager.gene >= selected.costBioPoolGene[selected.numBioPools])
-				buttonAddBioPool.interactable = true;
-			else
-				buttonAddBioPool.interactable = false;
+		} else {
+			buttonEvolveSpawnT1.interactable = false;
+			buttonEvolveCreepA.interactable = false;
+			buttonEvolveCreepB.interactable = false;
+			buttonSkillSpawn.interactable = false;
 		}
-<<<<<<< HEAD
-
-		
-=======
 		//Boton de piscina de biomateria
 		if (touchManager.selected.numBioPools < touchManager.selected.costBioPoolGene.Length && 
 			EconomyManager.gene >= touchManager.selected.costBioPoolGene[touchManager.selected.numBioPools])
@@ -125,7 +129,6 @@ public class UIManager : MonoBehaviour {
 		else
 			buttonAddBioPool.interactable = false;
 		*/
->>>>>>> origin/master
 	}
 
 	/*
