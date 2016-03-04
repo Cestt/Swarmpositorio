@@ -62,29 +62,30 @@ public class UIManager : MonoBehaviour {
 		else {
 			buttonCreateCreep1.interactable = true;
 		}
-		if (touchManager.selectedSquad == null) {
+		Squad selectedSquad = (Squad)touchManager.selected;
+		if (selectedSquad == null) {
 			buttonSkillSquad.gameObject.SetActive (false);
 			buttonEvolveSquad1.gameObject.SetActive (false);
 			buttonEvolveSquad2.gameObject.SetActive (false);
 		} else {
 			buttonSkillSquad.gameObject.SetActive (true);
 			//Si puede evolucionar el squad
-			if (touchManager.selectedSquad.evolves.Count > 0) {
+			if (selectedSquad.evolves.Count > 0) {
 				buttonEvolveSquad1.gameObject.SetActive (true);
-				if (EconomyManager.gene < touchManager.selectedSquad.evolves [0].geneCost ||
-					EconomyManager.biomatter < touchManager.selectedSquad.evolves [0].bioCost ||
-					touchManager.selectedSquad.Agents.Count < touchManager.selectedSquad.evolves [0].unitCost)
+				if (EconomyManager.gene < selectedSquad.evolves [0].geneCost ||
+					EconomyManager.biomatter < selectedSquad.evolves [0].bioCost ||
+					selectedSquad.Agents.Count < selectedSquad.evolves [0].unitCost)
 					buttonEvolveSquad1.interactable = false;
 				else
 					buttonEvolveSquad1.interactable = true;
 				
-				if (touchManager.selectedSquad.evolves.Count > 1) {
+				if (selectedSquad.evolves.Count > 1) {
 					buttonEvolveSquad2.gameObject.SetActive (true);
 
 
-					if (EconomyManager.gene < touchManager.selectedSquad.evolves [1].geneCost ||
-					   EconomyManager.biomatter < touchManager.selectedSquad.evolves [1].bioCost ||
-					   touchManager.selectedSquad.Agents.Count < touchManager.selectedSquad.evolves [1].unitCost)
+					if (EconomyManager.gene < selectedSquad.evolves [1].geneCost ||
+					   EconomyManager.biomatter < selectedSquad.evolves [1].bioCost ||
+					   selectedSquad.Agents.Count < selectedSquad.evolves [1].unitCost)
 						buttonEvolveSquad2.interactable = false;
 					else
 						buttonEvolveSquad2.interactable = true;

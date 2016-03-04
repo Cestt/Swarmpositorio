@@ -189,16 +189,12 @@ public class TouchManager : MonoBehaviour {
 	/// <summary>
 	/// Añade una pool de biomateria en el spawn actual
 	/// </summary>
-	public void UseSpawnSkill(){
+	/*public void UseSpawnSkill(){
 		Spawn spawn = (Spawn) selected;
 		spawn.UseSkill ();
 
 	}
-	public void AddBioPool(){
-		Spawn spawn = (Spawn) selected;
-		spawn.AddBioPool();
-	}
-
+*/
 	/// <summary>
 	/// Asigna una unidad para que conquiste un power point
 	/// </summary>

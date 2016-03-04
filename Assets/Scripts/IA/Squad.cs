@@ -147,7 +147,7 @@ public class Squad : MonoBehaviour {
 
 	public void UseSkill(){
 		List<Unit> units = new List<Unit> ();
-		foreach (CreepSquad cs in Agents)
+		foreach (UnitSquad cs in Agents)
 			units.Add (cs);
 		skill.Use (units);
 	}
