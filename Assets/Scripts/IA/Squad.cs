@@ -19,7 +19,13 @@ public class Squad : MonoBehaviour {
 	public Vector3[] path;
 	[HideInInspector]
 	public List<UnitSquad> Agents = new List<UnitSquad>();
+	public int geneCost;
+	public int bioCost;
+	[Tooltip ("Numero de unidades necesarias del escuadron origen para crear este escuadron")]
+	public int unitCost; 
+	public Skill skill;
 
+	public List<Squad> evolves = new List<Squad>();
 
 	void Awake(){
 		Agents.Clear();
@@ -138,5 +144,29 @@ public class Squad : MonoBehaviour {
 			agent.StartAttack();
 		}
 	}
-		
+
+	public void UseSkill(){
+		List<Unit> units = new List<Unit> ();
+		foreach (CreepSquad cs in Agents)
+			units.Add (cs);
+		skill.Use (units);
+	}
+
+	public void Evolve(int type){
+		Squad sqEvolve = evolves [type];
+		int killUnits = sqEvolve.unitCost;
+		if (Agents.Count < killUnits)
+			return;
+		for (int i = Agents.Count - 1; killUnits > 0; i--) {
+			Destroy (Agents [i].gameObject);
+			Agents.RemoveAt (i);
+			killUnits--;
+
+
+
+		}
+		Instantiate (sqEvolve, transform.position, Quaternion.identity);
+		if (Agents.Count == 0)
+			Destroy (gameObject);
+	}
 }
