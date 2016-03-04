@@ -24,8 +24,9 @@ public class Squad : MonoBehaviour {
 	[Tooltip ("Numero de unidades necesarias del escuadron origen para crear este escuadron")]
 	public int unitCost; 
 	public Skill skill;
+	PathFinding pathfinder;
 
-	public List<Squad> evolves = new List<Squad>();
+	public List<GameObject> evolves = new List<GameObject>();
 
 	void Awake(){
 		Agents.Clear();
@@ -34,7 +35,10 @@ public class Squad : MonoBehaviour {
 				Agents.Add(agent.GetComponent<UnitSquad>());
 				agent.GetComponent<UnitSquad>().tipoUnidad = tipoEscuadra;
 			}
-				
+			if(tipoEscuadra == squadType.Humanos){
+				pathfinder =GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
+				pathfinder.StartFindPath(transform.position,GameObject.Find("T0Spawn").transform.position,SetPath);
+			}	
 		}
 
 		int i = 0;

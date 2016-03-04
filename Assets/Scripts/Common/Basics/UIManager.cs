@@ -72,9 +72,10 @@ public class UIManager : MonoBehaviour {
 			//Si puede evolucionar el squad
 			if (selectedSquad.evolves.Count > 0) {
 				buttonEvolveSquad1.gameObject.SetActive (true);
-				if (EconomyManager.gene < selectedSquad.evolves [0].geneCost ||
-					EconomyManager.biomatter < selectedSquad.evolves [0].bioCost ||
-					selectedSquad.Agents.Count < selectedSquad.evolves [0].unitCost)
+				Squad evolve = selectedSquad.evolves [0].GetComponentInChildren<Squad>();
+				if (EconomyManager.gene < evolve.geneCost ||
+					EconomyManager.biomatter < evolve.bioCost ||
+					selectedSquad.Agents.Count < evolve.unitCost)
 					buttonEvolveSquad1.interactable = false;
 				else
 					buttonEvolveSquad1.interactable = true;
@@ -82,10 +83,10 @@ public class UIManager : MonoBehaviour {
 				if (selectedSquad.evolves.Count > 1) {
 					buttonEvolveSquad2.gameObject.SetActive (true);
 
-
-					if (EconomyManager.gene < selectedSquad.evolves [1].geneCost ||
-					   EconomyManager.biomatter < selectedSquad.evolves [1].bioCost ||
-					   selectedSquad.Agents.Count < selectedSquad.evolves [1].unitCost)
+					evolve = selectedSquad.evolves [1].GetComponentInChildren<Squad>();
+					if (EconomyManager.gene < evolve.geneCost ||
+						EconomyManager.biomatter < evolve.bioCost ||
+						selectedSquad.Agents.Count < evolve.unitCost)
 						buttonEvolveSquad2.interactable = false;
 					else
 						buttonEvolveSquad2.interactable = true;

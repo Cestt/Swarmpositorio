@@ -14,13 +14,19 @@ public class UnitSquad : Unit {
 	[HideInInspector]
 	public Squad.squadType tipoUnidad;
 	Grid grid;
+	PathFinding pathfinder;
 	public float detectionRadius;
 	public float detectionCreepsRadius;
 
 	void Start(){
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
-		if(tipoUnidad == Squad.squadType.Humanos)
+
+		if(tipoUnidad == Squad.squadType.Humanos){
 			StartAgain();
+		}else{
+			
+		}
+			
 	}
 
 	IEnumerator Move(){
@@ -41,6 +47,7 @@ public class UnitSquad : Unit {
 		}
 
 	}
+
 
 	/// <summary>
 	/// Mantiene al creep buscando enemigos alrededor suya
@@ -70,6 +77,16 @@ public class UnitSquad : Unit {
 					}
 				}
 			}
+			Collider[] spawns = Physics.OverlapSphere (thisTransform.position, detectionRadius, 1 << LayerMask.NameToLayer ("Creep"));
+			if (spawns.Length > 0) {
+				foreach(Collider col in spawns){
+					UnitSquad temp = col.GetComponent<UnitSquad>();
+					temp.target = this;
+					temp.AttackSwarm();
+				}
+
+				return true;
+			}
 			yield return new WaitForSeconds (Random.Range (0.1f, 0.5f));
 		}
 	}
@@ -94,6 +111,12 @@ public class UnitSquad : Unit {
 			target = bestTarget;
 			return true;
 		}
+		Collider[] spawns = Physics.OverlapSphere (thisTransform.position, detectionRadius, 1 << LayerMask.NameToLayer ("Spawn"));
+		if (spawns.Length > 0) {
+			target = spawns [0].transform.parent.GetComponent<Spawn> ();
+			return true;
+		}
+
 		return false;
 	}
 
@@ -107,6 +130,10 @@ public class UnitSquad : Unit {
 		StartCoroutine(Move());
 		StartCoroutine(ActiveCreeps());
 		StartCoroutine(EnemyDetection());
+	}
+
+	public void AttackSwarm(){
+		StartCoroutine(Attack());
 	}
 	/// <summary>
 	/// Ataca al target con la habilidad designada.
