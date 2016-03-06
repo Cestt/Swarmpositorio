@@ -5,6 +5,9 @@ public class MoveCamera : MonoBehaviour {
 	public int offset = 2;
 	public float speed = 2;
 
+	public float zoomMin = 7.2f;
+	public float zoomMax = 15;
+	public float scrollSpeed = 2;
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKey (KeyCode.LeftControl)) {
@@ -19,5 +22,8 @@ public class MoveCamera : MonoBehaviour {
 				transform.position -= new Vector3 (0, speed, 0) * Time.deltaTime; 
 			}
 		}
+		//Debug.Log (Input.GetAxis ("Mouse ScrollWheel"));
+		Camera.main.orthographicSize += Input.GetAxis ("Mouse ScrollWheel") * scrollSpeed * -1;
+		Camera.main.orthographicSize = Mathf.Clamp (Camera.main.orthographicSize, zoomMin, zoomMax);
 	}
 }

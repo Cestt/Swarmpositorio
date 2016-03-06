@@ -20,7 +20,7 @@ public class Pool : MonoBehaviour {
 	[Tooltip ("Prefabs del creep de tier 0")]
 	public GameObject prefabCreepT0;
 
-	public GameObject prefabSquadComadreja;
+	public GameObject prefabSquadBadger;
 	//Lista de coste en genes de los creeps
 	private int[] geneCostCreep;
 	//Lista prefabs de Humanos;
@@ -30,7 +30,7 @@ public class Pool : MonoBehaviour {
 	[HideInInspector]
 	public CreepScript[] creep0;
 
-	public Squad[] squadComadreja;
+	public GameObject[] squadBadger;
 	/*public CreepScript[] creepT1_1;
 	public CreepScript[] creepT1_1A;
 	public CreepScript[] creepT1_1B;
@@ -70,11 +70,12 @@ public class Pool : MonoBehaviour {
 		//Tier 0
 		creep0 = new CreepScript[tier0Cuantity];
 		FillPoolCreep (prefabCreepT0, prefabCreepT0.GetComponent<Creep> (), tier0Cuantity, creep0);
-		if (prefabSquadComadreja != null) {
-			squadComadreja = new Squad[10];
+		if (prefabSquadBadger != null) {
+			squadBadger = new GameObject[10];
 			for (int i = 0; i < 10; i++) {
-				squadComadreja [i] = ((GameObject)Instantiate (prefabSquadComadreja)).GetComponent<Squad> ();
-				squadComadreja [i].transform.parent = transform;
+				GameObject newSquad = (GameObject)Instantiate (prefabSquadBadger);
+				newSquad.transform.parent = transform;
+				squadBadger [i] = newSquad;
 			}
 		}
 		/**TIER 1**
@@ -149,13 +150,13 @@ public class Pool : MonoBehaviour {
 		}
 	}
 
-	public Squad GetCreepSquad(int type){
+	public GameObject GetCreepSquad(int type){
 		switch (type) {
 		case 0:
 			for (int i = 0; i < 10; i++) {
-				if (!squadComadreja [i].gameObject.activeInHierarchy) {
-					EconomyManager.gene -= squadComadreja [i].geneCost;
-					return squadComadreja [i];
+				if (!squadBadger [i].gameObject.activeInHierarchy) {
+					EconomyManager.gene -= squadBadger [i].GetComponentInChildren<Squad>().geneCost;
+					return squadBadger [i];
 				}
 			}
 			break;

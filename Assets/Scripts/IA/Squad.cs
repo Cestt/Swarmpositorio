@@ -157,7 +157,7 @@ public class Squad : MonoBehaviour {
 	}
 
 	public void Evolve(int type){
-		Squad sqEvolve = evolves [type];
+		Squad sqEvolve = evolves [type].GetComponentInChildren<Squad>();
 		int killUnits = sqEvolve.unitCost;
 		if (Agents.Count < killUnits)
 			return;
@@ -169,7 +169,9 @@ public class Squad : MonoBehaviour {
 
 
 		}
-		Instantiate (sqEvolve, transform.position, Quaternion.identity);
+		EconomyManager.gene -= sqEvolve.geneCost;
+		EconomyManager.biomatter = sqEvolve.bioCost;
+		((GameObject)Instantiate (evolves [type], transform.position, Quaternion.identity)).SetActive (true);
 		if (Agents.Count == 0)
 			Destroy (gameObject);
 	}

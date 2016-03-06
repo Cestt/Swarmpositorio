@@ -36,7 +36,7 @@ public class BuildSpawn : MonoBehaviour {
 		
 		if (Physics2D.OverlapCircle(transform.position, radiusCollision, 1 << LayerMask.NameToLayer("Obstacles")) == null
 			&& Physics2D.OverlapCircle(transform.position, minDistEnemy, 1 << LayerMask.NameToLayer("Human")) == null
-			&& Physics2D.OverlapCircle(transform.position, maxDistSpawn, 1 << LayerMask.NameToLayer("Spawn")) != null){
+			&& Physics.OverlapSphere(transform.position,maxDistSpawn,1 << LayerMask.NameToLayer("Spawn")).Length > 0){
 			canBuild = true;
 			render.color = new Color(0,1,0,0.5f);
 		}else{

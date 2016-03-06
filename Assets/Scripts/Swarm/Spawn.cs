@@ -315,7 +315,7 @@ public class Spawn : Unit, IPointerClickHandler {
 	}
 
 	public void CreateCreep(int type){
-		Squad sq = pool.GetCreepSquad (type);
+		GameObject sq = pool.GetCreepSquad (type);
 		if (sq != null) {
 			sq.gameObject.SetActive (true);
 			float angle = Random.Range (0, 360);

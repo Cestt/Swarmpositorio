@@ -39,6 +39,7 @@ public class TouchManager : MonoBehaviour {
 
 		if (Input.GetMouseButtonUp (0) & !isBuilding) {
 			pos = camera.ScreenToWorldPoint (Input.mousePosition);
+			pos = new Vector3 (pos.x, pos.y, 0);
 			Collider2D[] colls = new Collider2D[5];
 			//Comprobacion tocar UI
 			int collsNum = Physics2D.OverlapCircleNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("UI"));
@@ -48,16 +49,17 @@ public class TouchManager : MonoBehaviour {
 				collsNum = Physics.OverlapSphereNonAlloc (pos, 0.01f, colls2, 1 << LayerMask.NameToLayer ("Spawn"));
 				if(collsNum < 1){
 					//Comprobacion tocar Squad
-					collsNum = Physics2D.OverlapCircleNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("Squad"));
+					collsNum = Physics.OverlapSphereNonAlloc (pos, 0.01f, colls2, 1 << LayerMask.NameToLayer ("Creep"));
 					if(collsNum < 1){
-						collsNum = Physics2D.OverlapCircleNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("Hero"));
+						collsNum = Physics.OverlapSphereNonAlloc (pos, 0.01f, colls2, 1 << LayerMask.NameToLayer ("Hero"));
 						if(collsNum < 1){
+							QuitSelected ();
 							selected = null;
 						}else{
-							selected = colls[0].GetComponent<Hero>();
+							selected = colls2[0].GetComponent<Hero>();
 						}
 					}else{
-						selected = colls[0].GetComponent<UnitSquad>().squad;
+						selected = colls2[0].GetComponent<UnitSquad>().squad;
 					}
 				}
 			}
@@ -70,7 +72,7 @@ public class TouchManager : MonoBehaviour {
 					pos = camera.ScreenToWorldPoint (Input.mousePosition);
 					int collsNum;
 					Collider[] colls = new Collider[5];
-					if(selected.Equals(typeof(Spawn))){
+					if(selected.GetType() == typeof(Spawn)){
 						Spawn spawn = (Spawn) selected;
 
 
@@ -98,13 +100,13 @@ public class TouchManager : MonoBehaviour {
 						}
 					}
 
-					else if(selected.Equals(typeof(Squad))){
+					else if(selected.GetType() == typeof(Squad)){
 						Squad squad = (Squad)selected;
 						pathfinder.StartFindPath(squad.transform.position, pos,squad.SetPath);
 						
 					}
 
-					else if(selected.Equals(typeof(Hero))){
+					else if(selected.GetType() ==typeof(Hero)){
 						Hero hero = (Hero)selected;
 						collsNum = Physics.OverlapSphereNonAlloc(new Vector3(pos.x,pos.y,0), 0.01f, colls,  1 << LayerMask.NameToLayer("Human"));
 						if(collsNum < 1){
@@ -146,16 +148,22 @@ public class TouchManager : MonoBehaviour {
 		}
 	}
 
+	public void QuitSelected(){
+	//	Debug.Log (selected + "-" + (selected.GetType() == typeof(Spawn)));
+		if (selected != null && selected.GetType() == typeof(Spawn)) {
+			Spawn spawn = (Spawn)selected;
+			spawn.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0.3f);
+		}
+	}
+
 	/// <summary>
 	/// Se ha pulsado un nuevo spawn y se cambia el spawn seleccionado.
 	/// </summary>
 	/// <param name="spawn">Spawn. Spawn que es seleccionado</param>
 	public void SelectSpawn(Spawn _spawn){
-		Spawn spawn = (Spawn) selected;
-		spawn.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 1, 1, 0.3f);
-		Debug.Log ("Change Spawn: " + spawn);
+		QuitSelected ();
 		selected = _spawn ;
-		spawn.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 0.3f);
+		_spawn.transform.FindChild ("ProductionBar").GetComponent<SpriteRenderer> ().color = new Color (1, 0, 0, 0.3f);
 	}
 
 	/// <summary>

@@ -28,6 +28,10 @@ public class UIManager : MonoBehaviour {
 	Button buttonAddBioPool;
 	*/
 	Pool pool;
+	Squad badgerSq;
+
+	Text selectedTxt;
+
 	// Use this for initialization
 	void Awake () {
 		buttonNewSpawn = transform.FindChild ("ButtonNewSpawn").GetComponent<Button> ();
@@ -35,6 +39,7 @@ public class UIManager : MonoBehaviour {
 		buttonSkillSquad = transform.FindChild ("ButtonSkillSquad").GetComponent<Button> ();
 		buttonEvolveSquad1 = transform.FindChild ("ButtonEvolveSquad1").GetComponent<Button> ();
 		buttonEvolveSquad2 = transform.FindChild ("ButtonEvolveSquad2").GetComponent<Button> ();
+		selectedTxt = transform.FindChild ("SelectedText").GetComponent<Text> ();
 		/*buttonEvolveSpawnT1 = transform.FindChild ("ButtonEvolveSpawnT1").GetComponent<Button> ();
 		buttonEvolveSpawnT2 = transform.FindChild ("ButtonEvolveSpawnT2").GetComponent<Button> ();
 		buttonEvolveCreepA = transform.FindChild ("ButtonEvolveCreepA").GetComponent<Button> ();
@@ -47,6 +52,7 @@ public class UIManager : MonoBehaviour {
 		buttonSkillSpawn.interactable = false;*/
 		touchManager = GameObject.Find ("GameManager/TouchManager").GetComponent<TouchManager> ();
 		pool = GameObject.Find ("Pool").GetComponent<Pool> ();
+		badgerSq = pool.prefabSquadBadger.GetComponentInChildren<Squad> ();
 	}
 	
 	// Update is called once per frame
@@ -57,18 +63,34 @@ public class UIManager : MonoBehaviour {
 		} else {
 			buttonNewSpawn.interactable = true;
 		}
-		if (EconomyManager.gene < pool.squadComadreja[0].geneCost)
+		if (EconomyManager.gene < badgerSq.geneCost)
 			buttonCreateCreep1.interactable = false;
 		else {
 			buttonCreateCreep1.interactable = true;
 		}
-		Squad selectedSquad = (Squad)touchManager.selected;
+		Squad selectedSquad = null;
+		if (touchManager.selected == null)
+			selectedTxt.text = "Nada";
+		else if (touchManager.selected.GetType () == typeof(Squad)) {
+			selectedTxt.text = "Squad";
+			selectedSquad = (Squad)touchManager.selected;
+		}
+		else if (touchManager.selected.GetType () == typeof(Spawn))
+			selectedTxt.text = "Spawn";
+		else if (touchManager.selected.GetType () == typeof(Hero))
+			selectedTxt.text = "Hero";
+		
+
 		if (selectedSquad == null) {
 			buttonSkillSquad.gameObject.SetActive (false);
 			buttonEvolveSquad1.gameObject.SetActive (false);
 			buttonEvolveSquad2.gameObject.SetActive (false);
 		} else {
 			buttonSkillSquad.gameObject.SetActive (true);
+			if (selectedSquad.skill == null)
+				buttonSkillSquad.interactable = false;
+			else
+				buttonSkillSquad.interactable = true;
 			//Si puede evolucionar el squad
 			if (selectedSquad.evolves.Count > 0) {
 				buttonEvolveSquad1.gameObject.SetActive (true);
