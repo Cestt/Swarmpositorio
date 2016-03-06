@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 459830}
   - 212: {fileID: 21234492}
   - 114: {fileID: 11481406}
-  - 65: {fileID: 6587582}
   m_Layer: 9
   m_Name: Roach
   m_TagString: Untagged
@@ -30,18 +29,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!65 &6587582
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 162330}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.67, y: 0.99, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11481406
 MonoBehaviour:
   m_ObjectHideFlags: 1

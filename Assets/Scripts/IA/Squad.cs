@@ -35,12 +35,13 @@ public class Squad : MonoBehaviour {
 				Agents.Add(agent.GetComponent<UnitSquad>());
 				agent.GetComponent<UnitSquad>().tipoUnidad = tipoEscuadra;
 			}
-			if(tipoEscuadra == squadType.Humanos){
-				pathfinder =GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
-				pathfinder.StartFindPath(transform.position,GameObject.Find("T0Spawn").transform.position,SetPath);
-			}	
+
 		}
 
+		if(tipoEscuadra == squadType.Humanos){
+			pathfinder =GameObject.Find("GameManager/PathFinder").GetComponent<PathFinding>();
+			pathfinder.StartFindPath(transform.position,GameObject.Find("T0Spawn").transform.position,SetPath);
+		}	
 		int i = 0;
 		int j = 0;
 		print(Agents.Count);
@@ -93,7 +94,7 @@ public class Squad : MonoBehaviour {
 								Agents[i].goTo = (transform.position + Agents[i].startPos);
 							}else if(transform.position.y < 0){
 								Agents[i].goTo = (transform.position - Agents[i].startPos);
-							}else if(transform.position.y < 0){
+						}else if(transform.position.y < 0){
 								Agents[i].goTo =(transform.position - Agents[i].startPos);
 							}
 					}
@@ -108,6 +109,7 @@ public class Squad : MonoBehaviour {
 		StopAllCoroutines();
 		StartCoroutine(Compute());
 		path = callBackData;
+		Debug.Log (path + "---" + path.Length);
 		StartCoroutine(MoveAlongPath());
 	}
 
@@ -134,6 +136,7 @@ public class Squad : MonoBehaviour {
 					if(targetIndex < path.Length)
 						currentWayPoint = path[targetIndex];
 				}
+				//Debug.Log (transform.position +" " + currentWayPoint);
 				transform.position = Vector3.MoveTowards(transform.position,currentWayPoint,speedAlongPath * Time.fixedDeltaTime);
 				yield return new WaitForEndOfFrame();
 			}

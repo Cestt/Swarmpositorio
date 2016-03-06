@@ -120,7 +120,7 @@ public class Spawn : Unit, IPointerClickHandler {
 			creep.creep.transform.position = thisTransform.position;
 			/*TEMPORAL PARA QUE SE VEAN/*/
 			float angle = Random.Range (0, 360);
-			creep.creep.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
+			creep.creep.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 5, Mathf.Sin (angle * Mathf.Deg2Rad) * 5, 0);
 			/****************************/
 			creep.creep.SetActive (true);
 			spawnedCreeps.Add(creep.creepScript);
@@ -320,7 +320,7 @@ public class Spawn : Unit, IPointerClickHandler {
 			sq.gameObject.SetActive (true);
 			float angle = Random.Range (0, 360);
 			sq.transform.position = thisTransform.position;
-			sq.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 2, Mathf.Sin (angle * Mathf.Deg2Rad) * 2, 0);
+			sq.transform.position += new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 5, Mathf.Sin (angle * Mathf.Deg2Rad) *5, 0);
 		}
 	}
 

@@ -69,10 +69,17 @@ public class Projectile : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other) {
-		Debug.Log (other.transform.parent.GetComponent<Unit> ());
-		skill.Attack (other.transform.parent.GetComponent<Unit> (), owner);
-		enemyPenetration--;
-		if (enemyPenetration <= 0)
-			Destroy (gameObject);
+		if (other.name == "Hero") {
+			skill.Attack (other.GetComponent<Hero> ());
+			enemyPenetration--;
+			if (enemyPenetration <= 0)
+				Destroy (gameObject);
+		} else if (other.name.Contains("Spawn")){
+			Debug.Log (other.transform.parent.GetComponent<Unit> ());
+			skill.Attack (other.transform.parent.GetComponent<Unit> (), owner);
+			enemyPenetration--;
+			if (enemyPenetration <= 0)
+				Destroy (gameObject);
+		}
 	}
 }

@@ -157608,11 +157608,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 446854, guid: 83c3ed74abe9fdf468e1760bc00435aa, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 62.4
+      value: -23.8
       objectReference: {fileID: 0}
     - target: {fileID: 446854, guid: 83c3ed74abe9fdf468e1760bc00435aa, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 64.5
+      value: -43.5
       objectReference: {fileID: 0}
     - target: {fileID: 446854, guid: 83c3ed74abe9fdf468e1760bc00435aa, type: 2}
       propertyPath: m_LocalPosition.z

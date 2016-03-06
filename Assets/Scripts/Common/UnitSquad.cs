@@ -20,8 +20,9 @@ public class UnitSquad : Unit {
 
 	void Start(){
 		grid = GameObject.Find("GameManager/PathFinder").GetComponent<Grid>();
-
+		Debug.Log ("UQ: " + tipoUnidad);
 		if(tipoUnidad == Squad.squadType.Humanos){
+			
 			StartAgain();
 		}else{
 			
@@ -36,7 +37,7 @@ public class UnitSquad : Unit {
 					Utils.LookAt2D(1.2f,thisTransform,thisTransform.position + goTo);
 					thisTransform.position = Vector3.MoveTowards(thisTransform.position,thisTransform.position + goTo ,speed * Time.deltaTime);
 				}
-			}else if(tipoUnidad == Squad.squadType.Swarm){
+			}else if(tipoUnidad == Squad.squadType.Humanos){
 				if(goTo.z != 10000){
 				Utils.LookAt2D(1.2f,thisTransform,goTo);
 				thisTransform.position = goTo;
