@@ -47,8 +47,10 @@ public class Projectile : MonoBehaviour {
 		if (nearEnemies != null && nearEnemies.Length > 0) {
 			//Debug.Log ("Creep cerca");
 			for (int i = 0; i < nearEnemies.Length && enemyPenetration > 0; i++) {
-				skill.Attack (nearEnemies [i], owner);
-				enemyPenetration--;
+				if (nearEnemies [i].gameObject.activeInHierarchy) {
+					skill.Attack (nearEnemies [i], owner);
+					enemyPenetration--;
+				}
 			}
 			if (enemyPenetration <= 0) {
 				Destroy (gameObject);

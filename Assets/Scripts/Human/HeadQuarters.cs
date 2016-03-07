@@ -87,7 +87,7 @@ public class HeadQuarters : Building {
 	/// </summary>
 	private void CreateSquad(){
 		float angle = Random.Range (0, 360);
-		Instantiate (prefabsSquads[Random.Range(0,prefabsSquads.Count)], transform.position + new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 5, Mathf.Sin (angle * Mathf.Deg2Rad) * 5, 0),Quaternion.identity);
+		Instantiate (prefabsSquads[Random.Range(0,prefabsSquads.Count)], transform.position + new Vector3 (Mathf.Cos (angle * Mathf.Deg2Rad) * 7, Mathf.Sin (angle * Mathf.Deg2Rad) * 7, 0),Quaternion.identity);
 		Invoke ("CreateSquad", (float)1f/spawnTime);
 	}
 }

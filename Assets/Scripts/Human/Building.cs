@@ -22,7 +22,7 @@ public class Building : Unit {
 		Creep[] nearCreeps = grid.GetCreepsArea (thisTransform.position, detectionCreepsRadius);
 		if (nearCreeps != null) {
 			foreach (Creep creep in nearCreeps) {
-				if (creep != null && creep.state != FSM.States.Attack) {
+				if (creep != null && creep.gameObject.activeInHierarchy && creep.state != FSM.States.Attack) {
 					creep.EnemyDetected (this);
 				}
 			}
