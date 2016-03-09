@@ -6,7 +6,7 @@ public class Building : Unit {
 
 	//Radio deteccion creeps;
 	public float detectionCreepsRadius;
-
+	Creep[] nearCreeps;
 	private Grid grid;
 
 	void Awake(){
@@ -19,11 +19,11 @@ public class Building : Unit {
 	/// Chequea si existen creeps en el area para mandarles a atacar a esta estructura
 	/// </summary>
 	private void CheckEnemies(){
-		Creep[] nearCreeps = grid.GetCreepsArea (thisTransform.position, detectionCreepsRadius);
+		nearCreeps = grid.GetCreepsArea (thisTransform.position, detectionCreepsRadius);
 		if (nearCreeps != null) {
-			foreach (Creep creep in nearCreeps) {
-				if (creep != null && creep.gameObject.activeInHierarchy && creep.state != FSM.States.Attack) {
-					creep.EnemyDetected (this);
+			for(int i = 0;i < nearCreeps.Length - 1; i++) {
+				if (nearCreeps[i] != null && nearCreeps[i].gameObject.activeInHierarchy && nearCreeps[i].state != FSM.States.Attack) {
+					nearCreeps[i].EnemyDetected (this);
 				}
 			}
 		}

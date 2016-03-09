@@ -146,9 +146,9 @@ public class Squad : MonoBehaviour {
 
 	}
 
-	public void StartAttack(){
+	public void StartAttack(Unit target){
 		foreach(UnitSquad agent in Agents){
-			agent.StartAttack();
+			agent.StartAttack(target);
 		}
 	}
 

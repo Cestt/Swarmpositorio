@@ -145,6 +145,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -155,12 +158,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &252788155
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -233,6 +241,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -243,12 +254,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &351915235
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -661,6 +677,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -671,12 +690,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &498292237
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -853,6 +877,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -863,12 +890,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &555687312
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -941,6 +973,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -951,12 +986,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &580386908
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1029,6 +1069,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -1039,12 +1082,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &643245532
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1234,6 +1282,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -1244,12 +1295,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &702529662
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1322,6 +1378,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -1332,12 +1391,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &724439226
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1701,6 +1765,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -1711,12 +1778,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1032527262
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179478,6 +179550,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -179488,12 +179563,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1060722060
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179566,6 +179646,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -179576,12 +179659,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1108457877
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179654,6 +179742,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -179664,12 +179755,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1156298820
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -179829,7 +179925,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 635e21ae41e88a6478810179a95c3537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedSquad: {fileID: 0}
+  hq: {fileID: 0}
 --- !u!1 &1531321465
 GameObject:
   m_ObjectHideFlags: 0
@@ -179860,6 +179956,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -179870,12 +179969,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1531321467
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180103,6 +180207,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -180113,12 +180220,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1682514541
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180191,6 +180303,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -180201,12 +180316,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1694406996
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180328,6 +180448,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -180338,12 +180461,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1766184002
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180488,16 +180616,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tier0Cuantity: 5000
   prefabCreepT0: {fileID: 162330, guid: f6463a1477e43144c8735cbfb867bc90, type: 2}
+  prefabSquadBadger: {fileID: 0}
   humanos: []
-  tier1Evolve:
-  - {fileID: 11456436, guid: 84893fd5dcfd09e438c46d8422a15a58, type: 2}
-  - {fileID: 0}
-  tier2Evolve:
-  - {fileID: 0}
-  - {fileID: 0}
-  tier3Evolve:
-  - {fileID: 0}
-  - {fileID: 0}
+  squadBadger: []
 --- !u!4 &1811320770
 Transform:
   m_ObjectHideFlags: 0
@@ -180545,6 +180666,11 @@ MonoBehaviour:
   maxRowElements: 6
   path: []
   Agents: []
+  geneCost: 0
+  bioCost: 0
+  unitCost: 0
+  skill: {fileID: 0}
+  evolves: []
 --- !u!4 &1819750974
 Transform:
   m_ObjectHideFlags: 0
@@ -180587,6 +180713,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -180597,12 +180726,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1821259339
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180854,6 +180988,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -180864,12 +181001,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1886739366
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -180942,6 +181084,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -180952,12 +181097,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1899177052
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -181030,6 +181180,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -181040,12 +181193,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1901907278
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -181118,6 +181276,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 500
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 0
   squadVector: {x: 0, y: 0, z: 10000}
@@ -181130,6 +181291,8 @@ MonoBehaviour:
   target: {fileID: 0}
   skills:
   - {fileID: 11432710, guid: 5d86a35a068ce5342b34a53d8b1384b8, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   path: []
   speedAlongPath: 10
   rotationSpeed: 5
@@ -181326,6 +181489,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   life: 1
   armor: 0
+  armorBase: 0
+  damageBoost: 1
+  damageBoostBase: 0
   lifeIni: 0
   speed: 2
   squadVector: {x: 0, y: 0, z: 10000}
@@ -181336,12 +181502,17 @@ MonoBehaviour:
   thisTransform: {fileID: 0}
   thisGameObject: {fileID: 0}
   target: {fileID: 0}
-  skills: []
+  skills:
+  - {fileID: 11409314, guid: 9db848dd9a2199f47b716e59b1baf801, type: 2}
+  numBoosts: 0
+  powerPoint: {fileID: 0}
   squad: {fileID: 0}
   leader: 0
   goTo: {x: 0, y: 0, z: 10000}
   startPos: {x: 0, y: 0, z: 1000}
   tipoUnidad: 0
+  detectionRadius: 0
+  detectionCreepsRadius: 0
 --- !u!212 &1944627193
 SpriteRenderer:
   m_ObjectHideFlags: 0

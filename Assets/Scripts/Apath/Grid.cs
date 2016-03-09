@@ -36,7 +36,12 @@ public class Grid : MonoBehaviour {
 	public int index = 0;
 	public List<Node> heatNodes = new List<Node>();
 	public bool con;
-
+	List<Unit> Units = new List<Unit>();
+	List<Creep> creeps = new List<Creep> ();
+	Node actualNode;
+	int numNodes;
+	int maxI;
+	int maxJ;
 		
 	void Awake(){
 	// Recrear el grid en tiempo de carga;
@@ -252,17 +257,17 @@ public class Grid : MonoBehaviour {
 	public Creep[] GetCreepsArea(Vector3 pos, float range){
 		if (grid == null)
 			return null;
-		List<Creep> creeps = new List<Creep> ();
-		int numNodes = (int)Mathf.Ceil (range / nodeSize);
-		Node actualNode = NodeFromWorldPosition (pos);
+		creeps.Clear();
+		numNodes = (int)Mathf.Ceil (range / nodeSize);
+		actualNode = NodeFromWorldPosition (pos);
 		int i = actualNode.gridX - numNodes;
 		if (i < 0)
 			i = 0;
-		int maxI = actualNode.gridX + numNodes;
+		maxI = actualNode.gridX + numNodes;
 		if (maxI >= gridWorldSize.x / nodeSize)
 			maxI = (int)(gridWorldSize.x / nodeSize) - 1;
 		
-		int maxJ = actualNode.gridY + numNodes;
+		maxJ = actualNode.gridY + numNodes;
 		if (maxJ >= gridWorldSize.y / nodeSize)
 			maxJ = (int)(gridWorldSize.y / nodeSize) - 1;
 		for (; i <= maxI; i++) {
@@ -270,8 +275,8 @@ public class Grid : MonoBehaviour {
 			if (j < 0)
 				j = 0;
 			for (; j <= maxJ; j++) {
-				foreach (Creep c in grid[i,j].creeps) {
-					creeps.Add (c);
+				for(int k = 0; k < grid[i,j].creeps.Count - 1;k++)  {
+					creeps.Add(grid[i,j].creeps[k]);
 				}
 			}
 		}
@@ -284,17 +289,17 @@ public class Grid : MonoBehaviour {
 	public Unit[] GetEnemiesArea(Vector3 pos, float range){
 		if (grid == null)
 			return null;
-		List<Unit> Units = new List<Unit> ();
-		int numNodes = (int)Mathf.Ceil (range / nodeSize);
-		Node actualNode = NodeFromWorldPosition (pos);
+		Units.Clear();
+		numNodes = (int)Mathf.Ceil (range / nodeSize);
+		actualNode = NodeFromWorldPosition (pos);
 		int i = actualNode.gridX - numNodes;
 		if (i < 0)
 			i = 0;
-		int maxI = actualNode.gridX + numNodes;
+		maxI = actualNode.gridX + numNodes;
 		if (maxI >= gridWorldSize.x / nodeSize)
 			maxI = (int)(gridWorldSize.x / nodeSize) - 1;
 
-		int maxJ = actualNode.gridY + numNodes;
+		maxJ = actualNode.gridY + numNodes;
 		if (maxJ >= gridWorldSize.y / nodeSize)
 			maxJ = (int)(gridWorldSize.y / nodeSize) - 1;
 		for (; i <= maxI; i++) {
@@ -305,10 +310,10 @@ public class Grid : MonoBehaviour {
 				if(grid[i,j].hero != null){
 					Units.Add((grid[i,j].hero));
 				}
-				foreach (Unit c in grid[i,j].creeps) {
+				for(int k = 0; k < grid[i,j].creeps.Count - 1;k++)  {
 					
-					if(c.GetType().Name == "Creep"){
-						Units.Add(c);
+					if(grid[i,j].creeps[k].GetType().Name == "Creep"){
+						Units.Add(grid[i,j].creeps[k]);
 					}
 				}
 			}
