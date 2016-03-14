@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class Spawn : Unit, IPointerClickHandler {
+public class Spawn : Unit {
 
 	//Rate de genes/segundo
 	public int geneConsumption;
@@ -333,7 +333,8 @@ public class Spawn : Unit, IPointerClickHandler {
 			Invoke("GenerateBiomatter",1f/(float)biomatterProduction[numBioPools]);
 		numBioPools++;
 	}
-	
+
+	/*
 	/// <summary>
 	/// Raises the pointer click event.
 	/// </summary>
@@ -341,7 +342,7 @@ public class Spawn : Unit, IPointerClickHandler {
 	public virtual void OnPointerClick(PointerEventData eventData)
 	{
 		touchManager.SelectSpawn (this);
-	}
+	}*/
 
 	public override void Dead(){
 		if (name == "T0Spawn") {

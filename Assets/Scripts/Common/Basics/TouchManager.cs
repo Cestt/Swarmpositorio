@@ -44,8 +44,26 @@ public class TouchManager : MonoBehaviour {
 			//Comprobacion tocar UI
 			int collsNum = Physics2D.OverlapCircleNonAlloc (pos, 0.01f, colls, 1 << LayerMask.NameToLayer ("UI"));
 			if(collsNum < 1){
+				RaycastHit ray;
+				if (Physics.Raycast (camera.ScreenToWorldPoint (Input.mousePosition), new Vector3 (0, 0, 1), out ray)) {
+					QuitSelected ();
+					int layerMask = ray.collider.gameObject.layer;
+					if (layerMask == LayerMask.NameToLayer ("Spawn")) {
+						Debug.Log ("Spawn");
+						SelectSpawn( ray.collider.GetComponent<Spawn> ());
+					} else if (layerMask == LayerMask.NameToLayer ("Creep")) {
+						Debug.Log ("Creep");
+						selected = ray.collider.GetComponent<UnitSquad> ().squad;
+					} else if (layerMask == LayerMask.NameToLayer ("Hero")) {
+						Debug.Log ("Hero");
+						selected = ray.collider.GetComponent<Hero>();
+					}
+				} else {
+					
+					Debug.Log ("Nothing touching");
+				}
 				//Comprobacion tocar Spawn
-				Collider[] colls2 = new Collider[5];
+				/*Collider[] colls2 = new Collider[5];
 				collsNum = Physics.OverlapSphereNonAlloc (pos, 0.01f, colls2, 1 << LayerMask.NameToLayer ("Spawn"));
 				if(collsNum < 1){
 					//Comprobacion tocar Squad
@@ -61,15 +79,23 @@ public class TouchManager : MonoBehaviour {
 					}else{
 						selected = colls2[0].GetComponent<UnitSquad>().squad;
 					}
-				}
+				}*/
 			}
 
 		
 		} else 
 			if (Input.GetMouseButtonUp (1) & !isBuilding) {
+				
 
 				if (selected != null) {
 					pos = camera.ScreenToWorldPoint (Input.mousePosition);
+					RaycastHit ray;
+					if (Physics.Raycast (camera.ScreenToWorldPoint (Input.mousePosition), new Vector3 (0, 0, 1), out ray)) {
+						int layerMask = ray.collider.gameObject.layer;
+						if (layerMask == LayerMask.NameToLayer("PowerPoint") && (selected.GetType() == typeof(Squad) || selected.GetType() == typeof(Hero))){
+							((Unit)selected).ConquestPowerPoint (ray.collider.GetComponent<PowerPoint> ());
+						}
+					}
 					int collsNum;
 					Collider[] colls = new Collider[5];
 					if(selected.GetType() == typeof(Spawn)){

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 public class PowerPoint : MonoBehaviour {
 	[Tooltip ("Puntos necesarios para conquistar")]
@@ -11,6 +13,7 @@ public class PowerPoint : MonoBehaviour {
 	public float powerProduction;
 	private Unit unit;
 
+	TouchManager touchManager;
 
 	bool conquered;
 	//Jugador que lo esta conquistando
@@ -27,6 +30,7 @@ public class PowerPoint : MonoBehaviour {
 		points = 0;
 		actualPlayer = -1;
 		conquered = false;
+		touchManager = GameObject.Find ("GameManager/TouchManager").GetComponent<TouchManager> ();
 	}
 
 	void Update(){
@@ -115,4 +119,6 @@ public class PowerPoint : MonoBehaviour {
 	public void RemoveUnit(){
 		unit = null;
 	}
+
+
 }
